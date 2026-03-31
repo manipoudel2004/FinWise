@@ -2,47 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>AU Tax - FinWise</title>
+    <style>
+        input, select { font-size: 16px !important; }
+    </style>
 </head>
-<body class="bg-[#020617] text-slate-200 font-sans antialiased">
+<body class="bg-[#020617] text-slate-200 font-sans antialiased overflow-x-hidden">
 
-    <nav class="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
-        <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">
-            FinWise
-        </a>
-        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">
-            ← Back to Dashboard
-        </a>
+    <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+        <a href="index.html" class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">FinWise</a>
+        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">← Back</a>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-8 py-12">
-        <div class="mb-12">
-            <div class="flex items-center gap-3 mb-4">
-                <span class="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-full border border-emerald-500/20 uppercase tracking-widest">FY 2024-25</span>
-                <h1 class="text-4xl font-bold text-white">Income Tax</h1>
-            </div>
-            <p class="text-slate-400">Calculate your net position after the latest Stage 3 tax adjustments.</p>
+    <main class="max-w-6xl mx-auto px-6 py-8 md:py-12">
+        <div class="mb-10">
+            <span class="bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-full border border-emerald-500/20 uppercase tracking-widest mb-4 inline-block">FY 2024-25</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-white">Income Tax Calculator</h1>
         </div>
 
         <div class="grid lg:grid-cols-3 gap-8">
             <div class="lg:col-span-1 space-y-6">
                 <div class="bg-slate-900/40 border border-slate-800 rounded-[2rem] p-8 space-y-6">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Annual Taxable Income (AUD)</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Annual Income (AUD)</label>
                         <input type="number" id="income" value="95000" oninput="calculateTax()"
-                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 text-xl font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500 transition">
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 text-xl font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500">
                     </div>
                     
                     <div class="space-y-4 pt-4 border-t border-slate-800">
                         <label class="flex items-center gap-3 cursor-pointer group">
                             <input type="checkbox" id="medicare" checked onchange="calculateTax()" class="w-5 h-5 rounded border-slate-800 bg-slate-950 text-emerald-500 focus:ring-0">
-                            <span class="text-sm text-slate-400 group-hover:text-slate-200 transition">Include Medicare Levy (2%)</span>
+                            <span class="text-sm text-slate-400 group-hover:text-slate-200">Medicare Levy (2%)</span>
                         </label>
                         <label class="flex items-center gap-3 cursor-pointer group">
                             <input type="checkbox" id="hecs" onchange="calculateTax()" class="w-5 h-5 rounded border-slate-800 bg-slate-950 text-emerald-500 focus:ring-0">
-                            <span class="text-sm text-slate-400 group-hover:text-slate-200 transition">Include HELP/HECS Debt</span>
+                            <span class="text-sm text-slate-400 group-hover:text-slate-200">HELP/HECS Debt</span>
                         </label>
                     </div>
                 </div>
@@ -50,49 +46,24 @@
 
             <div class="lg:col-span-2 grid md:grid-cols-2 gap-6">
                 <div class="bg-emerald-500/5 border border-emerald-500/20 rounded-[2.5rem] p-10 flex flex-col justify-center">
-                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Annual Take-Home</span>
-                    <div id="net-annual" class="text-5xl font-black text-white tracking-tighter mb-6">$74,212</div>
-                    
+                    <span class="text-xs font-bold uppercase text-slate-500 mb-2">Annual Take-Home</span>
+                    <div id="net-annual" class="text-4xl md:text-5xl font-black text-white mb-6">$74,212</div>
                     <div class="space-y-4 pt-6 border-t border-slate-800/50">
-                        <div class="flex justify-between">
-                            <span class="text-slate-500 text-sm">Monthly</span>
-                            <span id="net-monthly" class="text-white font-bold">$6,184</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500 text-sm">Fortnightly</span>
-                            <span id="net-fortnightly" class="text-white font-bold">$2,854</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-slate-500 text-sm">Weekly</span>
-                            <span id="net-weekly" class="text-white font-bold">$1,427</span>
-                        </div>
+                        <div class="flex justify-between"><span class="text-slate-500 text-sm">Monthly</span><span id="net-monthly" class="text-white font-bold">$6,184</span></div>
+                        <div class="flex justify-between"><span class="text-slate-500 text-sm">Weekly</span><span id="net-weekly" class="text-white font-bold">$1,427</span></div>
                     </div>
                 </div>
 
                 <div class="bg-slate-900/20 border border-slate-800 rounded-[2.5rem] p-10">
-                    <span class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6 block">Tax Breakdown</span>
+                    <span class="text-xs font-bold uppercase text-slate-500 mb-6 block">Breakdown</span>
                     <div class="space-y-6">
                         <div>
-                            <div class="flex justify-between mb-2">
-                                <span class="text-slate-400 text-sm">Income Tax</span>
-                                <span id="tax-amount" class="text-red-400 font-bold">$18,888</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                                <div id="tax-bar" class="bg-red-500 h-full transition-all duration-700" style="width: 20%"></div>
-                            </div>
+                            <div class="flex justify-between mb-2"><span class="text-slate-400 text-xs">Income Tax</span><span id="tax-amount" class="text-red-400 font-bold text-sm">$0</span></div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden"><div id="tax-bar" class="bg-red-500 h-full transition-all duration-700"></div></div>
                         </div>
-                        <div id="medicare-row">
-                            <div class="flex justify-between mb-2">
-                                <span class="text-slate-400 text-sm">Medicare Levy</span>
-                                <span id="medicare-amount" class="text-orange-400 font-bold">$1,900</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                                <div id="medicare-bar" class="bg-orange-500 h-full transition-all duration-700" style="width: 2%"></div>
-                            </div>
-                        </div>
-                        <div class="pt-6 border-t border-slate-800 flex justify-between items-center">
-                            <span class="text-slate-500 text-xs font-bold uppercase">Effective Rate</span>
-                            <span id="effective-rate" class="bg-slate-800 px-3 py-1 rounded-lg text-emerald-400 font-mono text-lg font-bold">21.8%</span>
+                        <div>
+                            <div class="flex justify-between mb-2"><span class="text-slate-400 text-xs">Effective Rate</span><span id="effective-rate" class="text-emerald-400 font-bold text-sm">0%</span></div>
+                            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden"><div id="effective-bar" class="bg-emerald-500 h-full transition-all duration-700"></div></div>
                         </div>
                     </div>
                 </div>
@@ -104,47 +75,29 @@
         function calculateTax() {
             const income = parseFloat(document.getElementById('income').value) || 0;
             const includeMedicare = document.getElementById('medicare').checked;
+            const includeHecs = document.getElementById('hecs').checked;
             
-            // 2024-25 Stage 3 Rates
             let tax = 0;
-            if (income <= 18200) {
-                tax = 0;
-            } else if (income <= 45000) {
-                tax = (income - 18200) * 0.16;
-            } else if (income <= 135000) {
-                tax = 4288 + (income - 45000) * 0.30;
-            } else if (income <= 190000) {
-                tax = 31288 + (income - 135000) * 0.37;
-            } else {
-                tax = 51638 + (income - 190000) * 0.45;
-            }
+            if (income <= 18200) tax = 0;
+            else if (income <= 45000) tax = (income - 18200) * 0.16;
+            else if (income <= 135000) tax = 4288 + (income - 45000) * 0.30;
+            else if (income <= 190000) tax = 31288 + (income - 135000) * 0.37;
+            else tax = 51638 + (income - 190000) * 0.45;
 
-            const medicareLevy = includeMedicare ? (income * 0.02) : 0;
-            // Simplified HECS logic for example (usually scaled)
-            const hecs = document.getElementById('hecs').checked ? (income * 0.05) : 0; 
-            
-            const totalTax = tax + medicareLevy + hecs;
-            const netIncome = income - totalTax;
+            const medicare = includeMedicare ? (income * 0.02) : 0;
+            const hecs = includeHecs ? (income * 0.045) : 0; // Simplified average HECS
+            const net = income - (tax + medicare + hecs);
 
-            // Update UI
-            document.getElementById('net-annual').innerText = `$${Math.round(netIncome).toLocaleString()}`;
-            document.getElementById('net-monthly').innerText = `$${Math.round(netIncome/12).toLocaleString()}`;
-            document.getElementById('net-fortnightly').innerText = `$${Math.round(netIncome/26).toLocaleString()}`;
-            document.getElementById('net-weekly').innerText = `$${Math.round(netIncome/52).toLocaleString()}`;
-            
+            document.getElementById('net-annual').innerText = `$${Math.round(net).toLocaleString()}`;
+            document.getElementById('net-monthly').innerText = `$${Math.round(net/12).toLocaleString()}`;
+            document.getElementById('net-weekly').innerText = `$${Math.round(net/52).toLocaleString()}`;
             document.getElementById('tax-amount').innerText = `$${Math.round(tax).toLocaleString()}`;
-            document.getElementById('medicare-amount').innerText = `$${Math.round(medicareLevy).toLocaleString()}`;
             
-            const taxPerc = (tax / income) * 100 || 0;
-            const medPerc = (medicareLevy / income) * 100 || 0;
-            const effective = (totalTax / income) * 100 || 0;
-
-            document.getElementById('tax-bar').style.width = `${taxPerc}%`;
-            document.getElementById('medicare-bar').style.width = `${medPerc * 5}%`; // Scaled for visibility
-            document.getElementById('effective-rate').innerText = `${effective.toFixed(1)}%`;
+            const eff = ((income - net) / income * 100) || 0;
+            document.getElementById('effective-rate').innerText = eff.toFixed(1) + '%';
+            document.getElementById('tax-bar').style.width = (tax/income*100) + '%';
+            document.getElementById('effective-bar').style.width = eff + '%';
         }
-
-        // Init
         calculateTax();
     </script>
 </body>

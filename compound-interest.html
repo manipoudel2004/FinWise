@@ -1,101 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Compound Interest - FinWise</title>
+    <title>Compound - FinWise</title>
+    <style>
+        input, select { font-size: 16px !important; }
+    </style>
 </head>
-
 <body class="bg-[#020617] text-slate-200 font-sans antialiased">
 
-    <nav class="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
-        <a href="index.html"
-            class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">
-            FinWise
-        </a>
-        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">
-            ← Back to Dashboard
-        </a>
+    <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+        <a href="index.html" class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">FinWise</a>
+        <a href="index.html" class="text-sm font-medium text-slate-400">← Back</a>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-8 py-12">
-        <div class="mb-12">
-            <h1 class="text-4xl font-bold text-white mb-4">Compound Interest Calculator</h1>
-            <p class="text-slate-400">See how regular contributions and compounding frequencies accelerate your wealth.</p>
+    <main class="max-w-6xl mx-auto px-6 py-8 md:py-12">
+        <div class="mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Compound Interest</h1>
+            <p class="text-slate-400">Time is your greatest asset.</p>
         </div>
 
         <div class="grid lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 bg-slate-900/30 border border-slate-800 rounded-[2.5rem] p-8 space-y-8">
-                
+            <div class="lg:col-span-2 bg-slate-900/30 border border-slate-800 rounded-[2rem] p-6 md:p-8 space-y-6">
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Initial Deposit</label>
-                        <input type="number" id="principal" value="10000"
-                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Initial Investment</label>
+                        <input type="number" id="principal" value="10000" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Regular Deposit</label>
-                        <input type="number" id="contribution" value="500"
-                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Regular Deposit</label>
+                        <input type="number" id="contribution" value="500" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 outline-none">
                     </div>
                 </div>
-
-                <div class="grid md:grid-cols-2 gap-6">
+                
+                <div class="grid grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Deposit Frequency</label>
-                        <select id="dep-freq" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none">
-                            <option value="12" selected>Monthly</option>
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Deposit Freq</label>
+                        <select id="dep-freq" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
+                            <option value="12">Monthly</option>
                             <option value="26">Bi-Weekly</option>
                             <option value="52">Weekly</option>
-                            <option value="1">Annually</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Compound Frequency</label>
-                        <select id="comp-freq" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500 appearance-none">
-                            <option value="12" selected>Monthly</option>
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Compound Freq</label>
+                        <select id="comp-freq" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
+                            <option value="12">Monthly</option>
                             <option value="365">Daily</option>
-                            <option value="4">Quarterly</option>
                             <option value="1">Annually</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Years to Grow</label>
-                        <input type="number" id="years" value="10"
-                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Years</label>
+                        <input type="number" id="years" value="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Annual Rate (%)</label>
-                        <input type="number" id="rate" value="8"
-                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Rate (%)</label>
+                        <input type="number" id="rate" value="8" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
                     </div>
                 </div>
 
-                <button onclick="calculate()"
-                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-5 rounded-2xl transition-all shadow-lg shadow-emerald-900/20 active:scale-[0.98]">
-                    CALCULATE GROWTH
-                </button>
+                <button onclick="calculate()" class="w-full bg-emerald-600 py-5 rounded-2xl font-bold active:scale-[0.98] transition-all">CALCULATE GROWTH</button>
             </div>
 
-            <div class="bg-emerald-500/5 border border-emerald-500/20 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center">
-                <span class="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-4">Estimated Future Value</span>
-                <div id="result" class="text-6xl font-black text-white mb-2 tracking-tighter">$112,589</div>
-                <p class="text-emerald-500/80 text-sm font-medium mb-8">Total Portfolio Balance</p>
-                
-                <div class="w-full pt-8 border-t border-slate-800 grid grid-cols-2 gap-4 text-left">
-                    <div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase">Total Deposits</p>
-                        <p id="total-dep" class="text-lg font-bold text-white">$0</p>
-                    </div>
-                    <div>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase">Interest Earned</p>
-                        <p id="total-int" class="text-lg font-bold text-emerald-400">$0</p>
-                    </div>
+            <div class="bg-emerald-500/5 border border-emerald-500/20 rounded-[2.5rem] p-10 text-center flex flex-col justify-center">
+                <span class="text-xs font-bold uppercase text-slate-500 mb-2">Future Value</span>
+                <div id="result" class="text-4xl md:text-6xl font-black text-white mb-6">$0</div>
+                <div class="grid grid-cols-2 gap-4 text-left border-t border-slate-800 pt-8">
+                    <div><p class="text-[10px] font-bold text-slate-500 uppercase">Invested</p><p id="total-dep" class="text-white font-bold">$0</p></div>
+                    <div><p class="text-[10px] font-bold text-slate-500 uppercase">Interest</p><p id="total-int" class="text-emerald-400 font-bold">$0</p></div>
                 </div>
             </div>
         </div>
@@ -110,29 +88,17 @@
             const n = parseFloat(document.getElementById('comp-freq').value);
             const pFreq = parseFloat(document.getElementById('dep-freq').value);
 
-            // Calculation for compound interest with regular contributions
-            // Formula: A = P(1+r/n)^(nt) + PMT * [((1+r/n)^(nt) - 1) / (r/n)] * (n/pFreq)
-            
             const compoundFactor = Math.pow((1 + r / n), (n * t));
             const futureValuePrincipal = P * compoundFactor;
+            const futureValueSeries = PMT * ((compoundFactor - 1) / (r / n)) * (n / pFreq);
             
-            let futureValueSeries = 0;
-            if (r > 0) {
-                futureValueSeries = PMT * ((compoundFactor - 1) / (r / n)) * (n / pFreq);
-            } else {
-                futureValueSeries = PMT * pFreq * t;
-            }
+            const total = futureValuePrincipal + futureValueSeries;
+            const invested = P + (PMT * pFreq * t);
 
-            const totalAmount = futureValuePrincipal + futureValueSeries;
-            const totalInvested = P + (PMT * pFreq * t);
-            const totalInterest = totalAmount - totalInvested;
-
-            document.getElementById('result').innerText = `$${Math.round(totalAmount).toLocaleString()}`;
-            document.getElementById('total-dep').innerText = `$${Math.round(totalInvested).toLocaleString()}`;
-            document.getElementById('total-int').innerText = `$${Math.round(totalInterest).toLocaleString()}`;
+            document.getElementById('result').innerText = `$${Math.round(total).toLocaleString()}`;
+            document.getElementById('total-dep').innerText = `$${Math.round(invested).toLocaleString()}`;
+            document.getElementById('total-int').innerText = `$${Math.round(total - invested).toLocaleString()}`;
         }
-        
-        // Run once on load
         calculate();
     </script>
 </body>
