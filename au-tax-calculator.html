@@ -7,14 +7,40 @@
     <title>AU Tax - FinWise</title>
     <style>
         input, select { font-size: 16px !important; }
+        .logo-svg-icon {
+    height: 32px;
+    width: 32px;
+}
+@media (max-width: 640px) {
+    .logo-svg-icon {
+        height: 28px;
+        width: 28px;
+    }
+}
     </style>
 </head>
 <body class="bg-[#020617] text-slate-200 font-sans antialiased overflow-x-hidden">
 
     <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
-        <a href="index.html" class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">FinWise</a>
-        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">← Back</a>
-    </nav>
+    <a href="index.html" class="flex items-center gap-3 group">
+        <svg class="logo-svg-icon shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="16" fill="url(#nav_icon_grad)" fill-opacity="0.15"/>
+            <path d="M20 44V20H44M20 32H38" stroke="url(#nav_icon_grad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="44" cy="20" r="4" fill="white" />
+            <defs>
+                <linearGradient id="nav_icon_grad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#34D399"/>
+                    <stop offset="1" stop-color="#06B6D4"/>
+                </linearGradient>
+            </defs>
+        </svg>
+        <span class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">
+            FinWise
+        </span>
+    </a>
+
+    <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">← Back</a>
+</nav>
 
     <main class="max-w-6xl mx-auto px-6 py-8 md:py-12">
         <div class="mb-10">

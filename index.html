@@ -22,23 +22,49 @@
         }
         /* Prevent font scaling issues on orientation change */
         html { -webkit-text-size-adjust: 100%; }
+        
+        .logo-svg-icon {
+            height: 32px;
+            width: 32px;
+        }
+        @media (max-width: 640px) {
+            .logo-svg-icon {
+                height: 28px;
+                width: 28px;
+            }
+        }
     </style>
 </head>
 
 <body class="bg-[#020617] text-slate-200 font-sans antialiased overflow-x-hidden">
 
     <nav class="flex justify-between items-center px-6 md:px-8 py-5 md:py-6 max-w-7xl mx-auto">
-        <div class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">
-            FinWise
-        </div>
+        <a href="index.html" class="flex items-center gap-3 group">
+            <svg class="logo-svg-icon shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="64" height="64" rx="16" fill="url(#nav_icon_grad)" fill-opacity="0.15"/>
+                <path d="M20 44V20H44M20 32H38" stroke="url(#nav_icon_grad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="44" cy="20" r="4" fill="white" />
+                <defs>
+                    <linearGradient id="nav_icon_grad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#34D399"/>
+                        <stop offset="1" stop-color="#06B6D4"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">
+                FinWise
+            </span>
+        </a>
+
         <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-400">
             <a href="#" class="hover:text-emerald-400 transition">Features</a>
             <a href="#" class="hover:text-emerald-400 transition">Calculators</a>
             <a href="#" class="hover:text-emerald-400 transition">Learn</a>
         </div>
+
         <div class="space-x-3 md:space-x-4 flex items-center">
-            <button class="text-xs md:text-sm font-medium hover:text-white transition">Login</button>
-            <button class="bg-emerald-600 hover:bg-emerald-500 px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-bold text-white transition shadow-lg">
+            <button class="text-xs md:text-sm font-medium text-slate-400 hover:text-white transition">Login</button>
+            <button class="bg-emerald-600 hover:bg-emerald-500 px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-bold text-white transition shadow-lg shadow-emerald-900/20">
                 Sign up
             </button>
         </div>
@@ -80,15 +106,13 @@
 
     <section class="max-w-7xl mx-auto px-6 md:px-8 py-16 md:py-20">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            
             <a href="compound-interest.html" class="group block h-full active:scale-[0.98] transition-transform">
                 <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-emerald-500/50 transition-all duration-300 h-full">
                     <div class="h-10 w-10 bg-emerald-500/10 rounded-lg mb-4 flex items-center justify-center text-emerald-500 font-bold group-hover:bg-emerald-500 group-hover:text-white transition-colors">∑</div>
                     <h3 class="text-white font-bold mb-2">Compound</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed">Visualise long-term wealth growth over time.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed">Visualize long-term wealth growth over time.</p>
                 </div>
             </a>
-
             <a href="au-tax-calculator.html" class="group block h-full active:scale-[0.98] transition-transform">
                 <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-blue-500/50 transition-all duration-300 h-full">
                     <div class="h-10 w-10 bg-blue-500/10 rounded-lg mb-4 flex items-center justify-center text-blue-500 font-bold group-hover:bg-blue-500 group-hover:text-white transition-colors">AU</div>
@@ -96,19 +120,16 @@
                     <p class="text-slate-500 text-xs leading-relaxed">Calculate your net take-home pay with Stage 3 rates.</p>
                 </div>
             </a>
-
             <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 opacity-50 h-full">
                 <div class="h-10 w-10 bg-slate-800 rounded-lg mb-4 flex items-center justify-center text-slate-500 font-bold">Div</div>
                 <h3 class="text-white font-bold mb-2">Dividends</h3>
                 <p class="text-slate-500 text-xs leading-relaxed">Coming soon: Track and project your passive income.</p>
             </div>
-
             <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 opacity-50 h-full">
                 <div class="h-10 w-10 bg-slate-800 rounded-lg mb-4 flex items-center justify-center text-slate-500 font-bold">☂</div>
                 <h3 class="text-white font-bold mb-2">Freedom Date</h3>
                 <p class="text-slate-500 text-xs leading-relaxed">Your personalized retirement exit strategy.</p>
             </div>
-
         </div>
     </section>
 
@@ -117,13 +138,13 @@
             <div class="flex space-x-12 md:space-x-20 px-6 md:px-10 text-lg md:text-xl font-medium items-center text-slate-300">
                 <span>Join thousands of investors using FinWise to <span class="text-emerald-400">simplify</span> their life.</span>
                 <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-[10px] font-bold border border-emerald-500/20">LIVE ACCESS</span>
-                <span>Your portfolio, <span class="text-emerald-400">visualised</span>.</span>
+                <span>Your portfolio, <span class="text-emerald-400">visualized</span>.</span>
                 <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-[10px] font-bold border border-emerald-500/20">NO CREDIT CARD</span>
             </div>
             <div class="flex space-x-12 md:space-x-20 px-6 md:px-10 text-lg md:text-xl font-medium items-center text-slate-300">
                 <span>Join thousands of investors using FinWise to <span class="text-emerald-400">simplify</span> their life.</span>
                 <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-[10px] font-bold border border-emerald-500/20">LIVE ACCESS</span>
-                <span>Your portfolio, <span class="text-emerald-400">visualised</span>.</span>
+                <span>Your portfolio, <span class="text-emerald-400">visualized</span>.</span>
                 <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-[10px] font-bold border border-emerald-500/20">NO CREDIT CARD</span>
             </div>
         </div>
@@ -134,7 +155,7 @@
             <div>
                 <h4 class="text-white font-bold mb-6">Product</h4>
                 <ul class="text-slate-500 space-y-3">
-                    <li class="hover:text-emerald-400 cursor-pointer transition">Analyser</li>
+                    <li class="hover:text-emerald-400 cursor-pointer transition">Analyzer</li>
                     <li class="hover:text-emerald-400 cursor-pointer transition">Pricing</li>
                 </ul>
             </div>
@@ -158,6 +179,5 @@
             </div>
         </div>
     </footer>
-
 </body>
 </html>
