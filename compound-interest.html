@@ -3,86 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compound Growth | FinWise</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background-color: #020617; }
-        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); }
-    </style>
+    <title>Compound Interest - FinWise</title>
 </head>
-<body class="text-slate-300 font-sans antialiased">
+<body class="bg-[#020617] text-slate-200 font-sans antialiased">
 
-    <nav class="p-8 max-w-7xl mx-auto flex justify-between items-center">
-        <a href="index.html" class="text-2xl font-black text-white tracking-tighter hover:text-emerald-400 transition-colors">
-            Fin<span class="text-emerald-500">Wise</span>
+    <nav class="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
+        <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">
+            FinWise
         </a>
-        <a href="index.html" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white transition">
+        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">
             ← Back to Dashboard
         </a>
     </nav>
 
-    <main class="max-w-4xl mx-auto px-8 py-12">
-        <header class="mb-12">
-            <h1 class="text-5xl font-black text-white mb-4">Compound Engine</h1>
-            <p class="text-slate-500 text-lg">Visualize the "Eighth Wonder of the World" and plan your exit strategy.</p>
-        </header>
+    <main class="max-w-4xl mx-auto px-8 py-20">
+        <div class="mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4">Compound Interest Calculator</h1>
+            <p class="text-slate-400">See how time and consistency transform your wealth.</p>
+        </div>
 
-        <div class="grid md:grid-cols-5 gap-8">
-            <div class="md:col-span-2 space-y-6">
-                <div class="glass-card border border-slate-800 p-8 rounded-[2rem] space-y-4">
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Initial Deposit</label>
-                        <input type="number" id="principal" value="10000" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-4 px-6 mt-1 text-emerald-400 outline-none focus:ring-1 focus:ring-emerald-500 transition">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Years to Grow</label>
-                        <input type="number" id="years" value="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-4 px-6 mt-1 text-emerald-400 outline-none focus:ring-1 focus:ring-emerald-500 transition">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Annual Return (%)</label>
-                        <input type="number" id="rate" value="8" class="w-full bg-slate-950 border border-slate-800 rounded-xl py-4 px-6 mt-1 text-emerald-400 outline-none focus:ring-1 focus:ring-emerald-500 transition">
-                    </div>
-                    <button onclick="calculate()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-5 rounded-xl shadow-lg shadow-emerald-900/20 transition-all active:scale-95">
-                        RUN PROJECTION
-                    </button>
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Initial Investment</label>
+                    <input type="number" id="principal" value="10000" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-500">
                 </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Annual Return (%)</label>
+                    <input type="number" id="rate" value="8" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Years to Grow</label>
+                    <input type="number" id="years" value="10" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-4 text-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                </div>
+                <button onclick="calculate()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-emerald-900/20">
+                    CALCULATE GROWTH
+                </button>
             </div>
 
-            <div class="md:col-span-3 flex flex-col gap-6">
-                <div class="glass-card border border-emerald-500/20 rounded-[2rem] p-10 flex flex-col justify-center items-center text-center h-full">
-                    <p class="text-slate-500 uppercase tracking-widest text-xs font-bold mb-4">Total Future Value</p>
-                    <h2 id="result-display" class="text-6xl font-black text-white">$21,589</h2>
-                    <div class="mt-8 pt-8 border-t border-slate-800 w-full grid grid-cols-2">
-                        <div>
-                            <p class="text-[10px] text-slate-500 uppercase font-bold">Total Profit</p>
-                            <p id="profit-display" class="text-emerald-400 font-bold">$11,589</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-slate-500 uppercase font-bold">Multiplier</p>
-                            <p id="multiplier-display" class="text-white font-bold">2.1x</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="bg-slate-900/50 border border-slate-800 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center">
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-slate-500 mb-4">Future Value</span>
+                <div id="result" class="text-6xl font-black text-white mb-2">$21,589</div>
+                <p class="text-emerald-500/80 text-sm font-medium">Estimated Total Balance</p>
             </div>
         </div>
     </main>
 
     <script>
         function calculate() {
-            const p = parseFloat(document.getElementById('principal').value) || 0;
-            const t = parseFloat(document.getElementById('years').value) || 0;
-            const r = parseFloat(document.getElementById('rate').value) / 100 || 0;
-
+            const p = parseFloat(document.getElementById('principal').value);
+            const r = parseFloat(document.getElementById('rate').value) / 100;
+            const t = parseFloat(document.getElementById('years').value);
+            
             const amount = p * Math.pow((1 + r), t);
-            const profit = amount - p;
-            const multiplier = amount / p;
-
-            document.getElementById('result-display').innerText = `$${amount.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-            document.getElementById('profit-display').innerText = `$${profit.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-            document.getElementById('multiplier-display').innerText = `${multiplier.toFixed(1)}x`;
+            
+            document.getElementById('result').innerText = `$${Math.round(amount).toLocaleString()}`;
         }
-        
-        // Initial run
+        // Run once on load
         calculate();
     </script>
 </body>
