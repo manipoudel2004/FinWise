@@ -12,10 +12,9 @@
         }
         .animate-scroll {
             display: flex;
-            width: 200%;
-            animation: scroll 30s linear infinite;
+            width: fit-content;
+            animation: scroll 40s linear infinite;
         }
-        /* Glass Effect */
         .glass-card {
             background: rgba(30, 41, 59, 0.5);
             backdrop-filter: blur(8px);
@@ -24,7 +23,7 @@
     </style>
 </head>
 
-<body class="bg-[#020617] text-slate-200 font-sans">
+<body class="bg-[#020617] text-slate-200 font-sans antialiased overflow-x-hidden">
 
     <nav class="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
         <div class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">
@@ -35,7 +34,7 @@
             <a href="#" class="hover:text-emerald-400 transition">Calculators</a>
             <a href="#" class="hover:text-emerald-400 transition">Learn</a>
         </div>
-        <div class="space-x-6 flex items-center">
+        <div class="space-x-4 flex items-center">
             <button class="text-sm font-medium hover:text-white transition">Login</button>
             <button class="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded-full text-sm font-bold text-white transition shadow-lg shadow-emerald-900/20">
                 Sign up
@@ -47,7 +46,7 @@
         <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-white">
             Discover Your Ideal <br><span class="text-emerald-500">Investing Strategy</span>
         </h1>
-        <p class="text-slate-400 text-lg mb-10 max-w-xl mx-auto">
+        <p class="text-slate-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             Take control of your portfolio with professional-grade analysis and minimalist design.
         </p>
         <div class="relative max-w-2xl mx-auto">
@@ -59,68 +58,74 @@
         </div>
     </header>
 
- <section class="max-w-7xl mx-auto px-8 py-20 flex flex-col md:flex-row items-center gap-16">
-    <div class="md:w-1/2">
-        <h2 class="text-4xl md:text-5xl font-bold leading-tight text-white mb-6">
-            Portfolio Analysis <br>Redefined.
-        </h2>
-        <p class="text-slate-400 leading-relaxed">
-            Clean, bento-box style layouts that prioritize clarity. Monitor your performance with professional-grade, multi-chart visualization that removes technical clutter.
-        </p>
-    </div>
-    <div class="md:w-1/2 relative">
-        <div class="glass-card rounded-3xl p-6 shadow-2xl transform hover:rotate-0 transition-transform duration-500 rotate-2 border border-slate-700/50">
-            <img src="/Gemini_Generated_Image_m92uhbm92uhbm92u(1).png" alt="Interactive Financial Dashboard Mockup" class="h-64 bg-slate-950/50 rounded-2xl flex items-center justify-center border border-dashed border-slate-700 w-full object-contain">
+    <section class="max-w-7xl mx-auto px-8 py-20 flex flex-col md:flex-row items-center gap-16">
+        <div class="md:w-1/2">
+            <h2 class="text-4xl md:text-5xl font-bold leading-tight text-white mb-6">
+                Portfolio Analysis <br>Redefined.
+            </h2>
+            <p class="text-slate-400 leading-relaxed text-lg">
+                Clean, bento-box style layouts that prioritize clarity. Monitor your performance with professional-grade visualization that removes technical clutter.
+            </p>
         </div>
-    </div>
-</section>
-
-   <section class="max-w-7xl mx-auto px-8 py-20">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <a href="compound-interest.html" class="group block">
-            <div class="bg-slate-900/40 p-8 rounded-3xl border border-slate-800 group-hover:border-emerald-500/50 group-hover:-translate-y-2 transition-all duration-300 h-full">
-                <div class="h-10 w-10 bg-emerald-500/10 rounded-lg mb-4 flex items-center justify-center text-emerald-500 font-bold group-hover:bg-emerald-500 group-hover:text-white transition-colors">∑</div>
-                <h3 class="text-white font-bold mb-2">Compound Interest</h3>
-                <p class="text-slate-500 text-sm">Visualise long-term growth with ease.</p>
-                <span class="text-emerald-500 text-xs font-bold mt-4 block opacity-0 group-hover:opacity-100 transition-opacity">LAUNCH TOOL →</span>
+        <div class="md:w-1/2 relative">
+            <div class="glass-card rounded-3xl p-6 shadow-2xl transform rotate-2 border border-slate-700/50">
+                <img src="/Gemini_Generated_Image_m92uhbm92uhbm92u(1).png" alt="Interactive Dashboard" class="w-full h-auto rounded-2xl">
             </div>
-        </a>
-
-        <div class="bg-slate-900/40 p-8 rounded-3xl border border-slate-800 hover:border-emerald-500/50 transition">
-            <div class="h-10 w-10 bg-emerald-500/10 rounded-lg mb-4 flex items-center justify-center text-emerald-500 font-bold">Div</div>
-            <h3 class="text-white font-bold mb-2">Dividend Tracker</h3>
-            <p class="text-slate-500 text-sm">Project your passive income streams.</p>
         </div>
+    </section>
 
-        <div class="bg-slate-900/40 p-8 rounded-3xl border border-slate-800 hover:border-emerald-500/50 transition">
-            <div class="h-10 w-10 bg-emerald-500/10 rounded-lg mb-4 flex items-center justify-center text-emerald-500 font-bold">☂</div>
-            <h3 class="text-white font-bold mb-2">Retirement Planner</h3>
-            <p class="text-slate-500 text-sm">Find your "Freedom Date" today.</p>
+    <section class="max-w-7xl mx-auto px-8 py-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <a href="compound-interest.html" class="group block h-full">
+                <div class="bg-slate-900/40 p-8 rounded-3xl border border-slate-800 group-hover:border-emerald-500/50 group-hover:-translate-y-2 transition-all duration-300 h-full">
+                    <div class="h-10 w-10 bg-emerald-500/10 rounded-lg mb-4 flex items-center justify-center text-emerald-500 font-bold group-hover:bg-emerald-500 group-hover:text-white transition-colors">∑</div>
+                    <h3 class="text-white font-bold mb-2">Compound Growth</h3>
+                    <p class="text-slate-500 text-xs leading-relaxed">Visualize long-term wealth growth.</p>
+                </div>
+            </a>
+
+            <a href="au-tax-calculator.html" class="group block h-full">
+                <div class="bg-slate-900/40 p-8 rounded-3xl border border-slate-800 group-hover:border-blue-500/50 group-hover:-translate-y-2 transition-all duration-300 h-full">
+                    <div class="h-10 w-10 bg-blue-500/10 rounded-lg mb-4 flex items-center justify-center text-blue-500 font-bold group-hover:bg-blue-500 group-hover:text-white transition-colors">AU</div>
+                    <h3 class="text-white font-bold mb-2">Tax Estimator</h3>
+                    <p class="text-slate-500 text-xs leading-relaxed">Calculate your net take-home pay.</p>
+                </div>
+            </a>
+
+            <div class="bg-slate-900/40 p-8 rounded-3xl border border-slate-800 opacity-50 h-full">
+                <div class="h-10 w-10 bg-slate-800 rounded-lg mb-4 flex items-center justify-center text-slate-500 font-bold">Div</div>
+                <h3 class="text-white font-bold mb-2">Dividends</h3>
+                <p class="text-slate-500 text-xs leading-relaxed">Coming soon: Income projections.</p>
+            </div>
+
+            <div class="bg-slate-900/40 p-8 rounded-3xl border border-slate-800 opacity-50 h-full">
+                <div class="h-10 w-10 bg-slate-800 rounded-lg mb-4 flex items-center justify-center text-slate-500 font-bold">☂</div>
+                <h3 class="text-white font-bold mb-2">Freedom Date</h3>
+                <p class="text-slate-500 text-xs leading-relaxed">Your retirement exit strategy.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="overflow-hidden bg-[#020617] py-16 border-y border-slate-900">
+        <div class="animate-scroll whitespace-nowrap">
+            <div class="flex space-x-20 px-10 text-xl font-medium items-center text-slate-300">
+                <span>Join thousands of investors using FinWise to <span class="text-emerald-400">simplify</span> their life.</span>
+                <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-xs font-bold border border-emerald-500/20">LIVE ACCESS</span>
+                <span>Your portfolio, <span class="text-emerald-400">visualized</span>.</span>
+                <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-xs font-bold border border-emerald-500/20">NO CREDIT CARD</span>
+            </div>
+            <div class="flex space-x-20 px-10 text-xl font-medium items-center text-slate-300">
+                <span>Join thousands of investors using FinWise to <span class="text-emerald-400">simplify</span> their life.</span>
+                <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-xs font-bold border border-emerald-500/20">LIVE ACCESS</span>
+                <span>Your portfolio, <span class="text-emerald-400">visualized</span>.</span>
+                <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-xs font-bold border border-emerald-500/20">NO CREDIT CARD</span>
+            </div>
         </div>
     </div>
-</section>
 
-    <div class="overflow-hidden bg-[#020617] py-12 border-y border-slate-900 flex">
-    <div class="flex animate-scroll whitespace-nowrap">
-        
-        <div class="flex space-x-20 px-10 text-xl font-medium items-center text-slate-300">
-            <span>Join thousands of investors using FinWise to <span class="text-emerald-400">simplify</span> their life.</span>
-            <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-xs font-bold border border-emerald-500/20">LIVE ACCESS</span>
-            <span>Your portfolio, <span class="text-emerald-400">visualised</span>.</span>
-            <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-xs font-bold border border-emerald-500/20">NO CREDIT CARD</span>
-        </div>
-
-        <div class="flex space-x-20 px-10 text-xl font-medium items-center text-slate-300">
-            <span>Join thousands of investors using FinWise to <span class="text-emerald-400">simplify</span> their life.</span>
-            <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-xs font-bold border border-emerald-500/20">LIVE ACCESS</span>
-            <span>Your portfolio, <span class="text-emerald-400">visualised</span>.</span>
-            <span class="bg-emerald-500/10 text-emerald-400 px-4 py-1 rounded-full text-xs font-bold border border-emerald-500/20">NO CREDIT CARD</span>
-        </div>
-
-    </div>
-</div>
-
-    <footer class="bg-[#020617] py-20 px-8 border-t border-slate-900 mt-20">
+    <footer class="bg-[#020617] py-20 px-8">
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-sm">
             <div>
                 <h4 class="text-white font-bold mb-6">Product</h4>
@@ -144,10 +149,11 @@
                 </ul>
             </div>
             <div class="text-slate-500">
-                <div class="text-white font-bold mb-6">FinWise</div>
+                <div class="text-white font-bold mb-6 italic">FinWise</div>
                 <p>© 2026 Clarity in Investing.</p>
             </div>
         </div>
     </footer>
+
 </body>
 </html>
