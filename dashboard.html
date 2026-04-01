@@ -110,6 +110,7 @@
           <label class="sm:col-span-2 block">
             <span class="text-sm font-semibold text-slate-200">Stock Symbol</span>
             <input id="symbolInput" required maxlength="8" placeholder="e.g. AAPL" class="mt-1 w-full rounded-lg border border-white/20 bg-slate-950/60 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 uppercase" />
+            <p id="symbolLookupStatus" class="mt-1 text-xs text-slate-400">Enter a symbol to auto-fill sector and dividend info.</p>
           </label>
           <label class="block">
             <span class="text-sm font-semibold text-slate-200">Quantity</span>
@@ -187,6 +188,7 @@
       const dividendInput = document.getElementById("dividendInput");
       const sectorInput = document.getElementById("sectorInput");
       const formError = document.getElementById("formError");
+      const symbolLookupStatus = document.getElementById("symbolLookupStatus");
       const excelInput = document.getElementById("excelInput");
       const importBtn = document.getElementById("importBtn");
       const importError = document.getElementById("importError");
@@ -230,6 +232,17 @@
         "#10b981", "#06b6d4", "#a78bfa", "#f59e0b", "#84cc16",
         "#ef4444", "#22d3ee", "#6366f1", "#ec4899", "#14b8a6", "#f97316"
       ];
+      const GOOGLE_LOOKUP_ENDPOINT = localStorage.getItem("finwise_google_api_url") || "";
+      const sectorAliases = {
+        "Technology": "Information Technology",
+        "Information Technology Services": "Information Technology",
+        "Consumer Cyclical": "Consumer Discretionary",
+        "Healthcare": "Health Care",
+        "Communication Services": "Communication Services",
+        "Financial Services": "Financials",
+        "Basic Materials": "Materials"
+      };
+      let lookupController = null;
 
       sectors.forEach((sector) => {
         const option = document.createElement("option");
@@ -259,6 +272,62 @@
         }
 
         return "Information Technology";
+      }
+
+      function normalizeSector(sectorName, symbol) {
+        if (sectors.includes(sectorName)) return sectorName;
+        if (sectorAliases[sectorName]) return sectorAliases[sectorName];
+        return getSector(symbol, sectorName);
+      }
+
+      async function autoFillHoldingFromGoogleApi() {
+        const symbol = symbolInput.value.trim().toUpperCase();
+
+        if (!symbol) {
+          symbolLookupStatus.textContent = "Enter a symbol to auto-fill sector and dividend info.";
+          symbolLookupStatus.className = "mt-1 text-xs text-slate-400";
+          return;
+        }
+
+        if (!GOOGLE_LOOKUP_ENDPOINT) {
+          sectorInput.value = getSector(symbol, sectorInput.value);
+          symbolLookupStatus.textContent = "Auto sector fallback active. Set localStorage.finwise_google_api_url to enable Google API lookup.";
+          symbolLookupStatus.className = "mt-1 text-xs text-amber-300";
+          return;
+        }
+
+        if (lookupController) lookupController.abort();
+        lookupController = new AbortController();
+
+        symbolLookupStatus.textContent = `Looking up ${symbol}...`;
+        symbolLookupStatus.className = "mt-1 text-xs text-cyan-300";
+
+        try {
+          const response = await fetch(`${GOOGLE_LOOKUP_ENDPOINT}?symbol=${encodeURIComponent(symbol)}`, {
+            signal: lookupController.signal
+          });
+          if (!response.ok) throw new Error("Lookup failed.");
+
+          const data = await response.json();
+          const resolvedSector = normalizeSector(String(data.sector || "").trim(), symbol);
+          sectorInput.value = resolvedSector;
+
+          const annualDividendPerShare = Number(data.annualDividendPerShare);
+          if (!Number.isNaN(annualDividendPerShare) && annualDividendPerShare >= 0) {
+            dividendInput.value = annualDividendPerShare.toString();
+          }
+
+          symbolLookupStatus.textContent = annualDividendPerShare > 0
+            ? `${symbol}: ${resolvedSector} • dividend auto-filled`
+            : `${symbol}: ${resolvedSector} • no dividend found`;
+          symbolLookupStatus.className = "mt-1 text-xs text-emerald-300";
+        } catch (error) {
+          if (error.name === "AbortError") return;
+
+          sectorInput.value = getSector(symbol, sectorInput.value);
+          symbolLookupStatus.textContent = `Could not fetch Google API data for ${symbol}. Used local sector mapping.`;
+          symbolLookupStatus.className = "mt-1 text-xs text-amber-300";
+        }
       }
 
       function updateSectorPie(holdings) {
@@ -394,6 +463,9 @@
         sectorInput.value = "Information Technology";
         symbolInput.focus();
       });
+
+      symbolInput.addEventListener("blur", autoFillHoldingFromGoogleApi);
+      symbolInput.addEventListener("change", autoFillHoldingFromGoogleApi);
 
       importBtn.addEventListener("click", async function () {
         importError.classList.add("hidden");
