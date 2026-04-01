@@ -20,9 +20,22 @@
     return btoa(unescape(encodeURIComponent(password))).split("").reverse().join("");
   }
 
-  function createSession(user) {
-    const safeUser = {
+  function normalizeEmail(email) {
+    return (email || "").trim().toLowerCase();
+  }
+
+  function normalizeUsername(username) {
+    return (username || "").trim().toLowerCase();
+  }
+
+  function deriveUsernameFromEmail(email) {
+    return normalizeEmail(email).split("@")[0] || "user";
+  }
+
+  function buildSessionUser(user) {
+    return {
       id: user.id,
+      username: user.username,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -30,13 +43,45 @@
       createdAt: user.createdAt,
       lastLoginAt: new Date().toISOString(),
     };
+  }
+
+  function createSession(user) {
+    const safeUser = buildSessionUser(user);
     localStorage.setItem(SESSION_KEY, JSON.stringify(safeUser));
     return safeUser;
   }
 
+  function findUserByLoginIdentifier(users, identifier) {
+    const normalizedIdentifier = (identifier || "").trim().toLowerCase();
+    if (!normalizedIdentifier) return null;
+    return users.find(
+      (u) => u.email === normalizedIdentifier || u.username === normalizedIdentifier
+    );
+  }
+
+  function validateSession(sessionCandidate) {
+    if (!sessionCandidate?.id || !sessionCandidate?.email) return null;
+
+    const users = getUsers();
+    const user = users.find(
+      (u) =>
+        u.id === sessionCandidate.id &&
+        u.email === normalizeEmail(sessionCandidate.email)
+    );
+
+    if (!user) {
+      localStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+
+    const refreshedSession = buildSessionUser(user);
+    localStorage.setItem(SESSION_KEY, JSON.stringify(refreshedSession));
+    return refreshedSession;
+  }
+
   function signup(firstName, lastName, email, password) {
     const users = getUsers();
-    const normalizedEmail = email.toLowerCase();
+    const normalizedEmail = normalizeEmail(email);
 
     if (users.some((u) => u.email === normalizedEmail)) {
       return { success: false, message: "An account with this email already exists." };
@@ -44,6 +89,7 @@
 
     const user = {
       id: crypto.randomUUID(),
+      username: deriveUsernameFromEmail(normalizedEmail),
       firstName,
       lastName,
       email: normalizedEmail,
@@ -59,28 +105,24 @@
 
     users.push(user);
     saveUsers(users);
-    createSession(user);
 
     return { success: true, user: createSession(user) };
   }
 
-  function login(email, password) {
+  function login(identifier, password) {
     const users = getUsers();
-    const normalizedEmail = email.toLowerCase();
-    const match = users.find(
-      (u) => u.email === normalizedEmail && u.passwordHash === hashPassword(password)
-    );
+    const user = findUserByLoginIdentifier(users, identifier);
 
-    if (!match) {
-      return { success: false, message: "Invalid email or password." };
+    if (!user || user.passwordHash !== hashPassword(password)) {
+      return { success: false, message: "Invalid username/email or password." };
     }
 
-    return { success: true, user: createSession(match) };
+    return { success: true, user: createSession(user) };
   }
 
   function upsertGoogleUser(profile) {
     const users = getUsers();
-    const normalizedEmail = (profile.email || "").toLowerCase();
+    const normalizedEmail = normalizeEmail(profile.email);
     let user = users.find((u) => u.email === normalizedEmail);
 
     if (!user) {
@@ -90,6 +132,7 @@
 
       user = {
         id: crypto.randomUUID(),
+        username: deriveUsernameFromEmail(normalizedEmail),
         firstName,
         lastName,
         email: normalizedEmail,
@@ -106,6 +149,7 @@
       users.push(user);
     } else {
       user.provider = "google";
+      user.username = user.username || deriveUsernameFromEmail(normalizedEmail);
       user.googleId = profile.sub || user.googleId;
       user.avatar = profile.picture || user.avatar;
     }
@@ -166,8 +210,10 @@
     initGoogleButton,
     getCurrentUser: function () {
       try {
-        return JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+        const raw = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+        return validateSession(raw);
       } catch {
+        localStorage.removeItem(SESSION_KEY);
         return null;
       }
     },
@@ -182,6 +228,9 @@
         return null;
       }
       return user;
+    },
+    helpers: {
+      normalizeUsername,
     },
   };
 })();
