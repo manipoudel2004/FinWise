@@ -115,6 +115,14 @@
             <span class="text-sm font-semibold text-slate-200">Quantity</span>
             <input id="qtyInput" required type="number" min="0.0001" step="any" placeholder="e.g. 12" class="mt-1 w-full rounded-lg border border-white/20 bg-slate-950/60 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
           </label>
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-200">Annual Dividend / Share (optional)</span>
+            <input id="dividendInput" type="number" min="0" step="any" placeholder="e.g. 1.20" class="mt-1 w-full rounded-lg border border-white/20 bg-slate-950/60 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
+          </label>
+          <label class="sm:col-span-2 block">
+            <span class="text-sm font-semibold text-slate-200">Sector</span>
+            <select id="sectorInput" class="mt-1 w-full rounded-lg border border-white/20 bg-slate-950/60 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"></select>
+          </label>
           <button type="submit" class="w-full rounded-lg btn-primary font-semibold py-2.5 transition">Add Holding</button>
           <p id="formError" class="sm:col-span-4 text-sm text-rose-400 hidden"></p>
         </form>
@@ -126,6 +134,7 @@
                 <th class="py-2 pr-4 font-semibold">Symbol</th>
                 <th class="py-2 pr-4 font-semibold">Quantity</th>
                 <th class="py-2 pr-4 font-semibold">Sector</th>
+                <th class="py-2 pr-4 font-semibold">Annual Dividend Pay</th>
                 <th class="py-2 pr-4 font-semibold">Added At</th>
                 <th class="py-2 text-right font-semibold">Action</th>
               </tr>
@@ -138,12 +147,18 @@
 
       <article class="glass-card rounded-2xl p-5">
         <h3 class="text-lg font-bold text-white mb-3">Sector Allocation</h3>
-        <p class="text-sm text-slate-400 mb-3">Pie chart grouped into Technology, Retail, and Consumer Staples.</p>
+        <p class="text-sm text-slate-400 mb-3">Pie chart grouped by all major sectors in your holdings.</p>
         <canvas id="sectorPieChart" height="220"></canvas>
         <div class="mt-6 p-3 rounded-lg bg-slate-900/70 border border-white/10">
           <p class="text-xs uppercase text-slate-500 font-semibold">Total Holdings</p>
           <p id="totalHoldings" class="text-2xl font-black text-white">0</p>
           <p class="text-sm text-slate-400">Based on quantity imported positions.</p>
+        </div>
+        <div class="mt-4 p-3 rounded-lg bg-slate-900/70 border border-white/10">
+          <p class="text-xs uppercase text-slate-500 font-semibold">Estimated Dividend Pay</p>
+          <p id="annualDividendPay" class="text-2xl font-black text-white">$0.00</p>
+          <p id="monthlyDividendPay" class="text-sm text-slate-300 mt-1">Monthly: $0.00</p>
+          <p id="quarterlyDividendPay" class="text-sm text-slate-400">Quarterly: $0.00</p>
         </div>
       </article>
     </section>
@@ -169,20 +184,60 @@
       const form = document.getElementById("holdingForm");
       const symbolInput = document.getElementById("symbolInput");
       const qtyInput = document.getElementById("qtyInput");
+      const dividendInput = document.getElementById("dividendInput");
+      const sectorInput = document.getElementById("sectorInput");
       const formError = document.getElementById("formError");
       const excelInput = document.getElementById("excelInput");
       const importBtn = document.getElementById("importBtn");
       const importError = document.getElementById("importError");
       const totalHoldingsEl = document.getElementById("totalHoldings");
+      const annualDividendPayEl = document.getElementById("annualDividendPay");
+      const monthlyDividendPayEl = document.getElementById("monthlyDividendPay");
+      const quarterlyDividendPayEl = document.getElementById("quarterlyDividendPay");
 
       const pieCtx = document.getElementById("sectorPieChart");
       let sectorPie = null;
 
+      const sectors = [
+        "Energy",
+        "Materials",
+        "Industrials",
+        "Consumer Discretionary",
+        "Consumer Staples",
+        "Health Care",
+        "Financials",
+        "Information Technology",
+        "Communication Services",
+        "Utilities",
+        "Real Estate"
+      ];
+
       const sectorMap = {
-        TECH: ["AAPL", "MSFT", "NVDA", "GOOGL", "GOOG", "META", "TSLA", "AMD", "INTC", "CRM", "ORCL", "QQQ", "NDQ", "VGT", "XLK"],
-        RETAIL: ["AMZN", "WMT", "COST", "TGT", "HD", "LOW", "EBAY", "BABA", "JD", "XRT", "RTH"],
-        CONSUMER_STAPLES: ["PG", "KO", "PEP", "WMT", "COST", "UL", "CL", "KMB", "MDLZ", "XLP", "VDC", "STZ"]
+        "Information Technology": ["AAPL", "MSFT", "NVDA", "GOOGL", "GOOG", "META", "AMD", "INTC", "CRM", "ORCL", "QQQ", "NDQ", "VGT", "XLK"],
+        "Consumer Discretionary": ["AMZN", "TSLA", "HD", "LOW", "MCD", "NKE", "XLY"],
+        "Consumer Staples": ["PG", "KO", "PEP", "WMT", "COST", "UL", "CL", "KMB", "MDLZ", "XLP", "VDC", "STZ"],
+        "Energy": ["XOM", "CVX", "COP", "SLB", "BP", "SHEL", "XLE"],
+        "Materials": ["BHP", "RIO", "LIN", "NEM", "FCX", "VALE", "XLB"],
+        "Industrials": ["BA", "CAT", "GE", "HON", "UNP", "UPS", "XLI"],
+        "Health Care": ["JNJ", "PFE", "MRK", "ABBV", "UNH", "LLY", "XLV"],
+        "Financials": ["JPM", "BAC", "C", "WFC", "GS", "MS", "XLF"],
+        "Communication Services": ["META", "GOOGL", "GOOG", "NFLX", "DIS", "T", "VZ", "XLC"],
+        "Utilities": ["NEE", "DUK", "SO", "AEP", "XEL", "EXC", "XLU"],
+        "Real Estate": ["PLD", "AMT", "CCI", "SPG", "O", "EQIX", "XLRE"]
       };
+
+      const sectorColors = [
+        "#10b981", "#06b6d4", "#a78bfa", "#f59e0b", "#84cc16",
+        "#ef4444", "#22d3ee", "#6366f1", "#ec4899", "#14b8a6", "#f97316"
+      ];
+
+      sectors.forEach((sector) => {
+        const option = document.createElement("option");
+        option.value = sector;
+        option.textContent = sector;
+        sectorInput.appendChild(option);
+      });
+      sectorInput.value = "Information Technology";
 
       function readHoldings() {
         try {
@@ -196,31 +251,38 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(holdings));
       }
 
-      function getSector(symbol) {
-        if (sectorMap.TECH.includes(symbol)) return "Technology";
-        if (sectorMap.RETAIL.includes(symbol)) return "Retail";
-        if (sectorMap.CONSUMER_STAPLES.includes(symbol)) return "Consumer Staples";
-        return "Technology";
+      function getSector(symbol, selectedSector) {
+        if (sectors.includes(selectedSector)) return selectedSector;
+
+        for (const sector of sectors) {
+          if ((sectorMap[sector] || []).includes(symbol)) return sector;
+        }
+
+        return "Information Technology";
       }
 
       function updateSectorPie(holdings) {
         const totals = holdings.reduce((acc, row) => {
-          const sector = getSector(row.symbol);
+          const sector = getSector(row.symbol, row.sector);
+          const annualPay = row.qty * (row.dividendPerShare || 0);
           acc[sector] += row.qty;
           acc.total += row.qty;
+          acc.totalAnnualDividendPay += annualPay;
           return acc;
-        }, {
-          total: 0,
-          "Technology": 0,
-          "Retail": 0,
-          "Consumer Staples": 0
-        });
+        }, sectors.reduce((acc, sector) => {
+          acc[sector] = 0;
+          return acc;
+        }, { total: 0, totalAnnualDividendPay: 0 }));
 
         totalHoldingsEl.textContent = totals.total.toLocaleString("en-AU", { maximumFractionDigits: 4 });
+        annualDividendPayEl.textContent = totals.totalAnnualDividendPay.toLocaleString("en-AU", { style: "currency", currency: "AUD" });
+        monthlyDividendPayEl.textContent = `Monthly: ${(totals.totalAnnualDividendPay / 12).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}`;
+        quarterlyDividendPayEl.textContent = `Quarterly: ${(totals.totalAnnualDividendPay / 4).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}`;
 
-        const data = [totals["Technology"], totals["Retail"], totals["Consumer Staples"]];
+        const data = sectors.map((sector) => totals[sector]);
 
         if (sectorPie) {
+          sectorPie.data.labels = sectors;
           sectorPie.data.datasets[0].data = data;
           sectorPie.update();
           return;
@@ -229,10 +291,10 @@
         sectorPie = new Chart(pieCtx, {
           type: "pie",
           data: {
-            labels: ["Technology", "Retail", "Consumer Staples"],
+            labels: sectors,
             datasets: [{
               data,
-              backgroundColor: ["#10b981", "#06b6d4", "#a78bfa"],
+              backgroundColor: sectorColors,
               borderColor: "#0f172a",
               borderWidth: 2
             }]
@@ -262,7 +324,8 @@
             tr.innerHTML = `
               <td class="py-2 pr-4 font-semibold text-slate-100">${row.symbol}</td>
               <td class="py-2 pr-4 text-slate-200">${row.qty.toLocaleString("en-AU", { maximumFractionDigits: 4 })}</td>
-              <td class="py-2 pr-4 text-slate-300">${getSector(row.symbol)}</td>
+              <td class="py-2 pr-4 text-slate-300">${getSector(row.symbol, row.sector)}</td>
+              <td class="py-2 pr-4 text-slate-300">${(row.qty * (row.dividendPerShare || 0)).toLocaleString("en-AU", { style: "currency", currency: "AUD" })}</td>
               <td class="py-2 pr-4 text-slate-500">${new Date(row.createdAt).toLocaleString("en-AU")}</td>
               <td class="py-2 text-right"><button data-index="${index}" class="text-sm text-rose-400 hover:text-rose-300 font-semibold">Remove</button></td>
             `;
@@ -273,13 +336,21 @@
         updateSectorPie(holdings);
       }
 
-      function validateHolding(symbol, qty) {
+      function validateHolding(symbol, qty, dividendPerShare, sector) {
         if (!/^[A-Z.]{1,8}$/.test(symbol)) {
           return "Use a valid stock symbol (letters only, max 8 characters).";
         }
 
         if (!Number.isFinite(qty) || qty <= 0) {
           return "Quantity must be a number greater than 0.";
+        }
+
+        if (!Number.isFinite(dividendPerShare) || dividendPerShare < 0) {
+          return "Annual dividend per share must be 0 or greater.";
+        }
+
+        if (!sectors.includes(sector)) {
+          return "Please select a valid sector.";
         }
 
         return null;
@@ -289,7 +360,13 @@
         const holdings = readHoldings();
 
         rows.forEach((row) => {
-          holdings.push({ symbol: row.symbol, qty: row.qty, createdAt: new Date().toISOString() });
+          holdings.push({
+            symbol: row.symbol,
+            qty: row.qty,
+            sector: getSector(row.symbol, row.sector),
+            dividendPerShare: row.dividendPerShare || 0,
+            createdAt: new Date().toISOString()
+          });
         });
 
         saveHoldings(holdings);
@@ -302,7 +379,9 @@
 
         const symbol = symbolInput.value.trim().toUpperCase();
         const qty = Number(qtyInput.value);
-        const error = validateHolding(symbol, qty);
+        const dividendPerShare = Number(dividendInput.value || 0);
+        const sector = sectorInput.value;
+        const error = validateHolding(symbol, qty, dividendPerShare, sector);
 
         if (error) {
           formError.textContent = error;
@@ -310,8 +389,9 @@
           return;
         }
 
-        addHoldings([{ symbol, qty }]);
+        addHoldings([{ symbol, qty, sector, dividendPerShare }]);
         form.reset();
+        sectorInput.value = "Information Technology";
         symbolInput.focus();
       });
 
@@ -334,9 +414,13 @@
           const parsed = rows.map((row) => {
             const symbolRaw = row.symbol || row.Symbol || row.SYMBOL || row.ticker || row.Ticker || row.TICKER;
             const qtyRaw = row.qty || row.Qty || row.QTY || row.quantity || row.Quantity || row.QUANTITY;
+            const sectorRaw = row.sector || row.Sector || row.SECTOR;
+            const dividendRaw = row.dividend || row.Dividend || row.DIVIDEND || row.dividendPerShare || row.DividendPerShare || row.DIVIDENDPERSHARE;
             return {
               symbol: String(symbolRaw || "").trim().toUpperCase(),
-              qty: Number(qtyRaw)
+              qty: Number(qtyRaw),
+              sector: String(sectorRaw || "").trim(),
+              dividendPerShare: Number(dividendRaw || 0)
             };
           }).filter((row) => row.symbol || row.qty);
 
@@ -344,7 +428,12 @@
             throw new Error("No rows found. Add headers: symbol and qty.");
           }
 
-          const invalid = parsed.find((row) => validateHolding(row.symbol, row.qty));
+          const invalid = parsed.find((row) => validateHolding(
+            row.symbol,
+            row.qty,
+            row.dividendPerShare,
+            getSector(row.symbol, row.sector)
+          ));
           if (invalid) {
             throw new Error(`Invalid row found: ${invalid.symbol || "(blank)"} / ${invalid.qty || "(blank)"}.`);
           }
