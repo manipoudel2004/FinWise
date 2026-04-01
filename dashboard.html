@@ -4,137 +4,146 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <title>Dashboard | FinWise</title>
+  <style>
+    :root {
+      --bg-base: #020617;
+      --bg-elevated: rgba(15, 23, 42, 0.6);
+      --ring-accent: rgba(16, 185, 129, 0.4);
+    }
+
+    .glass-card {
+      background: var(--bg-elevated);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(2, 6, 23, 0.35);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+      color: #04130d;
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 36px rgba(16, 185, 129, 0.32);
+    }
+
+    .btn-primary:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--ring-accent);
+      outline-offset: 2px;
+    }
+  </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen font-sans antialiased">
-  <header class="border-b border-slate-200 bg-white">
+<body class="bg-[#020617] text-slate-200 min-h-screen font-sans antialiased overflow-x-hidden">
+  <header class="border-b border-white/10 bg-[#020617]/80 backdrop-blur-xl sticky top-0 z-10">
     <div class="max-w-6xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="text-3xl font-black text-indigo-700 tracking-tight">FinWise</a>
-        <span class="text-xs font-semibold bg-indigo-100 text-indigo-700 rounded-full px-3 py-1">Portfolio Dashboard</span>
+        <a href="index.html" class="flex items-center gap-3 group">
+          <svg class="h-8 w-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="16" fill="#10B981" fill-opacity="0.15" />
+            <path d="M20 44V20H44M20 32H38" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="44" cy="20" r="4" fill="white" />
+          </svg>
+          <span class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">FinWise</span>
+        </a>
+        <span class="text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-400/20 rounded-full px-3 py-1">Portfolio Dashboard</span>
       </div>
       <div class="flex items-center gap-3">
-        <a href="index.html" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 transition">Home</a>
-        <button id="logoutBtn" class="px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition">Log out</button>
+        <a href="index.html" class="px-4 py-2 rounded-lg border border-white/20 text-slate-300 hover:bg-slate-900/80 transition">Home</a>
+        <button id="logoutBtn" class="px-4 py-2 rounded-lg btn-primary font-semibold transition">Log out</button>
       </div>
     </div>
   </header>
 
   <main class="max-w-6xl mx-auto px-6 py-8 space-y-7">
-    <section class="bg-white border border-slate-200 rounded-2xl p-6">
+    <section class="glass-card rounded-2xl p-6">
       <div class="flex flex-wrap items-start justify-between gap-6">
         <div>
-          <p class="text-xs uppercase tracking-[0.2em] text-indigo-500 font-bold mb-2">Signed in</p>
-          <h1 id="welcomeTitle" class="text-3xl font-black text-slate-900">Welcome back</h1>
-          <p class="text-slate-500 mt-1">Track your portfolio and review allocation insights in one place.</p>
+          <p class="text-xs uppercase tracking-[0.2em] text-emerald-500 font-bold mb-2">Signed in</p>
+          <h1 id="welcomeTitle" class="text-3xl font-black text-white">Welcome back</h1>
+          <p class="text-slate-400 mt-1">Track your portfolio and review sector exposure in one place.</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 min-w-[280px]">
-          <article class="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+          <article class="rounded-xl bg-slate-900/70 border border-white/10 px-4 py-3">
             <p class="text-xs text-slate-500 uppercase">Profile Email</p>
-            <p id="userEmail" class="font-semibold text-slate-800 mt-1 truncate">-</p>
+            <p id="userEmail" class="font-semibold text-slate-100 mt-1 truncate">-</p>
           </article>
-          <article class="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+          <article class="rounded-xl bg-slate-900/70 border border-white/10 px-4 py-3">
             <p class="text-xs text-slate-500 uppercase">Member Since</p>
-            <p id="memberSince" class="font-semibold text-slate-800 mt-1">-</p>
+            <p id="memberSince" class="font-semibold text-slate-100 mt-1">-</p>
           </article>
-          <article class="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+          <article class="rounded-xl bg-slate-900/70 border border-white/10 px-4 py-3">
             <p class="text-xs text-slate-500 uppercase">Provider</p>
-            <p id="provider" class="font-semibold text-slate-800 mt-1">-</p>
+            <p id="provider" class="font-semibold text-slate-100 mt-1">-</p>
           </article>
         </div>
       </div>
     </section>
 
     <section class="grid lg:grid-cols-3 gap-5">
-      <article class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl">
-        <div class="border-b border-slate-200 px-5 py-4 flex items-center justify-between">
+      <article class="lg:col-span-2 glass-card rounded-2xl">
+        <div class="border-b border-white/10 px-5 py-4 flex items-center justify-between gap-4">
           <div>
-            <h2 class="font-bold text-xl text-slate-900">Portfolio Holdings Import</h2>
-            <p class="text-sm text-slate-500">Import stock symbols and quantities, then review your current holdings.</p>
+            <h2 class="font-bold text-xl text-white">Portfolio Holdings Import</h2>
+            <p class="text-sm text-slate-400">Upload an Excel file or add rows manually. Required columns: symbol, qty.</p>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold">Manual entry</span>
+          <span class="text-xs px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">Excel + manual</span>
+        </div>
+
+        <div class="p-5 border-b border-white/10 grid sm:grid-cols-5 gap-3 items-end">
+          <label class="sm:col-span-4 block">
+            <span class="text-sm font-semibold text-slate-200">Import Excel (.xlsx / .xls)</span>
+            <input id="excelInput" type="file" accept=".xlsx,.xls" class="mt-1 w-full rounded-lg border border-white/20 bg-slate-950/60 px-3 py-2 text-slate-200 file:mr-4 file:rounded-md file:border-0 file:bg-emerald-500/20 file:px-3 file:py-1.5 file:text-emerald-300 hover:file:bg-emerald-500/30" />
+          </label>
+          <button id="importBtn" type="button" class="w-full rounded-lg btn-primary font-semibold py-2.5 transition">Import</button>
+          <p id="importError" class="sm:col-span-5 text-sm text-rose-400 hidden"></p>
         </div>
 
         <form id="holdingForm" class="p-5 grid sm:grid-cols-4 gap-3 items-end">
           <label class="sm:col-span-2 block">
-            <span class="text-sm font-semibold text-slate-700">Stock Symbol</span>
-            <input id="symbolInput" required maxlength="8" placeholder="e.g. AAPL" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 uppercase" />
+            <span class="text-sm font-semibold text-slate-200">Stock Symbol</span>
+            <input id="symbolInput" required maxlength="8" placeholder="e.g. AAPL" class="mt-1 w-full rounded-lg border border-white/20 bg-slate-950/60 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 uppercase" />
           </label>
           <label class="block">
-            <span class="text-sm font-semibold text-slate-700">Quantity</span>
-            <input id="qtyInput" required type="number" min="0.0001" step="any" placeholder="e.g. 12" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            <span class="text-sm font-semibold text-slate-200">Quantity</span>
+            <input id="qtyInput" required type="number" min="0.0001" step="any" placeholder="e.g. 12" class="mt-1 w-full rounded-lg border border-white/20 bg-slate-950/60 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
           </label>
-          <button type="submit" class="w-full rounded-lg bg-indigo-600 text-white font-semibold py-2.5 hover:bg-indigo-500 transition">Add Holding</button>
-          <p id="formError" class="sm:col-span-4 text-sm text-rose-600 hidden"></p>
+          <button type="submit" class="w-full rounded-lg btn-primary font-semibold py-2.5 transition">Add Holding</button>
+          <p id="formError" class="sm:col-span-4 text-sm text-rose-400 hidden"></p>
         </form>
 
         <div class="px-5 pb-5 overflow-x-auto">
           <table class="min-w-full text-sm">
             <thead>
-              <tr class="text-left text-slate-500 border-y border-slate-200">
+              <tr class="text-left text-slate-400 border-y border-white/10">
                 <th class="py-2 pr-4 font-semibold">Symbol</th>
                 <th class="py-2 pr-4 font-semibold">Quantity</th>
+                <th class="py-2 pr-4 font-semibold">Sector</th>
                 <th class="py-2 pr-4 font-semibold">Added At</th>
                 <th class="py-2 text-right font-semibold">Action</th>
               </tr>
             </thead>
             <tbody id="holdingsBody"></tbody>
           </table>
-          <p id="emptyState" class="text-sm text-slate-500 py-4">No holdings imported yet. Add your first symbol above.</p>
+          <p id="emptyState" class="text-sm text-slate-400 py-4">No holdings imported yet. Add your first symbol above.</p>
         </div>
       </article>
 
-      <article class="bg-white border border-slate-200 rounded-2xl p-5">
-        <h3 class="text-lg font-bold text-slate-900 mb-3">Allocation Snapshot</h3>
-        <div class="space-y-3">
-          <div>
-            <div class="flex items-center justify-between text-sm mb-1"><span>Equities</span><span id="equitiesPct">0%</span></div>
-            <div class="h-2 rounded-full bg-slate-200 overflow-hidden"><div id="equitiesBar" class="h-full bg-indigo-600" style="width:0%"></div></div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between text-sm mb-1"><span>ETFs</span><span id="etfPct">0%</span></div>
-            <div class="h-2 rounded-full bg-slate-200 overflow-hidden"><div id="etfBar" class="h-full bg-cyan-600" style="width:0%"></div></div>
-          </div>
-          <div>
-            <div class="flex items-center justify-between text-sm mb-1"><span>Cash</span><span id="cashPct">0%</span></div>
-            <div class="h-2 rounded-full bg-slate-200 overflow-hidden"><div id="cashBar" class="h-full bg-emerald-600" style="width:0%"></div></div>
-          </div>
-        </div>
-        <div class="mt-6 p-3 rounded-lg bg-slate-50 border border-slate-200">
+      <article class="glass-card rounded-2xl p-5">
+        <h3 class="text-lg font-bold text-white mb-3">Sector Allocation</h3>
+        <p class="text-sm text-slate-400 mb-3">Pie chart grouped into Technology, Retail, and Consumer Staples.</p>
+        <canvas id="sectorPieChart" height="220"></canvas>
+        <div class="mt-6 p-3 rounded-lg bg-slate-900/70 border border-white/10">
           <p class="text-xs uppercase text-slate-500 font-semibold">Total Holdings</p>
-          <p id="totalHoldings" class="text-2xl font-black text-slate-900">0</p>
-          <p class="text-sm text-slate-500">Based on quantity-only imported positions.</p>
-        </div>
-      </article>
-    </section>
-
-    <section class="grid md:grid-cols-3 gap-5">
-      <article class="bg-white border border-slate-200 rounded-2xl p-5">
-        <h3 class="text-lg font-bold mb-2">Performance</h3>
-        <p class="text-sm text-slate-500 mb-4">Preview trend layout similar to institutional dashboards.</p>
-        <div class="h-40 flex items-end gap-2">
-          <div class="flex-1 bg-indigo-200 rounded-t" style="height:35%"></div>
-          <div class="flex-1 bg-indigo-300 rounded-t" style="height:50%"></div>
-          <div class="flex-1 bg-indigo-400 rounded-t" style="height:65%"></div>
-          <div class="flex-1 bg-indigo-500 rounded-t" style="height:58%"></div>
-          <div class="flex-1 bg-indigo-600 rounded-t" style="height:80%"></div>
-        </div>
-      </article>
-      <article class="bg-white border border-slate-200 rounded-2xl p-5">
-        <h3 class="text-lg font-bold mb-2">Portfolio Movers</h3>
-        <ul class="text-sm space-y-2">
-          <li class="flex justify-between"><span class="text-slate-600">Top performer</span><span class="font-semibold text-emerald-600">NVDA +4.2%</span></li>
-          <li class="flex justify-between"><span class="text-slate-600">Best sector</span><span class="font-semibold">Technology</span></li>
-          <li class="flex justify-between"><span class="text-slate-600">Worst performer</span><span class="font-semibold text-rose-600">TSLA -1.1%</span></li>
-        </ul>
-      </article>
-      <article class="bg-white border border-slate-200 rounded-2xl p-5">
-        <h3 class="text-lg font-bold mb-2">Quick Actions</h3>
-        <div class="grid grid-cols-2 gap-2 text-sm">
-          <a href="compound-interest.html" class="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">Compound</a>
-          <a href="dividend-calculator.html" class="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">Dividends</a>
-          <a href="goal-tracker.html" class="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">Goals</a>
-          <a href="learn.html" class="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">Learn</a>
+          <p id="totalHoldings" class="text-2xl font-black text-white">0</p>
+          <p class="text-sm text-slate-400">Based on quantity imported positions.</p>
         </div>
       </article>
     </section>
@@ -161,14 +170,19 @@
       const symbolInput = document.getElementById("symbolInput");
       const qtyInput = document.getElementById("qtyInput");
       const formError = document.getElementById("formError");
-
+      const excelInput = document.getElementById("excelInput");
+      const importBtn = document.getElementById("importBtn");
+      const importError = document.getElementById("importError");
       const totalHoldingsEl = document.getElementById("totalHoldings");
-      const equitiesPctEl = document.getElementById("equitiesPct");
-      const etfPctEl = document.getElementById("etfPct");
-      const cashPctEl = document.getElementById("cashPct");
-      const equitiesBar = document.getElementById("equitiesBar");
-      const etfBar = document.getElementById("etfBar");
-      const cashBar = document.getElementById("cashBar");
+
+      const pieCtx = document.getElementById("sectorPieChart");
+      let sectorPie = null;
+
+      const sectorMap = {
+        TECH: ["AAPL", "MSFT", "NVDA", "GOOGL", "GOOG", "META", "TSLA", "AMD", "INTC", "CRM", "ORCL", "QQQ", "NDQ", "VGT", "XLK"],
+        RETAIL: ["AMZN", "WMT", "COST", "TGT", "HD", "LOW", "EBAY", "BABA", "JD", "XRT", "RTH"],
+        CONSUMER_STAPLES: ["PG", "KO", "PEP", "WMT", "COST", "UL", "CL", "KMB", "MDLZ", "XLP", "VDC", "STZ"]
+      };
 
       function readHoldings() {
         try {
@@ -182,34 +196,56 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(holdings));
       }
 
-      function categorize(symbol) {
-        const etfExamples = ["SPY", "VOO", "VTI", "QQQ", "IVV", "SCHD", "GLD", "BIL"];
-        if (etfExamples.includes(symbol)) return "ETF";
-        if (symbol === "CASH") return "CASH";
-        return "EQUITY";
+      function getSector(symbol) {
+        if (sectorMap.TECH.includes(symbol)) return "Technology";
+        if (sectorMap.RETAIL.includes(symbol)) return "Retail";
+        if (sectorMap.CONSUMER_STAPLES.includes(symbol)) return "Consumer Staples";
+        return "Technology";
       }
 
-      function updateSnapshot(holdings) {
+      function updateSectorPie(holdings) {
         const totals = holdings.reduce((acc, row) => {
-          const bucket = categorize(row.symbol);
+          const sector = getSector(row.symbol);
+          acc[sector] += row.qty;
           acc.total += row.qty;
-          acc[bucket] += row.qty;
           return acc;
-        }, { total: 0, EQUITY: 0, ETF: 0, CASH: 0 });
+        }, {
+          total: 0,
+          "Technology": 0,
+          "Retail": 0,
+          "Consumer Staples": 0
+        });
 
-        const total = totals.total;
-        const eqPct = total ? (totals.EQUITY / total) * 100 : 0;
-        const etfPct = total ? (totals.ETF / total) * 100 : 0;
-        const cashPct = total ? (totals.CASH / total) * 100 : 0;
+        totalHoldingsEl.textContent = totals.total.toLocaleString("en-AU", { maximumFractionDigits: 4 });
 
-        totalHoldingsEl.textContent = total.toLocaleString("en-AU", { maximumFractionDigits: 4 });
-        equitiesPctEl.textContent = `${eqPct.toFixed(1)}%`;
-        etfPctEl.textContent = `${etfPct.toFixed(1)}%`;
-        cashPctEl.textContent = `${cashPct.toFixed(1)}%`;
+        const data = [totals["Technology"], totals["Retail"], totals["Consumer Staples"]];
 
-        equitiesBar.style.width = `${eqPct}%`;
-        etfBar.style.width = `${etfPct}%`;
-        cashBar.style.width = `${cashPct}%`;
+        if (sectorPie) {
+          sectorPie.data.datasets[0].data = data;
+          sectorPie.update();
+          return;
+        }
+
+        sectorPie = new Chart(pieCtx, {
+          type: "pie",
+          data: {
+            labels: ["Technology", "Retail", "Consumer Staples"],
+            datasets: [{
+              data,
+              backgroundColor: ["#10b981", "#06b6d4", "#a78bfa"],
+              borderColor: "#0f172a",
+              borderWidth: 2
+            }]
+          },
+          options: {
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: { color: "#cbd5e1" }
+              }
+            }
+          }
+        });
       }
 
       function render() {
@@ -222,18 +258,42 @@
           emptyState.classList.add("hidden");
           holdings.forEach((row, index) => {
             const tr = document.createElement("tr");
-            tr.className = "border-b border-slate-100";
+            tr.className = "border-b border-white/5";
             tr.innerHTML = `
-              <td class="py-2 pr-4 font-semibold text-slate-800">${row.symbol}</td>
-              <td class="py-2 pr-4">${row.qty.toLocaleString("en-AU", { maximumFractionDigits: 4 })}</td>
+              <td class="py-2 pr-4 font-semibold text-slate-100">${row.symbol}</td>
+              <td class="py-2 pr-4 text-slate-200">${row.qty.toLocaleString("en-AU", { maximumFractionDigits: 4 })}</td>
+              <td class="py-2 pr-4 text-slate-300">${getSector(row.symbol)}</td>
               <td class="py-2 pr-4 text-slate-500">${new Date(row.createdAt).toLocaleString("en-AU")}</td>
-              <td class="py-2 text-right"><button data-index="${index}" class="text-sm text-rose-600 hover:text-rose-700 font-semibold">Remove</button></td>
+              <td class="py-2 text-right"><button data-index="${index}" class="text-sm text-rose-400 hover:text-rose-300 font-semibold">Remove</button></td>
             `;
             holdingsBody.appendChild(tr);
           });
         }
 
-        updateSnapshot(holdings);
+        updateSectorPie(holdings);
+      }
+
+      function validateHolding(symbol, qty) {
+        if (!/^[A-Z.]{1,8}$/.test(symbol)) {
+          return "Use a valid stock symbol (letters only, max 8 characters).";
+        }
+
+        if (!Number.isFinite(qty) || qty <= 0) {
+          return "Quantity must be a number greater than 0.";
+        }
+
+        return null;
+      }
+
+      function addHoldings(rows) {
+        const holdings = readHoldings();
+
+        rows.forEach((row) => {
+          holdings.push({ symbol: row.symbol, qty: row.qty, createdAt: new Date().toISOString() });
+        });
+
+        saveHoldings(holdings);
+        render();
       }
 
       form.addEventListener("submit", function (event) {
@@ -242,26 +302,59 @@
 
         const symbol = symbolInput.value.trim().toUpperCase();
         const qty = Number(qtyInput.value);
+        const error = validateHolding(symbol, qty);
 
-        if (!/^[A-Z.]{1,8}$/.test(symbol)) {
-          formError.textContent = "Use a valid stock symbol (letters only, max 8 characters).";
+        if (error) {
+          formError.textContent = error;
           formError.classList.remove("hidden");
           return;
         }
 
-        if (!Number.isFinite(qty) || qty <= 0) {
-          formError.textContent = "Quantity must be a number greater than 0.";
-          formError.classList.remove("hidden");
-          return;
-        }
-
-        const holdings = readHoldings();
-        holdings.push({ symbol, qty, createdAt: new Date().toISOString() });
-        saveHoldings(holdings);
-
+        addHoldings([{ symbol, qty }]);
         form.reset();
         symbolInput.focus();
-        render();
+      });
+
+      importBtn.addEventListener("click", async function () {
+        importError.classList.add("hidden");
+
+        const file = excelInput.files && excelInput.files[0];
+        if (!file) {
+          importError.textContent = "Choose an Excel file first.";
+          importError.classList.remove("hidden");
+          return;
+        }
+
+        try {
+          const buffer = await file.arrayBuffer();
+          const workbook = XLSX.read(buffer, { type: "array" });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(firstSheet, { defval: "" });
+
+          const parsed = rows.map((row) => {
+            const symbolRaw = row.symbol || row.Symbol || row.SYMBOL || row.ticker || row.Ticker || row.TICKER;
+            const qtyRaw = row.qty || row.Qty || row.QTY || row.quantity || row.Quantity || row.QUANTITY;
+            return {
+              symbol: String(symbolRaw || "").trim().toUpperCase(),
+              qty: Number(qtyRaw)
+            };
+          }).filter((row) => row.symbol || row.qty);
+
+          if (!parsed.length) {
+            throw new Error("No rows found. Add headers: symbol and qty.");
+          }
+
+          const invalid = parsed.find((row) => validateHolding(row.symbol, row.qty));
+          if (invalid) {
+            throw new Error(`Invalid row found: ${invalid.symbol || "(blank)"} / ${invalid.qty || "(blank)"}.`);
+          }
+
+          addHoldings(parsed);
+          excelInput.value = "";
+        } catch (error) {
+          importError.textContent = error.message || "Failed to parse the Excel file.";
+          importError.classList.remove("hidden");
+        }
       });
 
       holdingsBody.addEventListener("click", function (event) {
