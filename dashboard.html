@@ -6,45 +6,137 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <title>Dashboard | FinWise</title>
 </head>
-<body class="bg-[#020617] text-slate-200 min-h-screen font-sans antialiased">
-  <nav class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-    <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">FinWise</a>
-    <div class="flex items-center gap-3">
-      <a href="index.html" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 hover:text-white hover:border-slate-500 transition">Home</a>
-      <button id="logoutBtn" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 transition">Log out</button>
-    </div>
-  </nav>
-
-  <main class="max-w-6xl mx-auto px-6 pb-16">
-    <section class="rounded-3xl border border-slate-800 bg-slate-900/40 p-8 mb-8">
-      <p class="text-xs uppercase tracking-[0.2em] text-emerald-400 font-semibold mb-2">Signed in</p>
-      <h1 id="welcomeTitle" class="text-4xl font-black text-white mb-3">Welcome back</h1>
-      <p class="text-slate-400">This dashboard is only visible for authenticated FinWise users.</p>
-    </section>
-
-    <section class="grid md:grid-cols-3 gap-5 mb-8">
-      <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
-        <p class="text-slate-400 text-sm mb-2">Profile Email</p>
-        <p id="userEmail" class="text-white text-lg font-semibold">-</p>
-      </article>
-      <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
-        <p class="text-slate-400 text-sm mb-2">Member Since</p>
-        <p id="memberSince" class="text-white text-lg font-semibold">-</p>
-      </article>
-      <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
-        <p class="text-slate-400 text-sm mb-2">Auth Provider</p>
-        <p id="provider" class="text-white text-lg font-semibold">-</p>
-      </article>
-    </section>
-
-    <section class="rounded-3xl border border-slate-800 bg-slate-900/40 p-8">
-      <h2 class="text-2xl font-bold text-white mb-5">Quick actions</h2>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a href="compound-interest.html" class="rounded-xl border border-slate-700 p-4 hover:border-emerald-400/60 transition">Compound Interest</a>
-        <a href="dividend-calculator.html" class="rounded-xl border border-slate-700 p-4 hover:border-emerald-400/60 transition">Dividend Calculator</a>
-        <a href="goal-tracker.html" class="rounded-xl border border-slate-700 p-4 hover:border-emerald-400/60 transition">Goal Tracker</a>
-        <a href="learn.html" class="rounded-xl border border-slate-700 p-4 hover:border-emerald-400/60 transition">Learn Hub</a>
+<body class="bg-slate-100 text-slate-800 min-h-screen font-sans antialiased">
+  <header class="border-b border-slate-200 bg-white">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="text-3xl font-black text-indigo-700 tracking-tight">FinWise</a>
+        <span class="text-xs font-semibold bg-indigo-100 text-indigo-700 rounded-full px-3 py-1">Portfolio Dashboard</span>
       </div>
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 transition">Home</a>
+        <button id="logoutBtn" class="px-4 py-2 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-500 transition">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 space-y-7">
+    <section class="bg-white border border-slate-200 rounded-2xl p-6">
+      <div class="flex flex-wrap items-start justify-between gap-6">
+        <div>
+          <p class="text-xs uppercase tracking-[0.2em] text-indigo-500 font-bold mb-2">Signed in</p>
+          <h1 id="welcomeTitle" class="text-3xl font-black text-slate-900">Welcome back</h1>
+          <p class="text-slate-500 mt-1">Track your portfolio and review allocation insights in one place.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 min-w-[280px]">
+          <article class="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+            <p class="text-xs text-slate-500 uppercase">Profile Email</p>
+            <p id="userEmail" class="font-semibold text-slate-800 mt-1 truncate">-</p>
+          </article>
+          <article class="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+            <p class="text-xs text-slate-500 uppercase">Member Since</p>
+            <p id="memberSince" class="font-semibold text-slate-800 mt-1">-</p>
+          </article>
+          <article class="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3">
+            <p class="text-xs text-slate-500 uppercase">Provider</p>
+            <p id="provider" class="font-semibold text-slate-800 mt-1">-</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid lg:grid-cols-3 gap-5">
+      <article class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl">
+        <div class="border-b border-slate-200 px-5 py-4 flex items-center justify-between">
+          <div>
+            <h2 class="font-bold text-xl text-slate-900">Portfolio Holdings Import</h2>
+            <p class="text-sm text-slate-500">Import stock symbols and quantities, then review your current holdings.</p>
+          </div>
+          <span class="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 font-semibold">Manual entry</span>
+        </div>
+
+        <form id="holdingForm" class="p-5 grid sm:grid-cols-4 gap-3 items-end">
+          <label class="sm:col-span-2 block">
+            <span class="text-sm font-semibold text-slate-700">Stock Symbol</span>
+            <input id="symbolInput" required maxlength="8" placeholder="e.g. AAPL" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 uppercase" />
+          </label>
+          <label class="block">
+            <span class="text-sm font-semibold text-slate-700">Quantity</span>
+            <input id="qtyInput" required type="number" min="0.0001" step="any" placeholder="e.g. 12" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </label>
+          <button type="submit" class="w-full rounded-lg bg-indigo-600 text-white font-semibold py-2.5 hover:bg-indigo-500 transition">Add Holding</button>
+          <p id="formError" class="sm:col-span-4 text-sm text-rose-600 hidden"></p>
+        </form>
+
+        <div class="px-5 pb-5 overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left text-slate-500 border-y border-slate-200">
+                <th class="py-2 pr-4 font-semibold">Symbol</th>
+                <th class="py-2 pr-4 font-semibold">Quantity</th>
+                <th class="py-2 pr-4 font-semibold">Added At</th>
+                <th class="py-2 text-right font-semibold">Action</th>
+              </tr>
+            </thead>
+            <tbody id="holdingsBody"></tbody>
+          </table>
+          <p id="emptyState" class="text-sm text-slate-500 py-4">No holdings imported yet. Add your first symbol above.</p>
+        </div>
+      </article>
+
+      <article class="bg-white border border-slate-200 rounded-2xl p-5">
+        <h3 class="text-lg font-bold text-slate-900 mb-3">Allocation Snapshot</h3>
+        <div class="space-y-3">
+          <div>
+            <div class="flex items-center justify-between text-sm mb-1"><span>Equities</span><span id="equitiesPct">0%</span></div>
+            <div class="h-2 rounded-full bg-slate-200 overflow-hidden"><div id="equitiesBar" class="h-full bg-indigo-600" style="width:0%"></div></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-sm mb-1"><span>ETFs</span><span id="etfPct">0%</span></div>
+            <div class="h-2 rounded-full bg-slate-200 overflow-hidden"><div id="etfBar" class="h-full bg-cyan-600" style="width:0%"></div></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-sm mb-1"><span>Cash</span><span id="cashPct">0%</span></div>
+            <div class="h-2 rounded-full bg-slate-200 overflow-hidden"><div id="cashBar" class="h-full bg-emerald-600" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="mt-6 p-3 rounded-lg bg-slate-50 border border-slate-200">
+          <p class="text-xs uppercase text-slate-500 font-semibold">Total Holdings</p>
+          <p id="totalHoldings" class="text-2xl font-black text-slate-900">0</p>
+          <p class="text-sm text-slate-500">Based on quantity-only imported positions.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="grid md:grid-cols-3 gap-5">
+      <article class="bg-white border border-slate-200 rounded-2xl p-5">
+        <h3 class="text-lg font-bold mb-2">Performance</h3>
+        <p class="text-sm text-slate-500 mb-4">Preview trend layout similar to institutional dashboards.</p>
+        <div class="h-40 flex items-end gap-2">
+          <div class="flex-1 bg-indigo-200 rounded-t" style="height:35%"></div>
+          <div class="flex-1 bg-indigo-300 rounded-t" style="height:50%"></div>
+          <div class="flex-1 bg-indigo-400 rounded-t" style="height:65%"></div>
+          <div class="flex-1 bg-indigo-500 rounded-t" style="height:58%"></div>
+          <div class="flex-1 bg-indigo-600 rounded-t" style="height:80%"></div>
+        </div>
+      </article>
+      <article class="bg-white border border-slate-200 rounded-2xl p-5">
+        <h3 class="text-lg font-bold mb-2">Portfolio Movers</h3>
+        <ul class="text-sm space-y-2">
+          <li class="flex justify-between"><span class="text-slate-600">Top performer</span><span class="font-semibold text-emerald-600">NVDA +4.2%</span></li>
+          <li class="flex justify-between"><span class="text-slate-600">Best sector</span><span class="font-semibold">Technology</span></li>
+          <li class="flex justify-between"><span class="text-slate-600">Worst performer</span><span class="font-semibold text-rose-600">TSLA -1.1%</span></li>
+        </ul>
+      </article>
+      <article class="bg-white border border-slate-200 rounded-2xl p-5">
+        <h3 class="text-lg font-bold mb-2">Quick Actions</h3>
+        <div class="grid grid-cols-2 gap-2 text-sm">
+          <a href="compound-interest.html" class="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">Compound</a>
+          <a href="dividend-calculator.html" class="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">Dividends</a>
+          <a href="goal-tracker.html" class="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">Goals</a>
+          <a href="learn.html" class="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">Learn</a>
+        </div>
+      </article>
     </section>
   </main>
 
@@ -62,10 +154,133 @@
         ? new Date(user.createdAt).toLocaleDateString("en-AU", { day: "2-digit", month: "short", year: "numeric" })
         : "-";
 
+      const STORAGE_KEY = `finwise_holdings_${user.email || "guest"}`;
+      const holdingsBody = document.getElementById("holdingsBody");
+      const emptyState = document.getElementById("emptyState");
+      const form = document.getElementById("holdingForm");
+      const symbolInput = document.getElementById("symbolInput");
+      const qtyInput = document.getElementById("qtyInput");
+      const formError = document.getElementById("formError");
+
+      const totalHoldingsEl = document.getElementById("totalHoldings");
+      const equitiesPctEl = document.getElementById("equitiesPct");
+      const etfPctEl = document.getElementById("etfPct");
+      const cashPctEl = document.getElementById("cashPct");
+      const equitiesBar = document.getElementById("equitiesBar");
+      const etfBar = document.getElementById("etfBar");
+      const cashBar = document.getElementById("cashBar");
+
+      function readHoldings() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        } catch (_err) {
+          return [];
+        }
+      }
+
+      function saveHoldings(holdings) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(holdings));
+      }
+
+      function categorize(symbol) {
+        const etfExamples = ["SPY", "VOO", "VTI", "QQQ", "IVV", "SCHD", "GLD", "BIL"];
+        if (etfExamples.includes(symbol)) return "ETF";
+        if (symbol === "CASH") return "CASH";
+        return "EQUITY";
+      }
+
+      function updateSnapshot(holdings) {
+        const totals = holdings.reduce((acc, row) => {
+          const bucket = categorize(row.symbol);
+          acc.total += row.qty;
+          acc[bucket] += row.qty;
+          return acc;
+        }, { total: 0, EQUITY: 0, ETF: 0, CASH: 0 });
+
+        const total = totals.total;
+        const eqPct = total ? (totals.EQUITY / total) * 100 : 0;
+        const etfPct = total ? (totals.ETF / total) * 100 : 0;
+        const cashPct = total ? (totals.CASH / total) * 100 : 0;
+
+        totalHoldingsEl.textContent = total.toLocaleString("en-AU", { maximumFractionDigits: 4 });
+        equitiesPctEl.textContent = `${eqPct.toFixed(1)}%`;
+        etfPctEl.textContent = `${etfPct.toFixed(1)}%`;
+        cashPctEl.textContent = `${cashPct.toFixed(1)}%`;
+
+        equitiesBar.style.width = `${eqPct}%`;
+        etfBar.style.width = `${etfPct}%`;
+        cashBar.style.width = `${cashPct}%`;
+      }
+
+      function render() {
+        const holdings = readHoldings();
+        holdingsBody.innerHTML = "";
+
+        if (!holdings.length) {
+          emptyState.classList.remove("hidden");
+        } else {
+          emptyState.classList.add("hidden");
+          holdings.forEach((row, index) => {
+            const tr = document.createElement("tr");
+            tr.className = "border-b border-slate-100";
+            tr.innerHTML = `
+              <td class="py-2 pr-4 font-semibold text-slate-800">${row.symbol}</td>
+              <td class="py-2 pr-4">${row.qty.toLocaleString("en-AU", { maximumFractionDigits: 4 })}</td>
+              <td class="py-2 pr-4 text-slate-500">${new Date(row.createdAt).toLocaleString("en-AU")}</td>
+              <td class="py-2 text-right"><button data-index="${index}" class="text-sm text-rose-600 hover:text-rose-700 font-semibold">Remove</button></td>
+            `;
+            holdingsBody.appendChild(tr);
+          });
+        }
+
+        updateSnapshot(holdings);
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        formError.classList.add("hidden");
+
+        const symbol = symbolInput.value.trim().toUpperCase();
+        const qty = Number(qtyInput.value);
+
+        if (!/^[A-Z.]{1,8}$/.test(symbol)) {
+          formError.textContent = "Use a valid stock symbol (letters only, max 8 characters).";
+          formError.classList.remove("hidden");
+          return;
+        }
+
+        if (!Number.isFinite(qty) || qty <= 0) {
+          formError.textContent = "Quantity must be a number greater than 0.";
+          formError.classList.remove("hidden");
+          return;
+        }
+
+        const holdings = readHoldings();
+        holdings.push({ symbol, qty, createdAt: new Date().toISOString() });
+        saveHoldings(holdings);
+
+        form.reset();
+        symbolInput.focus();
+        render();
+      });
+
+      holdingsBody.addEventListener("click", function (event) {
+        const button = event.target.closest("button[data-index]");
+        if (!button) return;
+
+        const index = Number(button.dataset.index);
+        const holdings = readHoldings();
+        holdings.splice(index, 1);
+        saveHoldings(holdings);
+        render();
+      });
+
       document.getElementById("logoutBtn").addEventListener("click", function () {
         window.finwiseAuth.logout();
         window.location.href = "login.html";
       });
+
+      render();
     });
   </script>
 </body>
