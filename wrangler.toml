@@ -1,4 +1,5 @@
 name = "finwise"
+main = "src/index.ts"
 compatibility_date = "2026-04-01"
 
 # Cloudflare Pages deploys (npx wrangler pages deploy .)
