@@ -1,5 +1,6 @@
 (function () {
   const SESSION_KEY = "finwise_session_v2";
+  const USERS_KEY = "finwise_users_v1";
 
   function normalizeEmail(email) {
     return (email || "").trim().toLowerCase();
@@ -22,52 +23,92 @@
     }
   }
 
-  async function request(path, options) {
-    const response = await fetch(path, {
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      ...options,
-    });
-
-    let payload = null;
+  function loadUsers() {
     try {
-      payload = await response.json();
+      return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
     } catch {
-      payload = { success: false, message: "Unexpected server response." };
+      return [];
     }
+  }
 
-    if (!response.ok) return { success: false, message: payload?.message || "Request failed." };
-    return payload;
+  function saveUsers(users) {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+
+  function mapToSessionUser(user) {
+    return {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+      name: `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email,
+    };
   }
 
   async function signup(firstName, lastName, email, password) {
-    const result = await request("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify({ firstName, lastName, email: normalizeEmail(email), password }),
-    });
+    const normalizedEmail = normalizeEmail(email);
+    const users = loadUsers();
 
-    if (result.success && result.user) storeSessionUser(result.user);
-    return result;
+    if (users.some((user) => user.email === normalizedEmail)) {
+      return { success: false, message: "An account with that email already exists." };
+    }
+
+    const username = normalizedEmail.split("@")[0];
+    const user = {
+      id: Date.now(),
+      firstName: (firstName || "").trim(),
+      lastName: (lastName || "").trim(),
+      email: normalizedEmail,
+      username,
+      password: password || "",
+    };
+
+    users.push(user);
+    saveUsers(users);
+
+    const sessionUser = mapToSessionUser(user);
+    storeSessionUser(sessionUser);
+    return { success: true, user: sessionUser };
   }
 
   async function login(identifier, password) {
-    const result = await request("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ identifier, password }),
-    });
+    const key = normalizeUsername(identifier);
+    const users = loadUsers();
+    const user = users.find((candidate) => candidate.email === key || candidate.username === key);
 
-    if (result.success && result.user) storeSessionUser(result.user);
-    return result;
+    if (!user || user.password !== (password || "")) {
+      return { success: false, message: "Invalid credentials." };
+    }
+
+    const sessionUser = mapToSessionUser(user);
+    storeSessionUser(sessionUser);
+    return { success: true, user: sessionUser };
   }
 
   async function upsertGoogleUser(profile) {
-    const result = await request("/api/auth/google", {
-      method: "POST",
-      body: JSON.stringify(profile),
-    });
+    const email = normalizeEmail(profile?.email);
+    if (!email) return { success: false, message: "Missing Google account email." };
 
-    if (result.success && result.user) storeSessionUser(result.user);
-    return result;
+    const users = loadUsers();
+    let user = users.find((candidate) => candidate.email === email);
+
+    if (!user) {
+      user = {
+        id: Date.now(),
+        firstName: (profile?.given_name || "").trim(),
+        lastName: (profile?.family_name || "").trim(),
+        email,
+        username: email.split("@")[0],
+        password: "",
+      };
+      users.push(user);
+      saveUsers(users);
+    }
+
+    const sessionUser = mapToSessionUser(user);
+    storeSessionUser(sessionUser);
+    return { success: true, user: sessionUser };
   }
 
   function decodeJwtPayload(token) {
@@ -125,17 +166,10 @@
       return getStoredSessionUser();
     },
     refreshSession: async function () {
-      const result = await request("/api/auth/me", { method: "GET" });
-      if (result.success && result.user) {
-        storeSessionUser(result.user);
-        return result.user;
-      }
-      localStorage.removeItem(SESSION_KEY);
-      return null;
+      return getStoredSessionUser();
     },
     logout: function () {
       localStorage.removeItem(SESSION_KEY);
-      fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(() => {});
     },
 
     requireAuth: function (redirectTo) {
