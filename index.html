@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-AU">
+<html lang="en-AU" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -10,19 +10,14 @@
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23020617'/><path d='M20 44V20H44M20 32H38' stroke='%2310B981' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/><circle cx='44' cy='20' r='4' fill='white'/></svg>">
 
     <style>
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-scroll { display: flex; width: fit-content; animation: scroll 40s linear infinite; }
+        #promo-slider { transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1); }
         .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-        
-        .calculator-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .calculator-card { transition: all 0.3s ease; }
         @media (min-width: 768px) {
-            .calculator-card:hover { transform: translateY(-5px); border-color: rgba(16, 185, 129, 0.4); background: rgba(30, 41, 59, 0.4); }
+            .calculator-card:hover { transform: translateY(-6px); border-color: rgba(16, 185, 129, 0.4); background: rgba(30, 41, 59, 0.4); }
         }
-        /* Prevents iOS zoom on input */
         input, select { font-size: 16px !important; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 
@@ -30,21 +25,24 @@
 
     <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
         <a href="index.html" class="flex items-center gap-3 group">
-            <svg class="h-8 w-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="h-8 w-8 shrink-0 transition-transform group-hover:scale-110" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="64" height="64" rx="16" fill="#10B981" fill-opacity="0.15" />
                 <path d="M20 44V20H44M20 32H38" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
                 <circle cx="44" cy="20" r="4" fill="white" />
             </svg>
             <span class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">FinWise</span>
         </a>
-        <div class="hidden md:flex space-x-8 text-sm font-bold text-slate-400">
-            <a href="#" class="hover:text-white transition">Platform</a>
-            <a href="#calculators" class="hover:text-white transition">Calculators</a>
-            <a href="#" class="hover:text-white transition">Learn</a>
+        
+        <div class="hidden lg:flex space-x-8 text-sm font-bold text-slate-400">
+            <a href="#" class="hover:text-white transition-colors">Platform</a>
+            <a href="#calculators" class="hover:text-white transition-colors">Calculators</a>
+            <a href="#" class="hover:text-white transition-colors">Learn</a>
+            <a href="about.html" class="hover:text-white transition-colors">About Us</a>
         </div>
+
         <div class="flex items-center gap-4">
-            <a href="login.html" class="text-sm font-medium text-slate-400 hover:text-white transition">Log in</a>
-            <a href="signup.html" class="bg-white text-slate-950 px-5 py-2 md:px-6 md:py-2.5 rounded-full text-sm font-bold hover:bg-emerald-400 transition shadow-xl">Get Started</a>
+            <a href="login.html" class="text-sm font-medium text-slate-400 hover:text-white transition-colors">Log in</a>
+            <a href="signup.html" class="bg-white text-slate-950 px-5 py-2 md:px-6 md:py-2.5 rounded-full text-sm font-bold hover:bg-emerald-400 transition-all shadow-xl active:scale-95">Get Started</a>
         </div>
     </nav>
 
@@ -56,52 +54,27 @@
             The modern standard for Australian wealth tracking. Monitor dividends, analyse sector exposure, and optimise your portfolio.
         </p>
 
-        <div class="relative max-w-2xl mx-auto">
+        <div class="relative max-w-2xl mx-auto group">
             <div class="relative flex items-center">
                 <input type="text" id="ai-input" placeholder="Analyse my portfolio..."
-                    class="w-full bg-slate-900/90 border border-slate-700/50 rounded-full py-5 md:py-6 pl-12 md:pl-14 pr-24 md:pr-40 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 text-white placeholder-slate-500 text-base md:text-lg backdrop-blur-xl transition-all shadow-2xl">
-                <button class="absolute right-2 md:right-3 top-2 md:top-3 bottom-2 md:top-3 bg-emerald-500 text-slate-950 px-5 md:px-8 rounded-full font-black hover:bg-emerald-400 transition-all text-sm md:text-base">Go</button>
+                    class="w-full bg-slate-900/90 border border-slate-700/50 rounded-full py-5 md:py-6 pl-12 md:pl-14 pr-24 md:pr-40 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 text-white placeholder-slate-500 text-base md:text-lg backdrop-blur-xl transition-all shadow-2xl group-hover:border-slate-600">
+                <button class="absolute right-2 md:right-3 top-2 bottom-2 bg-emerald-500 text-slate-950 px-5 md:px-8 rounded-full font-black hover:bg-emerald-400 transition-all text-sm md:text-base shadow-lg active:scale-95">Go</button>
             </div>
         </div>
     </header>
 
-    <div class="px-4 md:px-8 -mt-8 md:-mt-10 relative z-20">
-        <div class="max-w-5xl mx-auto">
-            <div class="glass-card rounded-3xl md:rounded-full py-4 px-6 md:px-10 flex flex-nowrap overflow-x-auto no-scrollbar snap-x justify-between items-center gap-8 md:gap-12 border border-white/10 shadow-2xl">
-                <div class="flex items-center gap-3 shrink-0 snap-center">
-                    <span class="uppercase tracking-widest text-slate-500 font-black text-[10px]">Inflation</span>
-                    <span class="text-white font-mono text-base md:text-lg font-bold">3.4%</span>
-                    <span class="text-emerald-500 text-xs">↑</span>
-                </div>
-                <div class="hidden md:block h-4 w-px bg-slate-800"></div>
-                <div class="flex items-center gap-3 shrink-0 snap-center">
-                    <span class="uppercase tracking-widest text-slate-500 font-black text-[10px]">RBA Rate</span>
-                    <span class="text-white font-mono text-base md:text-lg font-bold">4.35%</span>
-                    <span class="text-slate-500 text-[10px] border border-slate-700 px-2 py-0.5 rounded">HOLD</span>
-                </div>
-                <div class="hidden md:block h-4 w-px bg-slate-800"></div>
-                <div class="flex items-center gap-3 shrink-0 snap-center">
-                    <span class="uppercase tracking-widest text-slate-500 font-black text-[10px]">ASX 200</span>
-                    <span class="text-white font-mono text-base md:text-lg font-bold">-0.49%</span>
-                    <span class="text-orange-500/60 text-[10px] font-black">Bearish</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20">
-        <div id="slider-container" class="relative overflow-hidden rounded-[2rem] md:rounded-[3.5rem] bg-slate-900/40 border border-white/5 shadow-2xl group">
-            <div id="promo-slider" class="flex transition-transform duration-1000 ease-in-out">
-                
+        <div id="slider-container" class="relative overflow-hidden rounded-[2rem] md:rounded-[3.5rem] bg-slate-900/40 border border-white/5 shadow-2xl group cursor-pointer">
+            <div id="promo-slider" class="flex">
                 <div class="min-w-full p-8 md:p-20 flex flex-col lg:flex-row items-center gap-10 md:gap-16">
                     <div class="lg:w-1/2 space-y-6 md:space-y-8 text-center lg:text-left">
                         <span class="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">Dividend Tracker</span>
                         <h2 class="text-3xl md:text-6xl font-bold text-white tracking-tighter leading-tight">Master Your <br><span class="text-emerald-500">Passive Income.</span></h2>
                         <p class="text-slate-400 text-lg md:text-xl">The only dashboard that projects your annual yield, monthly payouts, and franking credits with institutional accuracy.</p>
-                        <button class="bg-emerald-500 text-slate-950 px-8 md:px-10 py-3 md:py-4 rounded-full font-black hover:scale-105 transition-all text-sm md:text-base">Explore Premium</button>
+                        <button class="bg-emerald-500 text-slate-950 px-8 md:px-10 py-3 md:py-4 rounded-full font-black hover:scale-105 hover:bg-emerald-400 transition-all text-sm md:text-base">Explore Premium</button>
                     </div>
                     <div class="lg:w-1/2 w-full">
-                        <div class="glass-card p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-2xl transform lg:rotate-3">
+                        <div class="glass-card p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] transform lg:rotate-3 transition-transform hover:rotate-0 duration-500">
                             <div class="flex justify-between items-end mb-6 md:mb-8">
                                 <div>
                                     <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-1">Annual Projected</p>
@@ -112,16 +85,15 @@
                                 </div>
                             </div>
                             <div class="flex items-end gap-2 md:gap-3 h-24 md:h-32">
-                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg" style="height: 40%"></div>
-                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg" style="height: 60%"></div>
-                                <div class="flex-1 bg-emerald-500 rounded-md md:rounded-lg shadow-lg shadow-emerald-500/20" style="height: 95%"></div>
-                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg" style="height: 45%"></div>
-                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg" style="height: 70%"></div>
+                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg h-[40%]"></div>
+                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg h-[60%]"></div>
+                                <div class="flex-1 bg-emerald-500 rounded-md md:rounded-lg shadow-lg shadow-emerald-500/20 h-[95%]"></div>
+                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg h-[45%]"></div>
+                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg h-[70%]"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="min-w-full p-8 md:p-20 flex flex-col lg:flex-row items-center gap-10 md:gap-16">
                     <div class="lg:w-1/2 space-y-6 md:space-y-8 text-center lg:text-left">
                         <span class="inline-block px-4 py-1 rounded-full bg-blue-500/10 text-blue-500 text-[10px] font-black uppercase tracking-widest border border-blue-500/20">AI Insights</span>
@@ -130,20 +102,17 @@
                         <button class="bg-blue-600 text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black hover:scale-105 transition-all text-sm md:text-base">Analyse Sector Risk</button>
                     </div>
                     <div class="lg:w-1/2 w-full">
-                        <div class="glass-card p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-2xl space-y-5 md:space-y-6">
+                        <div class="glass-card p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] space-y-5 md:space-y-6">
                             <h4 class="text-white font-bold text-base md:text-lg">Portfolio Overlap</h4>
                             <div class="space-y-4">
                                 <div>
                                     <div class="flex justify-between text-[10px] font-bold mb-2 text-slate-400"><span>Financials</span><span>45%</span></div>
-                                    <div class="h-2 bg-slate-800 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 45%"></div></div>
+                                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-emerald-500 rounded-full" style="width: 45%"></div></div>
                                 </div>
                                 <div>
                                     <div class="flex justify-between text-[10px] font-bold mb-2 text-slate-400"><span>Technology</span><span>15%</span></div>
-                                    <div class="h-2 bg-slate-800 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width: 15%"></div></div>
+                                    <div class="h-2 bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-blue-500 rounded-full" style="width: 15%"></div></div>
                                 </div>
-                            </div>
-                            <div class="mt-4 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs md:text-sm italic">
-                                "High concentration in banks. Consider adding NDQ or IVV for tech exposure."
                             </div>
                         </div>
                     </div>
@@ -161,13 +130,13 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-3">Essential Tools</h2>
                 <p class="text-slate-500 text-base md:text-lg">Powerful, free-to-use calculators built specifically for the Australian tax and investment landscape.</p>
             </div>
-            <a href="#all-tools" class="text-emerald-500 font-bold hover:underline text-sm md:text-base">View All Tools →</a>
+            <a href="#all-tools" class="text-emerald-500 font-bold hover:underline transition-all text-sm md:text-base">View All Tools →</a>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             <a href="compound-interest.html" class="md:col-span-2 calculator-card glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between group">
                 <div class="flex justify-between items-start mb-12">
-                    <div class="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-2xl group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all">∑</div>
+                    <div class="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-2xl group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-300">∑</div>
                     <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest">Most Popular</span>
                 </div>
                 <div>
@@ -211,7 +180,7 @@
     </section>
 
     <footer class="bg-[#020617] py-16 md:py-20 px-6 border-t border-white/5">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 text-sm">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 text-sm text-center md:text-left">
             <div class="col-span-1 md:col-span-1">
                 <div class="text-white font-black text-2xl tracking-tighter mb-4 italic">FinWise</div>
                 <p class="text-slate-600">The premium standard for the modern Australian investor.</p>
@@ -219,18 +188,20 @@
             <div>
                 <h4 class="text-white font-bold mb-4 md:mb-6 uppercase tracking-widest text-[10px]">Navigation</h4>
                 <ul class="text-slate-500 space-y-3 md:space-y-4">
-                    <li><a href="#" class="hover:text-emerald-400">Dashboard</a></li>
-                    <li><a href="#calculators" class="hover:text-emerald-400">Calculators</a></li>
+                    <li><a href="#" class="hover:text-emerald-400 transition-colors">Platform</a></li>
+                    <li><a href="#calculators" class="hover:text-emerald-400 transition-colors">Calculators</a></li>
+                    <li><a href="#" class="hover:text-emerald-400 transition-colors">Learn</a></li>
+                    <li><a href="about.html" class="hover:text-emerald-400 transition-colors">About Us</a></li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-white font-bold mb-4 md:mb-6 uppercase tracking-widest text-[10px]">Legal</h4>
                 <ul class="text-slate-500 space-y-3 md:space-y-4">
-                    <li><a href="#" class="hover:text-emerald-400">Privacy</a></li>
-                    <li><a href="#" class="hover:text-emerald-400">Terms</a></li>
+                    <li><a href="#" class="hover:text-emerald-400 transition-colors">Privacy</a></li>
+                    <li><a href="#" class="hover:text-emerald-400 transition-colors">Terms</a></li>
                 </ul>
             </div>
-            <div class="text-slate-700 text-xs md:text-sm">
+            <div class="text-slate-700 text-xs md:text-sm flex md:justify-end items-center justify-center">
                 <p>© 2026 FinWise. All rights reserved.</p>
             </div>
         </div>
@@ -240,20 +211,18 @@
         const slider = document.getElementById('promo-slider');
         const progress = document.getElementById('slide-progress');
         const container = document.getElementById('slider-container');
-        
         let currentSlide = 0;
         const totalSlides = 2;
         const slideDuration = 8000;
-        let isPaused = false;
+        let slideTimer;
 
-        function nextSlide() {
-            if (isPaused) return;
+        function moveSlide() {
             currentSlide = (currentSlide + 1) % totalSlides;
             slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            resetProgress();
+            startProgressBar();
         }
 
-        function resetProgress() {
+        function startProgressBar() {
             progress.style.transition = 'none';
             progress.style.width = '0%';
             setTimeout(() => {
@@ -262,26 +231,34 @@
             }, 50);
         }
 
-        resetProgress();
-        let itvl = setInterval(nextSlide, slideDuration);
+        function startAutoplay() {
+            startProgressBar();
+            slideTimer = setInterval(moveSlide, slideDuration);
+        }
 
-        container.addEventListener('mouseenter', () => { isPaused = true; clearInterval(itvl); progress.style.transition = 'none'; });
-        container.addEventListener('mouseleave', () => { isPaused = false; resetProgress(); itvl = setInterval(nextSlide, slideDuration); });
+        function stopAutoplay() {
+            clearInterval(slideTimer);
+            progress.style.transition = 'none';
+            progress.style.width = '0%';
+        }
 
-        // AI Typing Animation
+        startAutoplay();
+        container.addEventListener('mouseenter', stopAutoplay);
+        container.addEventListener('mouseleave', startAutoplay);
+
         const input = document.getElementById('ai-input');
-        const phrases = ["Analyse my ASX holdings...", "Project my dividends...", "Calculate my CGT...", "Am I diversified enough?"];
+        const phrases = ["Analyse my ASX holdings...", "Project my dividends...", "Calculate my CGT..."];
         let pIdx = 0, cIdx = 0, isDel = false;
 
         function type() {
             const curr = phrases[pIdx];
             input.placeholder = isDel ? curr.substring(0, cIdx--) : curr.substring(0, cIdx++);
-            if (!isDel && cIdx === curr.length + 1) { isDel = true; setTimeout(type, 2000); return; }
-            if (isDel && cIdx === 0) { isDel = false; pIdx = (pIdx + 1) % phrases.length; }
-            setTimeout(type, isDel ? 50 : 100);
+            let typeSpeed = isDel ? 50 : 100;
+            if (!isDel && cIdx === curr.length + 1) { isDel = true; typeSpeed = 2000; }
+            else if (isDel && cIdx === 0) { isDel = false; pIdx = (pIdx + 1) % phrases.length; }
+            setTimeout(type, typeSpeed);
         }
         type();
     </script>
 </body>
-
 </html>
