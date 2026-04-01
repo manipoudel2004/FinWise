@@ -1,24 +1,5 @@
 (function () {
-  const USERS_KEY = "finwise_users_v1";
-  const SESSION_KEY = "finwise_session_v1";
-
-  function getUsers() {
-    try {
-      return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
-    } catch {
-      return [];
-    }
-  }
-
-  function saveUsers(users) {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  }
-
-  function hashPassword(password) {
-    // Lightweight obfuscation for static hosting demo apps.
-    // Replace with server-side hashing (bcrypt/argon2) in production.
-    return btoa(unescape(encodeURIComponent(password))).split("").reverse().join("");
-  }
+  const SESSION_KEY = "finwise_session_v2";
 
   function normalizeEmail(email) {
     return (email || "").trim().toLowerCase();
@@ -28,134 +9,65 @@
     return (username || "").trim().toLowerCase();
   }
 
-  function deriveUsernameFromEmail(email) {
-    return normalizeEmail(email).split("@")[0] || "user";
+  function storeSessionUser(user) {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    return user;
   }
 
-  function buildSessionUser(user) {
-    return {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      provider: user.provider,
-      createdAt: user.createdAt,
-      lastLoginAt: new Date().toISOString(),
-    };
-  }
-
-  function createSession(user) {
-    const safeUser = buildSessionUser(user);
-    localStorage.setItem(SESSION_KEY, JSON.stringify(safeUser));
-    return safeUser;
-  }
-
-  function findUserByLoginIdentifier(users, identifier) {
-    const normalizedIdentifier = (identifier || "").trim().toLowerCase();
-    if (!normalizedIdentifier) return null;
-    return users.find(
-      (u) => u.email === normalizedIdentifier || u.username === normalizedIdentifier
-    );
-  }
-
-  function validateSession(sessionCandidate) {
-    if (!sessionCandidate?.id || !sessionCandidate?.email) return null;
-
-    const users = getUsers();
-    const user = users.find(
-      (u) =>
-        u.id === sessionCandidate.id &&
-        u.email === normalizeEmail(sessionCandidate.email)
-    );
-
-    if (!user) {
-      localStorage.removeItem(SESSION_KEY);
+  function getStoredSessionUser() {
+    try {
+      return JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+    } catch {
       return null;
     }
-
-    const refreshedSession = buildSessionUser(user);
-    localStorage.setItem(SESSION_KEY, JSON.stringify(refreshedSession));
-    return refreshedSession;
   }
 
-  function signup(firstName, lastName, email, password) {
-    const users = getUsers();
-    const normalizedEmail = normalizeEmail(email);
+  async function request(path, options) {
+    const response = await fetch(path, {
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      ...options,
+    });
 
-    if (users.some((u) => u.email === normalizedEmail)) {
-      return { success: false, message: "An account with this email already exists." };
+    let payload = null;
+    try {
+      payload = await response.json();
+    } catch {
+      payload = { success: false, message: "Unexpected server response." };
     }
 
-    const user = {
-      id: crypto.randomUUID(),
-      username: deriveUsernameFromEmail(normalizedEmail),
-      firstName,
-      lastName,
-      email: normalizedEmail,
-      passwordHash: hashPassword(password),
-      provider: "password",
-      createdAt: new Date().toISOString(),
-      profile: {
-        riskProfile: null,
-        savedGoals: [],
-        calculators: {},
-      },
-    };
-
-    users.push(user);
-    saveUsers(users);
-
-    return { success: true, user: createSession(user) };
+    if (!response.ok) return { success: false, message: payload?.message || "Request failed." };
+    return payload;
   }
 
-  function login(identifier, password) {
-    const users = getUsers();
-    const user = findUserByLoginIdentifier(users, identifier);
+  async function signup(firstName, lastName, email, password) {
+    const result = await request("/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify({ firstName, lastName, email: normalizeEmail(email), password }),
+    });
 
-    if (!user || user.passwordHash !== hashPassword(password)) {
-      return { success: false, message: "Invalid username/email or password." };
-    }
-
-    return { success: true, user: createSession(user) };
+    if (result.success && result.user) storeSessionUser(result.user);
+    return result;
   }
 
-  function upsertGoogleUser(profile) {
-    const users = getUsers();
-    const normalizedEmail = normalizeEmail(profile.email);
-    let user = users.find((u) => u.email === normalizedEmail);
+  async function login(identifier, password) {
+    const result = await request("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ identifier, password }),
+    });
 
-    if (!user) {
-      const fullName = profile.name || "";
-      const [firstName = "Google", ...rest] = fullName.trim().split(" ");
-      const lastName = rest.join(" ") || "User";
+    if (result.success && result.user) storeSessionUser(result.user);
+    return result;
+  }
 
-      user = {
-        id: crypto.randomUUID(),
-        username: deriveUsernameFromEmail(normalizedEmail),
-        firstName,
-        lastName,
-        email: normalizedEmail,
-        provider: "google",
-        googleId: profile.sub,
-        avatar: profile.picture,
-        createdAt: new Date().toISOString(),
-        profile: {
-          riskProfile: null,
-          savedGoals: [],
-          calculators: {},
-        },
-      };
-      users.push(user);
-    } else {
-      user.provider = "google";
-      user.username = user.username || deriveUsernameFromEmail(normalizedEmail);
-      user.googleId = profile.sub || user.googleId;
-      user.avatar = profile.picture || user.avatar;
-    }
+  async function upsertGoogleUser(profile) {
+    const result = await request("/api/auth/google", {
+      method: "POST",
+      body: JSON.stringify(profile),
+    });
 
-    saveUsers(users);
-    return { success: true, user: createSession(user) };
+    if (result.success && result.user) storeSessionUser(result.user);
+    return result;
   }
 
   function decodeJwtPayload(token) {
@@ -167,11 +79,12 @@
     return JSON.parse(json);
   }
 
-  function handleGoogleCredentialResponse(response, onSuccess, onError) {
+  async function handleGoogleCredentialResponse(response, onSuccess, onError) {
     try {
       const profile = decodeJwtPayload(response.credential);
       if (!profile?.email) throw new Error("Missing Google profile email");
-      const result = upsertGoogleUser(profile);
+      const result = await upsertGoogleUser(profile);
+      if (!result.success) throw new Error(result.message || "Google sign-in failed");
       onSuccess(result);
     } catch (error) {
       if (typeof onError === "function") onError(error);
@@ -209,16 +122,20 @@
     login,
     initGoogleButton,
     getCurrentUser: function () {
-      try {
-        const raw = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
-        return validateSession(raw);
-      } catch {
-        localStorage.removeItem(SESSION_KEY);
-        return null;
+      return getStoredSessionUser();
+    },
+    refreshSession: async function () {
+      const result = await request("/api/auth/me", { method: "GET" });
+      if (result.success && result.user) {
+        storeSessionUser(result.user);
+        return result.user;
       }
+      localStorage.removeItem(SESSION_KEY);
+      return null;
     },
     logout: function () {
       localStorage.removeItem(SESSION_KEY);
+      fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(() => {});
     },
 
     requireAuth: function (redirectTo) {

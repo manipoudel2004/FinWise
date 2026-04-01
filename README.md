@@ -1,22 +1,48 @@
 # FinWise
 
-Static FinWise prototype site.
+FinWise is now a **full-stack development website**:
 
-## Auth flow added
+- Front-end pages are still plain HTML/CSS/JS.
+- A new Node.js/Express backend provides auth APIs, cookie sessions, and persistent user storage.
 
-This project now includes a lightweight client-side auth module in `auth.js`:
+## Stack
 
-- Email/password sign up and login.
-- Google sign-in/sign-up integration using Google Identity Services.
-- User profile/session persistence in `localStorage` (`finwise_users_v1` and `finwise_session_v1`).
+- **Frontend:** static HTML pages + `auth.js`
+- **Backend:** `express`, `jsonwebtoken`, `bcryptjs`, `cookie-parser`
+- **Storage:** local JSON database at `data/users.json`
 
-## Configure Google sign-in
+## Run locally
 
-1. Create a Google OAuth web client in Google Cloud Console.
-2. Add your local/dev origin (for example `http://localhost:5500`).
-3. Copy the Client ID.
-4. Paste it into `GOOGLE_CLIENT_ID` in:
-   - `signup.html`
-   - `login.html`
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start in dev mode:
+   ```bash
+   npm run dev
+   ```
+3. Open:
+   - `http://localhost:3000`
 
-> Note: This is a front-end-only demo implementation. For production, move auth and data storage to a secure backend.
+## Backend API
+
+- `GET /api/health` - backend status check
+- `POST /api/auth/signup` - create account (email/password)
+- `POST /api/auth/login` - login with email or username + password
+- `POST /api/auth/google` - upsert Google profile and login
+- `GET /api/auth/me` - fetch current authenticated user from cookie
+- `POST /api/auth/logout` - clear auth cookie
+
+## Environment variables
+
+- `PORT` (default: `3000`)
+- `JWT_SECRET` (default: `dev-only-change-me`; set a strong secret in real deployments)
+
+## Google sign-in
+
+Set your Google Client ID in:
+
+- `signup.html`
+- `login.html`
+
+`auth.js` decodes the Google credential client-side and sends profile data to the backend.
