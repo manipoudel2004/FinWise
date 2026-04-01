@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <title>Login | FinWise</title>
     <style>
         input { font-size: 16px !important; }
@@ -42,33 +43,41 @@
                     <p class="text-slate-400 text-sm">Access your portfolio and calculators.</p>
                 </div>
 
-                <form action="#" class="space-y-6">
+                <form id="loginForm" class="space-y-6">
                     <div>
                         <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2 tracking-widest">Email Address</label>
-                        <input type="email" placeholder="name@company.com" 
+                        <input id="email" type="email" placeholder="name@company.com"
                             class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-white outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all placeholder:text-slate-700">
                     </div>
 
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <label class="block text-[10px] font-bold uppercase text-slate-500 tracking-widest">Password</label>
-                            <a href="#" class="text-[10px] font-bold text-emerald-500 hover:text-emerald-400 uppercase tracking-widest">Forgot?</a>
                         </div>
-                        <input type="password" placeholder="••••••••" 
+                        <input id="password" type="password" placeholder="••••••••"
                             class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-white outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all placeholder:text-slate-700">
                     </div>
 
+                    <p id="message" class="text-sm text-slate-400"></p>
+
                     <div class="pt-2">
-                        <button type="submit" 
+                        <button type="submit"
                             class="w-full bg-emerald-600 hover:bg-emerald-500 text-[#020617] font-black py-4 rounded-2xl transition-all active:scale-[0.98] shadow-lg shadow-emerald-900/20 uppercase tracking-widest text-xs">
                             Sign In
                         </button>
                     </div>
                 </form>
 
+                <div class="my-6 flex items-center gap-3 text-slate-600 text-xs uppercase tracking-wider">
+                    <span class="h-px bg-slate-800 flex-1"></span>
+                    or
+                    <span class="h-px bg-slate-800 flex-1"></span>
+                </div>
+                <div id="googleLogin" class="flex justify-center"></div>
+
                 <div class="mt-8 pt-8 border-t border-slate-800 text-center">
                     <p class="text-slate-500 text-sm">
-                        Don't have an account? 
+                        Don't have an account?
                         <a href="signup.html" class="text-white font-bold hover:text-emerald-400 transition-colors">Sign up free</a>
                     </p>
                 </div>
@@ -80,5 +89,44 @@
         </div>
     </main>
 
+    <script src="auth.js"></script>
+    <script>
+      const GOOGLE_CLIENT_ID = ""; // Add your Google OAuth client ID here.
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("loginForm");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value.trim();
+
+          if (!email || !password) {
+            message.textContent = "Enter both email and password.";
+            return;
+          }
+
+          const result = window.finwiseAuth.login(email, password);
+          if (!result.success) {
+            message.textContent = result.message;
+            return;
+          }
+
+          window.location.href = "index.html";
+        });
+
+        window.finwiseAuth.initGoogleButton("googleLogin", {
+          clientId: GOOGLE_CLIENT_ID,
+          onSuccess: function () {
+            window.location.href = "index.html";
+          },
+          onError: function () {
+            message.textContent = "Google sign-in failed. Please try email login.";
+          },
+        });
+      });
+    </script>
 </body>
 </html>
