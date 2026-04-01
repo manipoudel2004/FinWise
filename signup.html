@@ -1,33 +1,59 @@
 <script>
-document.querySelector("form").addEventListener("submit", function(e) {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
 
-    const inputs = document.querySelectorAll("input");
+    const form = document.querySelector("form");
 
-    const firstName = inputs[0].value.trim();
-    const lastName = inputs[1].value.trim();
-    const email = inputs[2].value.trim();
-    const password = inputs[3].value.trim();
-    const terms = document.getElementById("terms").checked;
+    if (!form) return;
 
-    if (!firstName || !lastName || !email || !password) {
-        alert("Fill all fields");
-        return;
-    }
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    if (!terms) {
-        alert("Accept Terms");
-        return;
-    }
+        const inputs = form.querySelectorAll("input");
 
-    const result = signup(firstName, lastName, email, password);
+        const firstName = inputs[0]?.value.trim();
+        const lastName = inputs[1]?.value.trim();
+        const email = inputs[2]?.value.trim();
+        const password = inputs[3]?.value.trim();
+        const terms = document.getElementById("terms")?.checked;
 
-    if (!result.success) {
-        alert(result.message);
-        return;
-    }
+        // basic validation
+        if (!firstName || !lastName || !email || !password) {
+            alert("Please fill all fields");
+            return;
+        }
 
-    alert("Account created!");
-    window.location.href = "dashboard.html";
+        if (!email.includes("@")) {
+            alert("Please enter a valid email");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters");
+            return;
+        }
+
+        if (!terms) {
+            alert("You must accept the Terms");
+            return;
+        }
+
+        // check if signup function exists
+        if (typeof signup !== "function") {
+            console.error("signup() function is missing");
+            alert("Signup system not loaded");
+            return;
+        }
+
+        const result = signup(firstName, lastName, email, password);
+
+        if (!result || !result.success) {
+            alert(result?.message || "Signup failed");
+            return;
+        }
+
+        alert("Account created successfully!");
+        window.location.href = "dashboard.html";
+    });
+
 });
 </script>
