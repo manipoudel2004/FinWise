@@ -27,6 +27,14 @@ This project is now configured to run as a **static site on Cloudflare Pages**.
 npx wrangler pages deploy .
 ```
 
+### Option C: Wrangler Workers deploy (assets mode)
+
+If your CI/CD runs `wrangler deploy` (Workers deploy), this repo now includes an `[assets]` section in `wrangler.toml` so static files are uploaded from the repo root:
+
+```bash
+npx wrangler deploy
+```
+
 ## Local development
 
 Because this is static-first, you can run any static server, for example:

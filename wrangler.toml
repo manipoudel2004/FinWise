@@ -1,3 +1,9 @@
 name = "finwise"
 compatibility_date = "2026-04-01"
+
+# Cloudflare Pages deploys (npx wrangler pages deploy .)
 pages_build_output_dir = "."
+
+# Cloudflare Workers deploys (npx wrangler deploy)
+[assets]
+directory = "."
