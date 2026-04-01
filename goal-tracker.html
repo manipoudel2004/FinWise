@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Goal Tracker - FinWise</title>
+    <style>
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        input, select { font-size: 16px !important; }
+        .progress-glow {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-[#020617] text-slate-200 font-sans antialiased overflow-x-hidden">
+
+    <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+        <div class="flex items-center gap-4 md:gap-6">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="h-8 w-8 bg-emerald-500/20 rounded-lg flex items-center justify-center border border-emerald-500/30">
+                    <span class="text-emerald-400 font-bold text-lg">🎯</span>
+                </div>
+                <span class="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">FinWise</span>
+            </a>
+            <div class="text-slate-500 text-[10px] font-bold uppercase tracking-widest border-l border-slate-800 pl-4 md:pl-6 hidden sm:block">Goal Tracker</div>
+        </div>
+
+        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">← Back</a>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-8 md:py-12">
+        <header class="mb-12">
+            <h1 class="text-3xl md:text-4xl font-black text-white mb-2">Target Tracker</h1>
+            <p class="text-slate-500">Break down your biggest ambitions into manageable milestones.</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div class="md:col-span-5 space-y-6">
+                <div class="glass-panel p-6 rounded-[2rem] space-y-5">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Goal Name</label>
+                        <input type="text" id="goalName" value="Home Deposit" oninput="updateUI()"
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white outline-none focus:border-emerald-500/50 transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Target Amount ($)</label>
+                        <input type="number" id="targetAmount" value="100000" oninput="updateUI()"
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white outline-none focus:border-emerald-500/50 transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Already Saved ($)</label>
+                        <input type="number" id="currentSaved" value="15000" oninput="updateUI()"
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white outline-none focus:border-emerald-500/50 transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Target Date</label>
+                        <input type="date" id="targetDate" oninput="updateUI()"
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white outline-none focus:border-emerald-500/50 transition-all">
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-7 space-y-6">
+                <div class="glass-panel p-8 rounded-[2rem] relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h2 id="displayGoalName" class="text-xl font-bold text-white mb-1">Home Deposit</h2>
+                        <div class="flex items-baseline gap-2 mb-6">
+                            <span id="displayPercent" class="text-5xl font-black text-emerald-500">15%</span>
+                            <span class="text-slate-500 text-sm font-medium tracking-tight">complete</span>
+                        </div>
+
+                        <div class="w-full bg-slate-950 h-4 rounded-full mb-2 overflow-hidden border border-slate-800">
+                            <div id="progressBar" class="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full transition-all duration-700 progress-glow" style="width: 15%"></div>
+                        </div>
+                        <div class="flex justify-between text-[10px] font-bold text-slate-600 uppercase tracking-tighter">
+                            <span id="displaySaved">$15,000</span>
+                            <span id="displayTarget">$100,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-panel p-6 rounded-[2rem]">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Gap Remaining</p>
+                        <p id="displayGap" class="text-xl font-bold text-white">$85,000</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-[2rem]">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Monthly Req.</p>
+                        <p id="displayMonthly" class="text-xl font-bold text-cyan-400">$0</p>
+                    </div>
+                </div>
+
+                <div id="timeStatus" class="glass-panel p-6 rounded-[2rem] border-l-4 border-emerald-500 hidden">
+                    <p class="text-sm text-slate-300">
+                        Save <span id="summaryAmount" class="font-bold text-white">$0</span>/mo for <span id="summaryMonths" class="font-bold text-white">0</span> months to hit your goal.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const defaultDate = new Date();
+        defaultDate.setFullYear(defaultDate.getFullYear() + 2);
+        document.getElementById('targetDate').value = defaultDate.toISOString().split('T')[0];
+
+        function updateUI() {
+            const goalName = document.getElementById('goalName').value || "My Goal";
+            const target = parseFloat(document.getElementById('targetAmount').value) || 0;
+            const saved = parseFloat(document.getElementById('currentSaved').value) || 0;
+            const dateVal = document.getElementById('targetDate').value;
+
+            const gap = Math.max(0, target - saved);
+            const percent = target > 0 ? Math.min(100, (saved / target) * 100) : 0;
+
+            document.getElementById('displayGoalName').innerText = goalName;
+            document.getElementById('displayPercent').innerText = Math.floor(percent) + "%";
+            document.getElementById('progressBar').style.width = percent + "%";
+            document.getElementById('displaySaved').innerText = "$" + saved.toLocaleString();
+            document.getElementById('displayTarget').innerText = "$" + target.toLocaleString();
+            document.getElementById('displayGap').innerText = "$" + gap.toLocaleString();
+
+            if (dateVal) {
+                const targetDate = new Date(dateVal);
+                const today = new Date();
+                const diffTime = targetDate - today;
+                const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44));
+
+                if (diffMonths > 0) {
+                    const monthly = gap / diffMonths;
+                    document.getElementById('displayMonthly').innerText = "$" + Math.round(monthly).toLocaleString();
+                    document.getElementById('summaryAmount').innerText = "$" + Math.round(monthly).toLocaleString();
+                    document.getElementById('summaryMonths').innerText = diffMonths;
+                    document.getElementById('timeStatus').classList.remove('hidden');
+                } else {
+                    document.getElementById('displayMonthly').innerText = "Overdue";
+                    document.getElementById('timeStatus').classList.add('hidden');
+                }
+            }
+        }
+        updateUI();
+    </script>
+</body>
+</html>
