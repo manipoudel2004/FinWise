@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AU CGT - FinWise</title>
+    <style>
+        input, select { font-size: 16px !important; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-[#020617] text-slate-200 font-sans antialiased">
+
+    <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <div class="h-8 w-8 bg-emerald-500/20 rounded-lg flex items-center justify-center border border-emerald-500/30">
+                <span class="text-emerald-400 font-bold text-xl">$</span>
+            </div>
+            <span class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">FinWise</span>
+        </a>
+        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">← Back</a>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-8 md:py-12">
+        <div class="mb-10">
+            <span class="bg-orange-500/10 text-orange-400 text-[10px] font-bold px-3 py-1 rounded-full border border-orange-500/20 uppercase tracking-widest mb-4 inline-block">ATO Standards</span>
+            <h1 class="text-3xl md:text-5xl font-black text-white">CGT Calculator</h1>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-4 space-y-6">
+                <div class="glass-panel rounded-[2.5rem] p-8 space-y-5">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Purchase Price ($)</label>
+                        <input type="number" id="purchasePrice" value="8000" oninput="calculateCGT()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white focus:ring-1 focus:ring-orange-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Sale Price ($)</label>
+                        <input type="number" id="salePrice" value="10000" oninput="calculateCGT()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white focus:ring-1 focus:ring-orange-500 outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Costs/Fees ($)</label>
+                            <input type="number" id="costs" value="20" oninput="calculateCGT()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white focus:ring-1 focus:ring-orange-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Loss Carry ($)</label>
+                            <input type="number" id="carriedLoss" value="500" oninput="calculateCGT()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white focus:ring-1 focus:ring-orange-500 outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Holding Period</label>
+                        <select id="holdingPeriod" onchange="calculateCGT()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
+                            <option value="over">Over 12 Months (Discount Apply)</option>
+                            <option value="under">Under 12 Months</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Marginal Tax Rate (%)</label>
+                        <select id="taxRate" onchange="calculateCGT()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
+                            <option value="0.16">16% (Low)</option>
+                            <option value="0.30" selected>30% (Median)</option>
+                            <option value="0.37">37% (High)</option>
+                            <option value="0.45">45% (Top)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-orange-500/5 border border-orange-500/10 rounded-[2.5rem] p-10">
+                    <span class="text-xs font-bold uppercase text-orange-500/60 tracking-widest mb-2 block">Estimated Net Taxable Gain</span>
+                    <div id="netTaxableGain" class="text-5xl md:text-7xl font-black text-white mb-6">$0</div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 pt-8 border-t border-orange-500/10">
+                        <div class="space-y-4">
+                            <div class="flex justify-between"><span class="text-slate-500 text-sm">Total Capital Gain</span><span id="totalGain" class="text-white font-bold">$0</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500 text-sm">CGT Discount (50%)</span><span id="discountAmount" class="text-emerald-400 font-bold">-$0</span></div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between"><span class="text-slate-500 text-sm">Estimated Tax Payable</span><span id="taxPayable" class="text-orange-400 font-bold">$0</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500 text-sm">Return on Investment</span><span id="roi" class="text-white font-bold">0%</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[2rem] p-8">
+                    <h3 class="text-xs font-bold uppercase text-slate-500 mb-4">Summary Breakdown</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        In Australia, if you hold an asset for longer than 12 months, individuals are typically entitled to a 50% discount on the capital gain before it is added to your taxable income. 
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function calculateCGT() {
+            const purchase = parseFloat(document.getElementById('purchasePrice').value) || 0;
+            const sale = parseFloat(document.getElementById('salePrice').value) || 0;
+            const costs = parseFloat(document.getElementById('costs').value) || 0;
+            const loss = parseFloat(document.getElementById('carriedLoss').value) || 0;
+            const isLongTerm = document.getElementById('holdingPeriod').value === 'over';
+            const mtr = parseFloat(document.getElementById('taxRate').value);
+
+            const totalGain = Math.max(0, sale - purchase - costs);
+            const gainAfterLoss = Math.max(0, totalGain - loss);
+            
+            const discount = isLongTerm ? (gainAfterLoss * 0.5) : 0;
+            const netTaxable = gainAfterLoss - discount;
+            const taxPayable = netTaxable * mtr;
+            
+            const roi = ((sale - purchase - costs) / purchase * 100) || 0;
+
+            document.getElementById('totalGain').innerText = `$${totalGain.toLocaleString()}`;
+            document.getElementById('discountAmount').innerText = `-$${discount.toLocaleString()}`;
+            document.getElementById('netTaxableGain').innerText = `$${netTaxable.toLocaleString()}`;
+            document.getElementById('taxPayable').innerText = `$${taxPayable.toLocaleString()}`;
+            document.getElementById('roi').innerText = `${roi.toFixed(1)}%`;
+        }
+        calculateCGT();
+    </script>
+</body>
+</html>

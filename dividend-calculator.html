@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dividend Projections - FinWise</title>
+    <style>
+        input, select { font-size: 16px !important; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-[#020617] text-slate-200 font-sans antialiased">
+
+    <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <div class="h-8 w-8 bg-emerald-500/20 rounded-lg flex items-center justify-center border border-emerald-500/30">
+                <span class="text-emerald-400 font-bold text-xl">$</span>
+            </div>
+            <span class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">FinWise</span>
+        </a>
+        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">← Back to Dashboard</a>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-8 md:py-12">
+        <div class="mb-10 text-center md:text-left">
+            <h1 class="text-3xl md:text-5xl font-black text-white mb-3 text-balance">Dividend Projections</h1>
+            <p class="text-slate-400 max-w-2xl">Estimate your long-term passive income and portfolio growth with precision.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-4 space-y-6">
+                <div class="glass-panel rounded-[2.5rem] p-8 space-y-5">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Share Price ($)</label>
+                        <input type="number" id="sharePrice" value="100" oninput="calculateDividends()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white focus:ring-1 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Number of Shares</label>
+                        <input type="number" id="shareCount" value="100" oninput="calculateDividends()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white focus:ring-1 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Annual Dividend Yield (%)</label>
+                        <input type="number" id="divYield" value="5" oninput="calculateDividends()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 font-bold focus:ring-1 focus:ring-emerald-500 outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Capital Growth (%)</label>
+                            <input type="number" id="capGrowth" value="2" oninput="calculateDividends()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white focus:ring-1 focus:ring-emerald-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Years</label>
+                            <select id="years" onchange="calculateDividends()" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
+                                <option value="5">5</option>
+                                <option value="10" selected>10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/50">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" id="reinvest" checked onchange="calculateDividends()" class="w-5 h-5 rounded border-slate-800 bg-slate-950 text-emerald-500 focus:ring-0">
+                            <span class="text-sm text-slate-400 group-hover:text-slate-200 font-medium">Reinvest Dividends (DRP)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-emerald-500/5 border border-emerald-500/10 rounded-[2.5rem] p-10 relative overflow-hidden">
+                    <div class="relative z-10 grid md:grid-cols-2 gap-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase text-emerald-500/60 tracking-widest mb-2 block">Total Projected Value</span>
+                            <div id="totalValue" class="text-5xl md:text-6xl font-black text-white mb-2">$0</div>
+                            <p class="text-slate-500 text-sm">Portfolio value after holding period</p>
+                        </div>
+                        <div class="flex flex-col justify-end space-y-4">
+                            <div class="flex justify-between items-end border-b border-emerald-500/10 pb-2">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">Final Annual Income</span>
+                                <span id="annualIncome" class="text-2xl font-bold text-emerald-400">$0</span>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <span class="text-[10px] font-bold text-slate-500 uppercase">Monthly Average</span>
+                                <span id="monthlyIncome" class="text-2xl font-bold text-white">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="glass-panel rounded-[2rem] p-8">
+                        <h3 class="text-xs font-bold uppercase text-slate-500 mb-6">Income Growth</h3>
+                        <div class="h-[250px] w-full">
+                            <canvas id="incomeChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-[2rem] p-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xs font-bold uppercase text-slate-500">Yearly Breakdown</h3>
+                            <span id="yieldOnCost" class="text-blue-400 font-bold text-sm">YoC: 0%</span>
+                        </div>
+                        <div id="yearTable" class="space-y-3 max-h-[220px] overflow-y-auto custom-scrollbar pr-2">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let myChart = null;
+
+        function calculateDividends() {
+            const initialPrice = parseFloat(document.getElementById('sharePrice').value) || 0;
+            const initialShares = parseFloat(document.getElementById('shareCount').value) || 0;
+            const divYield = (parseFloat(document.getElementById('divYield').value) / 100) || 0;
+            const capGrowth = (parseFloat(document.getElementById('capGrowth').value) / 100) || 0;
+            const years = parseInt(document.getElementById('years').value);
+            const drp = document.getElementById('reinvest').checked;
+
+            let currentShares = initialShares;
+            let currentPrice = initialPrice;
+            const labels = [];
+            const data = [];
+            let tableHTML = '';
+            let annualDiv = 0;
+
+            for (let i = 1; i <= years; i++) {
+                // End of year calculation
+                annualDiv = (currentShares * currentPrice) * divYield;
+                
+                labels.push(`Year ${i}`);
+                data.push(Math.round(annualDiv));
+
+                tableHTML += `
+                    <div class="flex justify-between items-center text-xs border-b border-slate-800/50 pb-2">
+                        <span class="text-slate-500">Year ${i}</span>
+                        <span class="text-white font-medium">$${Math.round(annualDiv).toLocaleString()}</span>
+                    </div>
+                `;
+
+                if (drp) {
+                    currentShares += (annualDiv / currentPrice);
+                }
+                
+                // Stock price appreciates
+                currentPrice *= (1 + capGrowth);
+            }
+
+            const finalValue = currentShares * currentPrice;
+            const yoc = (annualDiv / (initialShares * initialPrice)) * 100;
+
+            // UI Update
+            document.getElementById('totalValue').innerText = `$${Math.round(finalValue).toLocaleString()}`;
+            document.getElementById('annualIncome').innerText = `$${Math.round(annualDiv).toLocaleString()}`;
+            document.getElementById('monthlyIncome').innerText = `$${Math.round(annualDiv/12).toLocaleString()}`;
+            document.getElementById('yieldOnCost').innerText = `Yield on Cost: ${yoc.toFixed(1)}%`;
+            document.getElementById('yearTable').innerHTML = tableHTML;
+
+            updateChart(labels, data);
+        }
+
+        function updateChart(labels, data) {
+            const ctx = document.getElementById('incomeChart').getContext('2d');
+            
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Annual Dividend',
+                        data: data,
+                        backgroundColor: '#10b981',
+                        borderRadius: 8,
+                        hoverBackgroundColor: '#34d399'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+                            ticks: { color: '#64748b', font: { size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#64748b', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initial Run
+        calculateDividends();
+    </script>
+</body>
+</html>
