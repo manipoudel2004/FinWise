@@ -10,16 +10,25 @@
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23020617'/><path d='M20 44V20H44M20 32H38' stroke='%2310B981' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/><circle cx='44' cy='20' r='4' fill='white'/></svg>">
 
     <style>
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-scroll { display: flex; width: fit-content; animation: scroll 40s linear infinite; }
-        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-card { 
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
         
         .calculator-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         @media (min-width: 768px) {
-            .calculator-card:hover { transform: translateY(-5px); border-color: rgba(16, 185, 129, 0.4); background: rgba(30, 41, 59, 0.4); }
+            .calculator-card:hover { 
+                transform: translateY(-5px); 
+                border-color: rgba(16, 185, 129, 0.4); 
+                background: rgba(30, 41, 59, 0.4); 
+            }
+        }
+        @media (max-width: 640px) {
+            h1 { font-size: 3rem !important; line-height: 1 !important; }
         }
         input, select { font-size: 16px !important; }
     </style>
@@ -27,7 +36,7 @@
 
 <body class="bg-[#020617] text-slate-200 font-sans antialiased overflow-x-hidden">
 
-    <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+    <nav class="flex justify-between items-center px-4 md:px-12 py-6 max-w-[1600px] mx-auto">
         <a href="index.html" class="flex items-center gap-3 group">
             <svg class="h-8 w-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="64" height="64" rx="16" fill="#10B981" fill-opacity="0.15" />
@@ -36,222 +45,207 @@
             </svg>
             <span class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">FinWise</span>
         </a>
-        <div class="hidden md:flex space-x-8 text-sm font-bold text-slate-400">
+        
+        <div class="hidden lg:flex space-x-10 text-sm font-bold text-slate-400">
             <a href="#" class="hover:text-white transition">Platform</a>
             <a href="#calculators" class="hover:text-white transition">Calculators</a>
             <a href="learn.html" class="hover:text-white transition">Learn</a>
             <a href="about.html" class="hover:text-white transition">About Us</a>
         </div>
-        <div class="flex items-center gap-4">
-            <a href="login.html" class="text-sm font-medium text-slate-400 hover:text-white transition">Log in</a>
-            <a href="signup.html" class="bg-white text-slate-950 px-5 py-2 md:px-6 md:py-2.5 rounded-full text-sm font-bold hover:bg-emerald-400 transition shadow-xl">Get Started</a>
+
+        <div class="flex items-center gap-3 md:gap-4">
+            <a href="login.html" class="text-sm font-medium text-slate-400 hover:text-white transition px-2">Log in</a>
+            <a href="signup.html" class="bg-white text-slate-950 px-5 py-2 md:px-8 md:py-3 rounded-full text-sm font-black hover:bg-emerald-400 transition shadow-xl">Get Started</a>
         </div>
     </nav>
 
-    <header class="text-center pt-12 md:pt-16 pb-20 md:pb-32 px-6 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#020617] to-[#020617]">
-        <h1 class="text-4xl md:text-8xl font-black mb-6 tracking-tighter text-white leading-tight md:leading-[0.9]">
+    <header class="text-center pt-12 md:pt-24 pb-20 md:pb-36 px-6 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#020617] to-[#020617]">
+        <h1 class="text-5xl md:text-7xl lg:text-9xl font-black mb-6 tracking-tighter text-white leading-[1.1] md:leading-[0.9]">
             Invest with <br><span class="text-emerald-500 font-serif italic">Absolute</span> Clarity.
         </h1>
-        <p class="text-slate-400 text-base md:text-xl mb-10 md:mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+        <p class="text-slate-400 text-base md:text-2xl mb-10 md:mb-14 max-w-3xl mx-auto leading-relaxed font-medium">
             The modern standard for Australian wealth tracking. Monitor dividends, analyse sector exposure, and optimise your portfolio.
         </p>
 
-        <div class="relative max-w-2xl mx-auto">
+        <div class="relative max-w-3xl mx-auto px-2">
             <div class="relative flex items-center">
                 <input type="text" id="ai-input" placeholder="Analyse my portfolio..."
-                    class="w-full bg-slate-900/90 border border-slate-700/50 rounded-full py-5 md:py-6 pl-12 md:pl-14 pr-24 md:pr-40 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 text-white placeholder-slate-500 text-base md:text-lg backdrop-blur-xl transition-all shadow-2xl">
-                <button class="absolute right-2 md:right-3 top-2 md:top-3 bottom-2 md:top-3 bg-emerald-500 text-slate-950 px-5 md:px-8 rounded-full font-black hover:bg-emerald-400 transition-all text-sm md:text-base">Go</button>
+                    class="w-full bg-slate-900/90 border border-slate-700/50 rounded-full py-5 md:py-7 pl-8 md:pl-14 pr-24 md:pr-40 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 text-white placeholder-slate-500 text-base md:text-xl backdrop-blur-xl transition-all shadow-2xl">
+                <button class="absolute right-2 md:right-3 top-2 md:top-3 bottom-2 md:top-3 bg-emerald-500 text-slate-950 px-6 md:px-10 rounded-full font-black hover:bg-emerald-400 transition-all text-sm md:text-base">Go</button>
             </div>
         </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20">
-        <div id="slider-container" class="relative overflow-hidden rounded-[2rem] md:rounded-[3.5rem] bg-slate-900/40 border border-white/5 shadow-2xl group">
+    <section class="max-w-[1600px] mx-auto px-4 md:px-12 py-8 md:py-16">
+        <div id="slider-container" class="relative overflow-hidden rounded-[2.5rem] md:rounded-[4rem] bg-slate-900/40 border border-white/5 shadow-2xl group">
             <div id="promo-slider" class="flex transition-transform duration-1000 ease-in-out">
                 
-                <div class="min-w-full p-8 md:p-20 flex flex-col lg:flex-row items-center gap-10 md:gap-16">
-                    <div class="lg:w-1/2 space-y-6 md:space-y-8 text-center lg:text-left">
-                        <span class="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">Dividend Tracker</span>
-                        <h2 class="text-3xl md:text-6xl font-bold text-white tracking-tighter leading-tight">Master Your <br><span class="text-emerald-500">Passive Income.</span></h2>
-                        <p class="text-slate-400 text-lg md:text-xl">The only dashboard that projects your annual yield, monthly payouts, and franking credits with institutional accuracy.</p>
-                        <button class="bg-emerald-500 text-slate-950 px-8 md:px-10 py-3 md:py-4 rounded-full font-black hover:scale-105 transition-all text-sm md:text-base">Explore Premium</button>
+                <div class="min-w-full p-8 md:p-24 flex flex-col lg:flex-row items-center gap-12 md:gap-20">
+                    <div class="lg:w-1/2 space-y-6 md:space-y-10 text-center lg:text-left">
+                        <span class="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] md:text-xs font-black uppercase tracking-widest border border-emerald-500/20">Dividend Tracker</span>
+                        <h2 class="text-4xl md:text-7xl font-bold text-white tracking-tighter leading-tight">Master Your <br><span class="text-emerald-500">Passive Income.</span></h2>
+                        <p class="text-slate-400 text-lg md:text-2xl max-w-xl">The only dashboard that projects your annual yield, monthly payouts, and franking credits with institutional accuracy.</p>
+                        <button class="bg-emerald-500 text-slate-950 px-8 md:px-12 py-4 md:py-5 rounded-full font-black hover:scale-105 transition-all text-sm md:text-lg">Explore Premium</button>
                     </div>
-                    <div class="lg:w-1/2 w-full">
-                        <div class="glass-card p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-2xl transform lg:rotate-3">
-                            <div class="flex justify-between items-end mb-6 md:mb-8">
+                    <div class="lg:w-1/2 w-full max-w-2xl">
+                        <div class="glass-card p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-2xl transform lg:rotate-2">
+                            <div class="flex justify-between items-end mb-8 md:mb-12">
                                 <div>
-                                    <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-1">Annual Projected</p>
-                                    <h4 class="text-2xl md:text-4xl font-mono font-bold text-white">$14,820</h4>
+                                    <p class="text-slate-500 text-xs font-black uppercase tracking-widest mb-2">Annual Projected</p>
+                                    <h4 class="text-3xl md:text-5xl font-mono font-bold text-white">$14,820</h4>
                                 </div>
-                                <div class="h-8 md:h-10 px-3 md:px-4 bg-emerald-500/10 rounded-xl flex items-center justify-center border border-emerald-500/20">
-                                    <span class="text-emerald-500 font-bold text-xs md:text-sm">4.8% Yield</span>
+                                <div class="h-10 md:h-12 px-4 md:px-6 bg-emerald-500/10 rounded-2xl flex items-center justify-center border border-emerald-500/20">
+                                    <span class="text-emerald-500 font-bold text-sm md:text-lg">4.8% Yield</span>
                                 </div>
                             </div>
-                            <div class="flex items-end gap-2 md:gap-3 h-24 md:h-32">
-                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg" style="height: 40%"></div>
-                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg" style="height: 60%"></div>
-                                <div class="flex-1 bg-emerald-500 rounded-md md:rounded-lg shadow-lg shadow-emerald-500/20" style="height: 95%"></div>
-                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg" style="height: 45%"></div>
-                                <div class="flex-1 bg-slate-800 rounded-md md:rounded-lg" style="height: 70%"></div>
+                            <div class="flex items-end gap-3 md:gap-4 h-32 md:h-48">
+                                <div class="flex-1 bg-slate-800 rounded-lg md:rounded-xl" style="height: 40%"></div>
+                                <div class="flex-1 bg-slate-800 rounded-lg md:rounded-xl" style="height: 60%"></div>
+                                <div class="flex-1 bg-emerald-500 rounded-lg md:rounded-xl shadow-lg shadow-emerald-500/20" style="height: 95%"></div>
+                                <div class="flex-1 bg-slate-800 rounded-lg md:rounded-xl" style="height: 45%"></div>
+                                <div class="flex-1 bg-slate-800 rounded-lg md:rounded-xl" style="height: 70%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="min-w-full p-8 md:p-20 flex flex-col lg:flex-row items-center gap-10 md:gap-16">
-                    <div class="lg:w-1/2 space-y-6 md:space-y-8 text-center lg:text-left">
-                        <span class="inline-block px-4 py-1 rounded-full bg-blue-500/10 text-blue-500 text-[10px] font-black uppercase tracking-widest border border-blue-500/20">AI Insights</span>
-                        <h2 class="text-3xl md:text-6xl font-bold text-white tracking-tighter leading-tight">Smart Sector <br><span class="text-blue-400">Diversification.</span></h2>
-                        <p class="text-slate-400 text-lg md:text-xl">Identify ETF and stock overlap. Our AI suggests asset classes to lower your portfolio beta and increase resilience.</p>
-                        <button class="bg-blue-600 text-white px-8 md:px-10 py-3 md:py-4 rounded-full font-black hover:scale-105 transition-all text-sm md:text-base">Analyse Sector Risk</button>
+                <div class="min-w-full p-8 md:p-24 flex flex-col lg:flex-row items-center gap-12 md:gap-20">
+                    <div class="lg:w-1/2 space-y-6 md:space-y-10 text-center lg:text-left">
+                        <span class="inline-block px-4 py-1 rounded-full bg-blue-500/10 text-blue-500 text-[10px] md:text-xs font-black uppercase tracking-widest border border-blue-500/20">AI Insights</span>
+                        <h2 class="text-4xl md:text-7xl font-bold text-white tracking-tighter leading-tight">Smart Sector <br><span class="text-blue-400">Diversification.</span></h2>
+                        <p class="text-slate-400 text-lg md:text-2xl max-w-xl">Identify ETF and stock overlap. Our AI suggests asset classes to lower your portfolio beta and increase resilience.</p>
+                        <button class="bg-blue-600 text-white px-8 md:px-12 py-4 md:py-5 rounded-full font-black hover:scale-105 transition-all text-sm md:text-lg">Analyse Sector Risk</button>
                     </div>
-                    <div class="lg:w-1/2 w-full">
-                        <div class="glass-card p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/10 shadow-2xl space-y-5 md:space-y-6">
-                            <h4 class="text-white font-bold text-base md:text-lg">Portfolio Overlap</h4>
-                            <div class="space-y-4">
+                    <div class="lg:w-1/2 w-full max-w-2xl">
+                        <div class="glass-card p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-2xl space-y-6 md:space-y-10">
+                            <h4 class="text-white font-bold text-xl md:text-2xl">Portfolio Overlap</h4>
+                            <div class="space-y-6">
                                 <div>
-                                    <div class="flex justify-between text-[10px] font-bold mb-2 text-slate-400"><span>Financials</span><span>45%</span></div>
-                                    <div class="h-2 bg-slate-800 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 45%"></div></div>
+                                    <div class="flex justify-between text-xs md:text-sm font-bold mb-3 text-slate-400"><span>Financials</span><span>45%</span></div>
+                                    <div class="h-3 bg-slate-800 rounded-full"><div class="h-full bg-emerald-500 rounded-full" style="width: 45%"></div></div>
                                 </div>
                                 <div>
-                                    <div class="flex justify-between text-[10px] font-bold mb-2 text-slate-400"><span>Technology</span><span>15%</span></div>
-                                    <div class="h-2 bg-slate-800 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width: 15%"></div></div>
+                                    <div class="flex justify-between text-xs md:text-sm font-bold mb-3 text-slate-400"><span>Technology</span><span>15%</span></div>
+                                    <div class="h-3 bg-slate-800 rounded-full"><div class="h-full bg-blue-500 rounded-full" style="width: 15%"></div></div>
                                 </div>
                             </div>
-                            <div class="mt-4 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs md:text-sm italic">
-                                "High concentration in banks. Consider adding NDQ or IVV for tech exposure."
+                            <div class="mt-6 p-6 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-300 text-sm md:text-lg italic leading-relaxed">
+                                "High concentration in Australian banks. Consider adding international tech exposure."
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-white/5">
+            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-white/5">
                 <div id="slide-progress" class="h-full bg-emerald-500 transition-all ease-linear" style="width: 0%"></div>
             </div>
         </div>
     </section>
 
-    <section id="calculators" class="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-20 border-t border-white/5">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-4 md:gap-6">
-            <div class="max-w-xl">
-                <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-3">Essential Tools</h2>
-                <p class="text-slate-500 text-base md:text-lg">Powerful, free-to-use calculators built specifically for the Australian tax and investment landscape.</p>
-            </div>
-            <a href="#all-tools" class="text-emerald-500 font-bold hover:underline text-sm md:text-base">View All Tools →</a>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            <a href="compound-interest.html" class="md:col-span-2 calculator-card glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between group">
-                <div class="flex justify-between items-start mb-12">
-                    <div class="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-2xl group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all">∑</div>
-                    <span class="text-[10px] font-black text-slate-600 uppercase tracking-widest">Most Popular</span>
-                </div>
-                <div>
-                    <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Compound Interest</h3>
-                    <p class="text-slate-500 leading-relaxed text-sm md:text-base max-w-sm">Visualise the power of time. Project your wealth growth over decades with custom contribution frequency.</p>
-                </div>
-            </a>
-
-            <a href="au-tax-calculator.html" class="calculator-card glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between group">
-                <div class="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-lg md:text-xl font-bold group-hover:bg-blue-500 group-hover:text-white transition-all mb-8">TAX</div>
-                <div>
-                    <h3 class="text-lg md:text-xl font-bold text-white mb-2">Income Tax</h3>
-                    <p class="text-slate-500 text-sm">ATO-aligned 2024/25 brackets. Calculate your net take-home pay instantly.</p>
-                </div>
-            </a>
-
-            <a href="dividend-calculator.html" class="calculator-card glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between group">
-                <div class="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-500 text-lg md:text-xl font-bold group-hover:bg-purple-500 group-hover:text-white transition-all mb-8">$</div>
-                <div>
-                    <h3 class="text-lg md:text-xl font-bold text-white mb-2">Dividend Calculator</h3>
-                    <p class="text-slate-500 text-sm">Calculate yield on cost and projected annual passive income.</p>
-                </div>
-            </a>
-
-            <a href="freedom-date.html" class="calculator-card glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between group">
-                <div class="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 text-xl group-hover:bg-amber-500 group-hover:text-slate-950 transition-all mb-8">🚀</div>
-                <div>
-                    <h3 class="text-lg md:text-xl font-bold text-white mb-2">Freedom Date</h3>
-                    <p class="text-slate-500 text-sm">Find your FIRE number and stop working earlier than you think.</p>
-                </div>
-            </a>
-
-            <a href="au-cgt-calculator.html" class="calculator-card glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between group">
-                <div class="h-12 w-12 md:h-14 md:w-14 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500 text-xl group-hover:bg-red-500 group-hover:text-white transition-all mb-8">%</div>
-                <div>
-                    <h3 class="text-lg md:text-xl font-bold text-white mb-2">CGT Calculator</h3>
-                    <p class="text-slate-500 text-sm">Australian Capital Gains Tax calculator with 12-month discount rules.</p>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <section id="learn" class="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-20 border-t border-white/5">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-12 gap-4 md:gap-6">
+    <section id="calculators" class="max-w-[1600px] mx-auto px-6 md:px-12 py-16 md:py-24 border-t border-white/5">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-6">
             <div class="max-w-2xl">
-                <span class="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 mb-4">Learn</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-3">Start With Investing Basics</h2>
-                <p class="text-slate-500 text-base md:text-lg">Short, practical guides for beginners. Learn the core ideas first, then jump straight into the right calculator.</p>
+                <h2 class="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4">Essential Tools</h2>
+                <p class="text-slate-500 text-lg md:text-2xl">Powerful, free-to-use calculators built specifically for the Australian tax and investment landscape.</p>
             </div>
-            <a href="investing-basics.html" class="text-emerald-500 font-bold hover:underline text-sm md:text-base">Open Investing Basics →</a>
+            <a href="#all-tools" class="text-emerald-500 font-bold hover:underline text-base md:text-xl">View All Tools →</a>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-            <a href="investing-basics.html" class="lg:col-span-2 calculator-card glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between group">
-                <div>
-                    <span class="inline-block px-4 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-black uppercase tracking-widest border border-blue-500/20 mb-6">Category 01</span>
-                    <h3 class="text-2xl md:text-4xl font-bold text-white tracking-tight mb-4">Investing Basics</h3>
-                    <p class="text-slate-400 text-base md:text-lg max-w-2xl leading-relaxed">Build a strong beginner foundation with six core topics: what investing is, shares vs ETFs, compound interest, dividends, risk vs return, and diversification.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+            <a href="compound-interest.html" class="lg:col-span-2 calculator-card glass-card rounded-[2.5rem] p-8 md:p-12 flex flex-col justify-between group">
+                <div class="flex justify-between items-start mb-16">
+                    <div class="h-16 w-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 text-3xl group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all">∑</div>
+                    <span class="text-xs font-black text-slate-600 uppercase tracking-widest bg-white/5 px-4 py-2 rounded-full">Most Popular</span>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-10 text-sm">
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-300">What Is Investing?</div>
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-300">Shares vs ETFs</div>
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-300">What Is Compound Interest?</div>
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-300">How Dividends Work</div>
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-300">Risk vs Return Explained</div>
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-300">What Is Diversification?</div>
+                <div>
+                    <h3 class="text-2xl md:text-4xl font-bold text-white mb-4">Compound Interest</h3>
+                    <p class="text-slate-500 leading-relaxed text-base md:text-xl max-w-md">Visualise the power of time. Project your wealth growth over decades with custom contribution frequency.</p>
                 </div>
             </a>
 
-            <div class="glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between">
+            <a href="au-tax-calculator.html" class="calculator-card glass-card rounded-[2.5rem] p-8 md:p-12 flex flex-col justify-between group">
+                <div class="h-16 w-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 text-xl font-bold group-hover:bg-blue-500 group-hover:text-white transition-all mb-12">TAX</div>
                 <div>
-                    <span class="inline-block px-4 py-1 rounded-full bg-amber-500/10 text-amber-400 text-[10px] font-black uppercase tracking-widest border border-amber-500/20 mb-6">Coming Next</span>
-                    <h3 class="text-xl md:text-2xl font-bold text-white tracking-tight mb-3">Property</h3>
-                    <p class="text-slate-500 leading-relaxed text-sm md:text-base">Keep Learn organised by adding new categories over time, like Property, Tax Basics, and Financial Independence.</p>
+                    <h3 class="text-xl md:text-2xl font-bold text-white mb-3">Income Tax</h3>
+                    <p class="text-slate-500 text-base">ATO-aligned 2024/25 brackets. Calculate net take-home pay instantly.</p>
                 </div>
-                <div class="space-y-3 mt-10">
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-400 text-sm">Rent vs Buy</div>
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-400 text-sm">Offset vs Redraw</div>
-                    <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-slate-400 text-sm">Home Deposit Basics</div>
+            </a>
+
+            <a href="dividend-calculator.html" class="calculator-card glass-card rounded-[2.5rem] p-8 md:p-12 flex flex-col justify-between group">
+                <div class="h-16 w-16 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-500 text-2xl font-bold group-hover:bg-purple-500 group-hover:text-white transition-all mb-12">$</div>
+                <div>
+                    <h3 class="text-xl md:text-2xl font-bold text-white mb-3">Dividend Calc</h3>
+                    <p class="text-slate-500 text-base">Calculate yield on cost and projected annual passive income.</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section id="learn" class="max-w-[1600px] mx-auto px-6 md:px-12 py-16 md:py-24 border-t border-white/5">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+            <div class="lg:col-span-5 space-y-6">
+                <span class="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">Learn</span>
+                <h2 class="text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight">Investing <br>Foundations</h2>
+                <p class="text-slate-500 text-lg md:text-xl leading-relaxed">Practical guides for the modern Aussie investor. Master the core mechanics of wealth creation before diving into the data.</p>
+            </div>
+
+            <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div class="glass-card rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-5 py-4 text-slate-300 flex justify-between items-center hover:bg-white/5 transition cursor-pointer">
+                            <span>Shares vs ETFs</span>
+                            <span class="text-emerald-500">→</span>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-5 py-4 text-slate-300 flex justify-between items-center hover:bg-white/5 transition cursor-pointer">
+                            <span>Compound Interest</span>
+                            <span class="text-emerald-500">→</span>
+                        </div>
+                        <div class="rounded-2xl border border-white/10 bg-slate-900/50 px-5 py-4 text-slate-300 flex justify-between items-center hover:bg-white/5 transition cursor-pointer">
+                            <span>Risk & Diversification</span>
+                            <span class="text-emerald-500">→</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="glass-card rounded-[2.5rem] p-8 md:p-10 bg-gradient-to-br from-slate-900 to-emerald-900/20">
+                    <h3 class="text-xl md:text-2xl font-bold text-white mb-4">Coming Soon: Property</h3>
+                    <p class="text-slate-400 mb-8">Master the mechanics of the Australian property market, from offset accounts to negative gearing.</p>
+                    <div class="space-y-2 opacity-50">
+                        <div class="h-12 bg-white/5 rounded-xl"></div>
+                        <div class="h-12 bg-white/5 rounded-xl"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-[#020617] py-16 md:py-20 px-6 border-t border-white/5">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 text-sm">
-            <div class="col-span-1 md:col-span-1">
-                <div class="text-white font-black text-2xl tracking-tighter mb-4 italic">FinWise</div>
-                <p class="text-slate-600">The premium standard for the modern Australian investor.</p>
+    <footer class="bg-[#020617] py-20 md:py-32 px-6 border-t border-white/5">
+        <div class="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-16 text-sm">
+            <div class="col-span-1">
+                <div class="text-white font-black text-3xl tracking-tighter mb-6 italic">FinWise</div>
+                <p class="text-slate-500 text-lg leading-relaxed">Defining the standard for the modern Australian investor. Absolute clarity for your financial future.</p>
             </div>
-            <div>
-                <h4 class="text-white font-bold mb-4 md:mb-6 uppercase tracking-widest text-[10px]">Navigation</h4>
-                <ul class="text-slate-500 space-y-3 md:space-y-4">
-                    <li><a href="#" class="hover:text-emerald-400">Dashboard</a></li>
-                    <li><a href="#calculators" class="hover:text-emerald-400">Calculators</a></li>
-                    <li><a href="learn.html" class="hover:text-emerald-400">Learn</a></li>
-                    <li><a href="about.html" class="hover:text-emerald-400">About Us</a></li>
-                </ul>
+            <div class="grid grid-cols-2 md:col-span-2 gap-8">
+                <div>
+                    <h4 class="text-white font-bold mb-8 uppercase tracking-widest text-xs">Navigation</h4>
+                    <ul class="text-slate-500 space-y-4 text-base">
+                        <li><a href="#" class="hover:text-emerald-400">Dashboard</a></li>
+                        <li><a href="#calculators" class="hover:text-emerald-400">Calculators</a></li>
+                        <li><a href="learn.html" class="hover:text-emerald-400">Learn</a></li>
+                        <li><a href="about.html" class="hover:text-emerald-400">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-8 uppercase tracking-widest text-xs">Legal</h4>
+                    <ul class="text-slate-500 space-y-4 text-base">
+                        <li><a href="#" class="hover:text-emerald-400">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-emerald-400">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-emerald-400">Security</a></li>
+                    </ul>
+                </div>
             </div>
-            <div>
-                <h4 class="text-white font-bold mb-4 md:mb-6 uppercase tracking-widest text-[10px]">Legal</h4>
-                <ul class="text-slate-500 space-y-3 md:space-y-4">
-                    <li><a href="#" class="hover:text-emerald-400">Privacy</a></li>
-                    <li><a href="#" class="hover:text-emerald-400">Terms</a></li>
-                </ul>
-            </div>
-            <div class="text-slate-700 text-xs md:text-sm">
-                <p>© 2026 FinWise. All rights reserved.</p>
+            <div class="text-slate-700 text-sm flex flex-col justify-end">
+                <p>© 2026 FinWise Wealth. Registered in Australia.</p>
             </div>
         </div>
     </footer>
