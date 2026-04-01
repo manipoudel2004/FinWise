@@ -232,7 +232,6 @@
         "#10b981", "#06b6d4", "#a78bfa", "#f59e0b", "#84cc16",
         "#ef4444", "#22d3ee", "#6366f1", "#ec4899", "#14b8a6", "#f97316"
       ];
-      const GOOGLE_LOOKUP_ENDPOINT = localStorage.getItem("finwise_google_api_url") || "";
       const sectorAliases = {
         "Technology": "Information Technology",
         "Information Technology Services": "Information Technology",
@@ -282,6 +281,7 @@
 
       async function autoFillHoldingFromGoogleApi() {
         const symbol = symbolInput.value.trim().toUpperCase();
+        const googleLookupEndpoint = localStorage.getItem("finwise_google_api_url") || "";
 
         if (!symbol) {
           symbolLookupStatus.textContent = "Enter a symbol to auto-fill sector and dividend info.";
@@ -289,7 +289,7 @@
           return;
         }
 
-        if (!GOOGLE_LOOKUP_ENDPOINT) {
+        if (!googleLookupEndpoint) {
           sectorInput.value = getSector(symbol, sectorInput.value);
           symbolLookupStatus.textContent = "Auto sector fallback active. Set localStorage.finwise_google_api_url to enable Google API lookup.";
           symbolLookupStatus.className = "mt-1 text-xs text-amber-300";
@@ -303,7 +303,7 @@
         symbolLookupStatus.className = "mt-1 text-xs text-cyan-300";
 
         try {
-          const response = await fetch(`${GOOGLE_LOOKUP_ENDPOINT}?symbol=${encodeURIComponent(symbol)}`, {
+          const response = await fetch(`${googleLookupEndpoint}?symbol=${encodeURIComponent(symbol)}`, {
             signal: lookupController.signal
           });
           if (!response.ok) throw new Error("Lookup failed.");
