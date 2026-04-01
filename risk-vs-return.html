@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Risk vs Return Explained | FinWise</title>
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%23020617'/><path d='M20 44V20H44M20 32H38' stroke='%2310B981' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/><circle cx='44' cy='20' r='4' fill='white'/></svg>">
+    <style>
+        .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .calculator-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        @media (min-width: 768px) {
+            .calculator-card:hover { transform: translateY(-5px); border-color: rgba(16, 185, 129, 0.4); background: rgba(30, 41, 59, 0.4); }
+        }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+        input, select { font-size: 16px !important; }
+        .prose-finwise p { color: rgb(148 163 184); line-height: 1.9; margin-bottom: 1rem; }
+        .prose-finwise h2 { color: white; font-size: 1.5rem; line-height: 2rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; }
+        .prose-finwise ul { color: rgb(148 163 184); margin: 0.5rem 0 1.25rem 1.25rem; }
+        .prose-finwise li { margin-bottom: 0.65rem; }
+    </style>
+</head>
+<body class="bg-[#020617] text-slate-200 font-sans antialiased overflow-x-hidden">
+    <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <svg class="h-8 w-8 shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="64" height="64" rx="16" fill="#10B981" fill-opacity="0.15" />
+                <path d="M20 44V20H44M20 32H38" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="44" cy="20" r="4" fill="white" />
+            </svg>
+            <span class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">FinWise</span>
+        </a>
+        <div class="hidden md:flex space-x-8 text-sm font-bold text-slate-400">
+            <a href="index.html" class="hover:text-white transition">Home</a>
+            <a href="index.html#calculators" class="text-slate-400 hover:text-white transition">Calculators</a>
+            <a href="learn.html" class="text-white">Learn</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="login.html" class="text-sm font-medium text-slate-400 hover:text-white transition">Log in</a>
+            <a href="signup.html" class="bg-white text-slate-950 px-5 py-2 md:px-6 md:py-2.5 rounded-full text-sm font-bold hover:bg-emerald-400 transition shadow-xl">Get Started</a>
+        </div>
+    </nav>
+
+    <header class="px-6 md:px-8 pt-12 md:pt-16 pb-14 md:pb-20 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#020617] to-[#020617]">
+        <div class="max-w-5xl mx-auto">
+            <div class="mb-6 text-sm text-slate-500 font-medium">
+                <a href="index.html" class="hover:text-slate-300">Home</a>
+                <span class="mx-2">/</span>
+                <a href="learn.html" class="hover:text-slate-300">Learn</a>
+                <span class="mx-2">/</span>
+                <span class="text-slate-300">Risk vs Return Explained</span>
+            </div>
+            <span class="inline-block px-4 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 mb-6">FinWise Learn</span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tighter text-white leading-tight max-w-4xl">Risk vs Return Explained</h1>
+            <p class="text-slate-400 text-base md:text-xl mt-6 max-w-3xl leading-relaxed font-medium">Understand why higher potential returns usually come with greater uncertainty and a higher chance of loss.</p>
+        </div>
+    </header>
+
+    
+<section class="max-w-5xl mx-auto px-6 md:px-8 py-12 md:py-20">
+    <div class="glass-card rounded-3xl md:rounded-[2.5rem] p-8 md:p-10 prose-finwise">
+        <p>In investing, risk and return are linked. Assets with higher potential returns usually come with more uncertainty, bigger price swings, or a greater chance that the outcome will disappoint.</p>
+
+        <h2>What risk means in simple terms</h2>
+        <p>Risk can mean different things. For beginners, it often shows up as price volatility, the chance of temporary losses, or the possibility of not reaching a financial goal.</p>
+
+        <h2>Why this matters</h2>
+        <p>An investment is not automatically good just because it has a high possible return. If the ups and downs are too severe for the investor to stick with it, the strategy may fail in practice even if it looked good on paper.</p>
+
+        <h2>Simple example</h2>
+        <p>Two investments may have different expected returns. The one with a higher expected return may also have deeper falls along the way. If an investor panics and sells during a drop, the actual result may be worse than expected.</p>
+
+        <h2>Common mistakes</h2>
+        <ul>
+            <li>Looking only at the return and ignoring the path required to get there.</li>
+            <li>Assuming short-term volatility always means a bad investment.</li>
+            <li>Taking more risk than you can handle emotionally.</li>
+        </ul>
+
+        <h2>Key takeaway</h2>
+        <p>The best investment is not always the one with the highest possible return. It is often the one that matches your goals, timeframe, and ability to stay invested through normal market ups and downs.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 mt-8">
+        <a href="diversification.html" class="glass-card rounded-3xl p-8 calculator-card">
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3">Read next</p>
+            <h3 class="text-2xl font-bold text-white mb-2">What Is Diversification?</h3>
+            <p class="text-slate-500 text-sm">Learn one of the main ways investors try to manage risk.</p>
+        </a>
+        <a href="investing-basics.html" class="glass-card rounded-3xl p-8 calculator-card">
+            <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-3">Back to category</p>
+            <h3 class="text-2xl font-bold text-white mb-2">Investing Basics</h3>
+            <p class="text-slate-500 text-sm">Return to the full list of beginner topics.</p>
+        </a>
+    </div>
+
+    <div class="mt-8 rounded-3xl border border-amber-500/20 bg-amber-500/10 px-6 py-5 text-sm text-slate-300">
+        General information only. This content is educational and does not consider your personal goals, financial situation, or needs.
+    </div>
+</section>
+
+
+    <footer class="bg-[#020617] py-16 md:py-20 px-6 border-t border-white/5 mt-12">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 text-sm">
+            <div class="col-span-1 md:col-span-1">
+                <div class="text-white font-black text-2xl tracking-tighter mb-4 italic">FinWise</div>
+                <p class="text-slate-600">General information only. FinWise does not provide personal financial advice.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 md:mb-6 uppercase tracking-widest text-[10px]">Navigation</h4>
+                <ul class="text-slate-500 space-y-3 md:space-y-4">
+                    <li><a href="index.html" class="hover:text-emerald-400">Home</a></li>
+                    <li><a href="index.html#calculators" class="hover:text-emerald-400">Calculators</a></li>
+                    <li><a href="learn.html" class="hover:text-emerald-400">Learn</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 md:mb-6 uppercase tracking-widest text-[10px]">First Category</h4>
+                <ul class="text-slate-500 space-y-3 md:space-y-4">
+                    <li><a href="investing-basics.html" class="hover:text-emerald-400">Investing Basics</a></li>
+                    <li><a href="shares-vs-etfs.html" class="hover:text-emerald-400">Shares vs ETFs</a></li>
+                    <li><a href="compound-interest-guide.html" class="hover:text-emerald-400">Compound Interest</a></li>
+                </ul>
+            </div>
+            <div class="text-slate-700 text-xs md:text-sm">
+                <p>© 2026 FinWise. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
