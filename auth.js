@@ -174,5 +174,14 @@
     logout: function () {
       localStorage.removeItem(SESSION_KEY);
     },
+
+    requireAuth: function (redirectTo) {
+      const user = this.getCurrentUser();
+      if (!user) {
+        window.location.href = redirectTo || "login.html";
+        return null;
+      }
+      return user;
+    },
   };
 })();
