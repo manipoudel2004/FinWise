@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Dashboard | FinWise</title>
+</head>
+<body class="bg-[#020617] text-slate-200 min-h-screen font-sans antialiased">
+  <nav class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+    <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">FinWise</a>
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 hover:text-white hover:border-slate-500 transition">Home</a>
+      <button id="logoutBtn" class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 transition">Log out</button>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-6 pb-16">
+    <section class="rounded-3xl border border-slate-800 bg-slate-900/40 p-8 mb-8">
+      <p class="text-xs uppercase tracking-[0.2em] text-emerald-400 font-semibold mb-2">Signed in</p>
+      <h1 id="welcomeTitle" class="text-4xl font-black text-white mb-3">Welcome back</h1>
+      <p class="text-slate-400">This dashboard is only visible for authenticated FinWise users.</p>
+    </section>
+
+    <section class="grid md:grid-cols-3 gap-5 mb-8">
+      <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+        <p class="text-slate-400 text-sm mb-2">Profile Email</p>
+        <p id="userEmail" class="text-white text-lg font-semibold">-</p>
+      </article>
+      <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+        <p class="text-slate-400 text-sm mb-2">Member Since</p>
+        <p id="memberSince" class="text-white text-lg font-semibold">-</p>
+      </article>
+      <article class="rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+        <p class="text-slate-400 text-sm mb-2">Auth Provider</p>
+        <p id="provider" class="text-white text-lg font-semibold">-</p>
+      </article>
+    </section>
+
+    <section class="rounded-3xl border border-slate-800 bg-slate-900/40 p-8">
+      <h2 class="text-2xl font-bold text-white mb-5">Quick actions</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a href="compound-interest.html" class="rounded-xl border border-slate-700 p-4 hover:border-emerald-400/60 transition">Compound Interest</a>
+        <a href="dividend-calculator.html" class="rounded-xl border border-slate-700 p-4 hover:border-emerald-400/60 transition">Dividend Calculator</a>
+        <a href="goal-tracker.html" class="rounded-xl border border-slate-700 p-4 hover:border-emerald-400/60 transition">Goal Tracker</a>
+        <a href="learn.html" class="rounded-xl border border-slate-700 p-4 hover:border-emerald-400/60 transition">Learn Hub</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const user = window.finwiseAuth.requireAuth("login.html");
+      if (!user) return;
+
+      const fullName = [user.firstName, user.lastName].filter(Boolean).join(" ").trim();
+      document.getElementById("welcomeTitle").textContent = fullName ? `Welcome back, ${fullName}` : "Welcome back";
+      document.getElementById("userEmail").textContent = user.email || "-";
+      document.getElementById("provider").textContent = (user.provider || "password").toUpperCase();
+      document.getElementById("memberSince").textContent = user.createdAt
+        ? new Date(user.createdAt).toLocaleDateString("en-AU", { day: "2-digit", month: "short", year: "numeric" })
+        : "-";
+
+      document.getElementById("logoutBtn").addEventListener("click", function () {
+        window.finwiseAuth.logout();
+        window.location.href = "login.html";
+      });
+    });
+  </script>
+</body>
+</html>

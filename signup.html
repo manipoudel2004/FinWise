@@ -83,14 +83,14 @@
           return;
         }
 
-        window.location.href = "index.html";
+        window.location.href = "dashboard.html";
       });
 
       window.finwiseAuth.initGoogleButton("googleSignup", {
         clientId: GOOGLE_CLIENT_ID,
         text: "signup_with",
         onSuccess: function () {
-          window.location.href = "index.html";
+          window.location.href = "dashboard.html";
         },
         onError: function () {
           message.textContent = "Google sign-up failed. Please try email sign-up.";
