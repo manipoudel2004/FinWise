@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Retirement - FinWise</title>
+    <style>
+        input, select { font-size: 16px !important; }
+        .logo-svg-icon { height: 32px; width: 32px; }
+        @media (max-width: 640px) { .logo-svg-icon { height: 28px; width: 28px; } }
+        /* Custom scrollbar for a cleaner dark look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-[#020617] text-slate-200 font-sans antialiased">
+
+    <nav class="flex justify-between items-center px-6 md:px-8 py-6 max-w-7xl mx-auto">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <svg class="logo-svg-icon shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="64" height="64" rx="16" fill="url(#nav_icon_grad)" fill-opacity="0.15"/>
+                <path d="M20 44V20H44M20 32H38" stroke="url(#nav_icon_grad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="44" cy="20" r="4" fill="white" />
+                <defs>
+                    <linearGradient id="nav_icon_grad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#34D399"/>
+                        <stop offset="1" stop-color="#06B6D4"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span class="text-xl md:text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent tracking-tight">
+                FinWise
+            </span>
+        </a>
+        <a href="index.html" class="text-sm font-medium text-slate-400 hover:text-white transition">← Back</a>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-8 md:py-12">
+        <div class="mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Retirement Forecaster</h1>
+            <p class="text-slate-400 max-w-2xl">How long could your super last? This estimate factors in inflation and the Australian Age Pension.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-slate-900/30 border border-slate-800 rounded-[2rem] p-6 md:p-8 space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Current Age</label>
+                        <input type="number" id="age" value="60" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Current Super Balance</label>
+                        <input type="number" id="balance" value="450000" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-emerald-400 outline-none">
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Ideal Annual Income</label>
+                        <input type="number" id="income" value="65000" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase text-slate-500 mb-2">Investment Strategy</label>
+                        <select id="strategy" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-white outline-none">
+                            <option value="0.04">Conservative (4%)</option>
+                            <option value="0.06" selected>Balanced (6%)</option>
+                            <option value="0.08">Growth (8%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-xl">
+                    <p class="text-[11px] text-slate-500 leading-relaxed">
+                        <span class="text-emerald-400 font-bold">Important:</span> This calculator uses a set of assumptions (2.5% inflation, Age Pension starting at 67). It should not be relied upon for financial decisions.
+                    </p>
+                </div>
+
+                <button onclick="calculate()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-5 rounded-2xl font-bold active:scale-[0.98] transition-all text-white">RUN FORECAST</button>
+            </div>
+
+            <div class="bg-emerald-500/5 border border-emerald-500/20 rounded-[2.5rem] p-10 text-center flex flex-col justify-center">
+                <span class="text-xs font-bold uppercase text-slate-500 mb-2">Funds Last Until Age</span>
+                <div id="resultAge" class="text-6xl md:text-8xl font-black text-white mb-4">82</div>
+                
+                <div class="w-full bg-slate-800 h-1.5 rounded-full mb-8 overflow-hidden">
+                    <div id="progressBar" class="bg-gradient-to-r from-emerald-400 to-cyan-500 h-full transition-all duration-700" style="width: 60%"></div>
+                </div>
+
+                <div class="space-y-4 text-left border-t border-slate-800 pt-8">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-500 uppercase">Duration</p>
+                        <p id="totalYears" class="text-white font-bold">22 Years</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-500 uppercase">Pension Status</p>
+                        <p id="pensionStatus" class="text-emerald-400 font-bold">Eligibility at Age 67</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function calculate() {
+            const currentAge = parseInt(document.getElementById('age').value) || 0;
+            let balance = parseFloat(document.getElementById('balance').value) || 0;
+            const targetIncome = parseFloat(document.getElementById('income').value) || 0;
+            const rate = parseFloat(document.getElementById('strategy').value);
+
+            let age = currentAge;
+            const inflation = 0.025; // Standard assumption
+            const pensionAge = 67;
+            const maxPension = 28000; // Approx single rate
+
+            while (balance > 0 && age < 110) {
+                // Adjust income need for inflation
+                let yearlyNeed = targetIncome * Math.pow(1 + inflation, age - currentAge);
+                
+                // Age Pension calculation (Basic Asset Test simulation)
+                let pension = 0;
+                if (age >= pensionAge) {
+                    if (balance < 300000) pension = maxPension;
+                    else if (balance < 600000) pension = maxPension * 0.5;
+                }
+
+                // Drawdown logic
+                balance = (balance - (yearlyNeed - pension)) * (1 + rate);
+                
+                if (balance > 0) {
+                    age++;
+                } else {
+                    break;
+                }
+            }
+
+            // Update UI
+            const yearsLasted = age - currentAge;
+            document.getElementById('resultAge').innerText = age >= 110 ? "100+" : age;
+            document.getElementById('totalYears').innerText = `${yearsLasted} Years of Funding`;
+            
+            // Progress Bar Logic (visualizing life expectancy)
+            const progress = Math.min(((age - 60) / (95 - 60)) * 100, 100);
+            document.getElementById('progressBar').style.width = Math.max(progress, 5) + "%";
+            
+            // Color feedback
+            if (age < 80) {
+                document.getElementById('resultAge').classList.replace('text-white', 'text-amber-500');
+            } else {
+                document.getElementById('resultAge').classList.add('text-white');
+                document.getElementById('resultAge').classList.remove('text-amber-500');
+            }
+        }
+        
+        // Initial run
+        calculate();
+    </script>
+</body>
+</html>
