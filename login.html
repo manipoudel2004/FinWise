@@ -97,7 +97,7 @@
         const form = document.getElementById("loginForm");
         const message = document.getElementById("message");
 
-        form.addEventListener("submit", function (e) {
+        form.addEventListener("submit", async function (e) {
           e.preventDefault();
 
           const email = document.getElementById("email").value.trim();
@@ -108,7 +108,7 @@
             return;
           }
 
-          const result = window.finwiseAuth.login(email, password);
+          const result = await window.finwiseAuth.login(email, password);
           if (!result.success) {
             message.textContent = result.message;
             return;
