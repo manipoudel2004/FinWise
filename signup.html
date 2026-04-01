@@ -1,59 +1,102 @@
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <title>Sign Up | FinWise</title>
+  <style>
+    input { font-size: 16px !important; }
+    .glass-panel {
+      background: rgba(30, 41, 59, 0.3);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-[#020617] text-slate-200 font-sans antialiased min-h-screen flex flex-col">
+  <main class="flex-grow flex items-center justify-center px-6 py-12">
+    <div class="w-full max-w-lg glass-panel rounded-[2rem] p-8 md:p-10 shadow-2xl">
+      <h1 class="text-3xl font-black text-white mb-2 text-center">Create your FinWise account</h1>
+      <p class="text-slate-400 text-sm text-center mb-8">Save your profile and access tools from any sign-in session.</p>
 
-    const form = document.querySelector("form");
+      <form id="signupForm" class="space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <input id="firstName" type="text" placeholder="First name" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/20" />
+          <input id="lastName" type="text" placeholder="Last name" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/20" />
+        </div>
+        <input id="email" type="email" placeholder="name@company.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/20" />
+        <input id="password" type="password" placeholder="Create password (min 6 chars)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/20" />
 
-    if (!form) return;
+        <label class="flex items-start gap-2 text-sm text-slate-400">
+          <input id="terms" type="checkbox" class="mt-1" />
+          <span>I agree to the Terms and Privacy Policy.</span>
+        </label>
 
-    form.addEventListener("submit", function (e) {
+        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-[#020617] font-black py-3 rounded-xl uppercase tracking-widest text-xs">Sign Up</button>
+      </form>
+
+      <div class="my-6 flex items-center gap-3 text-slate-600 text-xs uppercase tracking-wider">
+        <span class="h-px bg-slate-800 flex-1"></span>
+        or
+        <span class="h-px bg-slate-800 flex-1"></span>
+      </div>
+
+      <div id="googleSignup" class="flex justify-center"></div>
+
+      <p id="message" class="text-sm mt-4 text-center text-slate-400"></p>
+      <p class="text-center text-slate-500 text-sm mt-8">Already have an account? <a href="login.html" class="text-emerald-400">Sign in</a></p>
+    </div>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    const GOOGLE_CLIENT_ID = ""; // Add your Google OAuth client ID here.
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("signupForm");
+      const message = document.getElementById("message");
+
+      form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const inputs = form.querySelectorAll("input");
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const terms = document.getElementById("terms").checked;
 
-        const firstName = inputs[0]?.value.trim();
-        const lastName = inputs[1]?.value.trim();
-        const email = inputs[2]?.value.trim();
-        const password = inputs[3]?.value.trim();
-        const terms = document.getElementById("terms")?.checked;
-
-        // basic validation
         if (!firstName || !lastName || !email || !password) {
-            alert("Please fill all fields");
-            return;
-        }
-
-        if (!email.includes("@")) {
-            alert("Please enter a valid email");
-            return;
-        }
-
-        if (password.length < 6) {
-            alert("Password must be at least 6 characters");
-            return;
+          message.textContent = "Please fill in all fields.";
+          return;
         }
 
         if (!terms) {
-            alert("You must accept the Terms");
-            return;
+          message.textContent = "Please accept the terms to continue.";
+          return;
         }
 
-        // check if signup function exists
-        if (typeof signup !== "function") {
-            console.error("signup() function is missing");
-            alert("Signup system not loaded");
-            return;
+        const result = window.finwiseAuth.signup(firstName, lastName, email, password);
+        if (!result.success) {
+          message.textContent = result.message;
+          return;
         }
 
-        const result = signup(firstName, lastName, email, password);
+        window.location.href = "index.html";
+      });
 
-        if (!result || !result.success) {
-            alert(result?.message || "Signup failed");
-            return;
-        }
-
-        alert("Account created successfully!");
-        window.location.href = "dashboard.html";
+      window.finwiseAuth.initGoogleButton("googleSignup", {
+        clientId: GOOGLE_CLIENT_ID,
+        text: "signup_with",
+        onSuccess: function () {
+          window.location.href = "index.html";
+        },
+        onError: function () {
+          message.textContent = "Google sign-up failed. Please try email sign-up.";
+        },
+      });
     });
-
-});
-</script>
+  </script>
+</body>
+</html>
