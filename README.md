@@ -52,3 +52,12 @@ npx wrangler pages dev .
 ## Important auth note
 
 Current auth in `auth.js` uses `localStorage` in the browser. That works on Cloudflare Pages, but user accounts are per-browser/per-device unless you later add a real backend (e.g., Cloudflare Workers + D1/KV/R2).
+
+## CI/CD troubleshooting
+
+If your deploy logs stop right after the Wrangler banner (for example after `⛅️ wrangler ...`), the two most common causes are:
+
+1. **Missing Cloudflare credentials in CI** (`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`).
+2. **A future `compatibility_date`** in `wrangler.toml` relative to the runner timezone/date.
+
+This repo pins `compatibility_date` to `2025-12-01` to avoid timezone-related "future date" failures in automated deploy environments.
