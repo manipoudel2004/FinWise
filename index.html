@@ -70,14 +70,14 @@
         <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-400">
             <a href="#" class="hover:text-emerald-400 transition">Features</a>
             <a href="#calculators" class="hover:text-emerald-400 transition">Calculators</a>
-            <a href="https://www.instagram.com/ram_subedi10/?hl=en" target="_blank" class="hover:text-emerald-400 transition">Learn</a>
+            <a href="#" class="hover:text-emerald-400 transition">Learn</a>
         </div>
 
         <div class="space-x-3 md:space-x-4 flex items-center">
-            <button class="text-xs md:text-sm font-medium text-slate-400 hover:text-white transition">Log in</button>
-            <button class="bg-emerald-600 hover:bg-emerald-500 px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-bold text-white transition shadow-lg shadow-emerald-900/20">
+            <a href="login.html" class="text-xs md:text-sm font-medium text-slate-400 hover:text-white transition cursor-pointer">Log in</a>
+            <a href="signup.html" class="bg-emerald-600 hover:bg-emerald-500 px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-bold text-white transition shadow-lg shadow-emerald-900/20">
                 Sign up
-            </button>
+            </a>
         </div>
     </nav>
 
@@ -90,10 +90,10 @@
         </p>
         <div class="relative max-w-2xl mx-auto">
             <input type="text" placeholder="Ask about investing..."
-                class="w-full bg-slate-900/50 border border-slate-800 rounded-2xl md:rounded-full py-4 md:py-5 px-6 md:px-8 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-white placeholder-slate-500 text-base">
-            <button class="w-full mt-4 md:mt-0 md:absolute md:right-2 md:top-2 md:w-auto bg-emerald-500 text-slate-950 px-8 py-3 rounded-xl md:rounded-full font-bold hover:bg-emerald-400 transition shadow-lg text-sm">
+                class="w-full bg-slate-950 border border-slate-800 rounded-2xl md:rounded-full py-4 md:py-5 px-6 md:px-8 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 text-white placeholder-slate-500 text-base">
+            <a href="signup.html" class="w-full mt-4 md:mt-0 md:absolute md:right-2 md:top-2 md:w-auto bg-emerald-500 text-slate-950 px-8 py-3 rounded-xl md:rounded-full font-bold hover:bg-emerald-400 transition shadow-lg text-sm flex items-center justify-center">
                 GET STARTED →
-            </button>
+            </a>
         </div>
     </header>
 
@@ -121,31 +121,34 @@
     <section id="calculators" class="max-w-7xl mx-auto px-6 md:px-8 pt-16 md:pt-20 pb-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <a href="compound-interest.html" class="group block h-full active:scale-[0.98] transition-transform">
-                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-emerald-500/50 transition-all duration-300 h-full">
+                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-emerald-500/50 transition-all duration-300 h-full text-left">
                     <div class="h-10 w-10 bg-emerald-500/10 rounded-lg mb-4 flex items-center justify-center text-emerald-500 font-bold group-hover:bg-emerald-500 group-hover:text-white transition-colors">∑</div>
                     <h3 class="text-white font-bold mb-2">Compound</h3>
                     <p class="text-slate-500 text-xs leading-relaxed">Visualise long-term wealth growth over time.</p>
                 </div>
             </a>
-            <a href="au-tax-calculator.html" class="group block h-full active:scale-[0.98] transition-transform">
-                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-blue-500/50 transition-all duration-300 h-full">
+            
+            <a href="#" class="group block h-full active:scale-[0.98] transition-transform opacity-60">
+                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-blue-500/50 transition-all duration-300 h-full text-left">
                     <div class="h-10 w-10 bg-blue-500/10 rounded-lg mb-4 flex items-center justify-center text-blue-500 font-bold group-hover:bg-blue-500 group-hover:text-white transition-colors">AU</div>
-                    <h3 class="text-white font-bold mb-2">Income Tax Estimator</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed">Calculate your net take-home pay with current ATO rates.</p>
+                    <h3 class="text-white font-bold mb-2">Tax Estimator</h3>
+                    <p class="text-slate-500 text-xs leading-relaxed">Calculate your net take-home pay with ATO rates.</p>
                 </div>
             </a>
-            <a href="dividend-calculator.html" class="group block h-full active:scale-[0.98] transition-transform">
-                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-emerald-400/50 transition-all duration-300 h-full">
+
+            <a href="#" class="group block h-full active:scale-[0.98] transition-transform opacity-60">
+                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-emerald-400/50 transition-all duration-300 h-full text-left">
                     <div class="h-10 w-10 bg-emerald-400/10 rounded-lg mb-4 flex items-center justify-center text-emerald-400 font-bold group-hover:bg-emerald-400 group-hover:text-white transition-colors">$</div>
                     <h3 class="text-white font-bold mb-2">Dividends</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed">Project your passive income and yield on cost.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed">Project passive income and yield on cost.</p>
                 </div>
             </a>
-            <a href="au-cgt-calculator.html" class="group block h-full active:scale-[0.98] transition-transform">
-                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-orange-500/50 transition-all duration-300 h-full">
+
+            <a href="#" class="group block h-full active:scale-[0.98] transition-transform opacity-60">
+                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-orange-500/50 transition-all duration-300 h-full text-left">
                     <div class="h-10 w-10 bg-orange-500/10 rounded-lg mb-4 flex items-center justify-center text-orange-500 font-bold group-hover:bg-orange-500 group-hover:text-white transition-colors">Tax</div>
                     <h3 class="text-white font-bold mb-2">CGT Estimator</h3>
-                    <p class="text-slate-500 text-xs leading-relaxed">Calculate capital gains with 50% discount and loss offsets.</p>
+                    <p class="text-slate-500 text-xs leading-relaxed">Calculate capital gains with discounts.</p>
                 </div>
             </a>
         </div>
@@ -157,24 +160,25 @@
             <div class="h-px bg-slate-800 flex-grow"></div>
         </div>
         
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            <a href="freedom-date.html" class="group block h-full active:scale-[0.98] transition-transform">
-                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-purple-500/50 transition-all duration-300 h-full">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <a href="#" class="group block h-full active:scale-[0.98] transition-transform opacity-60">
+                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-purple-500/50 transition-all duration-300 h-full text-left">
                     <div class="h-10 w-10 bg-purple-500/10 rounded-lg mb-4 flex items-center justify-center text-purple-500 font-bold group-hover:bg-purple-500 group-hover:text-white transition-colors">🚀</div>
                     <h3 class="text-white font-bold mb-2">Freedom Date</h3>
                     <p class="text-slate-500 text-xs leading-relaxed">Calculate exactly when you can stop working.</p>
                 </div>
             </a>
             
-            <a href="savings-goal.html" class="group block h-full active:scale-[0.98] transition-transform">
-                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-pink-500/50 transition-all duration-300 h-full">
+            <a href="#" class="group block h-full active:scale-[0.98] transition-transform opacity-60">
+                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-pink-500/50 transition-all duration-300 h-full text-left">
                     <div class="h-10 w-10 bg-pink-500/10 rounded-lg mb-4 flex items-center justify-center text-pink-500 font-bold group-hover:bg-pink-500 group-hover:text-white transition-colors">🎯</div>
                     <h3 class="text-white font-bold mb-2">Goal Tracker</h3>
                     <p class="text-slate-500 text-xs leading-relaxed">Visualise your journey toward a home deposit.</p>
                 </div>
             </a>
-            <a href="fire-calc.html" class="group block h-full active:scale-[0.98] transition-transform">
-                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-cyan-500/50 transition-all duration-300 h-full">
+
+            <a href="fire.html" class="group block h-full active:scale-[0.98] transition-transform">
+                <div class="bg-slate-900/40 p-8 rounded-[2rem] border border-slate-800 group-hover:border-cyan-500/50 transition-all duration-300 h-full text-left">
                     <div class="h-10 w-10 bg-cyan-500/10 rounded-lg mb-4 flex items-center justify-center text-cyan-500 font-bold group-hover:bg-cyan-500 group-hover:text-white transition-colors">🔥</div>
                     <h3 class="text-white font-bold mb-2">FIRE Calc</h3>
                     <p class="text-slate-500 text-xs leading-relaxed">Specialised metrics for the FIRE movement.</p>
