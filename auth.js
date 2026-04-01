@@ -1,18 +1,17 @@
 (function () {
-  const SESSION_KEY = "finwise_session_v2";
-  const USERS_KEY = "finwise_users_v1";
+  const SESSION_KEY = "finwise_session_v3";
 
-  function normalizeEmail(email) {
-    return (email || "").trim().toLowerCase();
-  }
-
-  function normalizeUsername(username) {
-    return (username || "").trim().toLowerCase();
+  function normalizeIdentifier(value) {
+    return (value || "").trim().toLowerCase();
   }
 
   function storeSessionUser(user) {
     localStorage.setItem(SESSION_KEY, JSON.stringify(user));
     return user;
+  }
+
+  function clearSessionUser() {
+    localStorage.removeItem(SESSION_KEY);
   }
 
   function getStoredSessionUser() {
@@ -23,92 +22,79 @@
     }
   }
 
-  function loadUsers() {
+  async function api(path, options) {
+    const response = await fetch(path, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        ...(options?.headers || {}),
+      },
+      ...options,
+    });
+
+    let data = null;
     try {
-      return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+      data = await response.json();
     } catch {
-      return [];
+      data = { success: false, message: "Unexpected server response." };
     }
-  }
 
-  function saveUsers(users) {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  }
+    if (!response.ok) {
+      return {
+        success: false,
+        status: response.status,
+        message: data?.message || "Request failed.",
+      };
+    }
 
-  function mapToSessionUser(user) {
-    return {
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      username: user.username,
-      name: `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email,
-    };
+    return data;
   }
 
   async function signup(firstName, lastName, email, password) {
-    const normalizedEmail = normalizeEmail(email);
-    const users = loadUsers();
+    const result = await api("/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        firstName: (firstName || "").trim(),
+        lastName: (lastName || "").trim(),
+        email: normalizeIdentifier(email),
+        password: password || "",
+      }),
+    });
 
-    if (users.some((user) => user.email === normalizedEmail)) {
-      return { success: false, message: "An account with that email already exists." };
+    if (result.success && result.user) {
+      storeSessionUser(result.user);
     }
 
-    const username = normalizedEmail.split("@")[0];
-    const user = {
-      id: Date.now(),
-      firstName: (firstName || "").trim(),
-      lastName: (lastName || "").trim(),
-      email: normalizedEmail,
-      username,
-      password: password || "",
-    };
-
-    users.push(user);
-    saveUsers(users);
-
-    const sessionUser = mapToSessionUser(user);
-    storeSessionUser(sessionUser);
-    return { success: true, user: sessionUser };
+    return result;
   }
 
   async function login(identifier, password) {
-    const key = normalizeUsername(identifier);
-    const users = loadUsers();
-    const user = users.find((candidate) => candidate.email === key || candidate.username === key);
+    const result = await api("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        identifier: normalizeIdentifier(identifier),
+        password: password || "",
+      }),
+    });
 
-    if (!user || user.password !== (password || "")) {
-      return { success: false, message: "Invalid credentials." };
+    if (result.success && result.user) {
+      storeSessionUser(result.user);
     }
 
-    const sessionUser = mapToSessionUser(user);
-    storeSessionUser(sessionUser);
-    return { success: true, user: sessionUser };
+    return result;
   }
 
   async function upsertGoogleUser(profile) {
-    const email = normalizeEmail(profile?.email);
-    if (!email) return { success: false, message: "Missing Google account email." };
+    const result = await api("/api/auth/google", {
+      method: "POST",
+      body: JSON.stringify(profile || {}),
+    });
 
-    const users = loadUsers();
-    let user = users.find((candidate) => candidate.email === email);
-
-    if (!user) {
-      user = {
-        id: Date.now(),
-        firstName: (profile?.given_name || "").trim(),
-        lastName: (profile?.family_name || "").trim(),
-        email,
-        username: email.split("@")[0],
-        password: "",
-      };
-      users.push(user);
-      saveUsers(users);
+    if (result.success && result.user) {
+      storeSessionUser(result.user);
     }
 
-    const sessionUser = mapToSessionUser(user);
-    storeSessionUser(sessionUser);
-    return { success: true, user: sessionUser };
+    return result;
   }
 
   function decodeJwtPayload(token) {
@@ -116,8 +102,7 @@
     if (!part) return null;
     const base64 = part.replace(/-/g, "+").replace(/_/g, "/");
     const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
-    const json = atob(padded);
-    return JSON.parse(json);
+    return JSON.parse(atob(padded));
   }
 
   async function handleGoogleCredentialResponse(response, onSuccess, onError) {
@@ -158,6 +143,15 @@
     });
   }
 
+  async function refreshSession() {
+    const result = await api("/api/auth/me", { method: "GET" });
+    if (!result.success || !result.user) {
+      clearSessionUser();
+      return null;
+    }
+    return storeSessionUser(result.user);
+  }
+
   window.finwiseAuth = {
     signup,
     login,
@@ -165,23 +159,29 @@
     getCurrentUser: function () {
       return getStoredSessionUser();
     },
-    refreshSession: async function () {
-      return getStoredSessionUser();
-    },
+    refreshSession,
     logout: function () {
-      localStorage.removeItem(SESSION_KEY);
+      clearSessionUser();
+      fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(function () {
+        return null;
+      });
     },
 
     requireAuth: function (redirectTo) {
       const user = this.getCurrentUser();
-      if (!user) {
-        window.location.href = redirectTo || "login.html";
-        return null;
+      if (user) {
+        refreshSession().catch(function () {
+          return null;
+        });
+        return user;
       }
-      return user;
-    },
-    helpers: {
-      normalizeUsername,
+
+      refreshSession().then(function (freshUser) {
+        if (!freshUser) {
+          window.location.href = redirectTo || "login.html";
+        }
+      });
+      return null;
     },
   };
 })();

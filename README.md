@@ -1,35 +1,48 @@
-# FinWise (Cloudflare Pages-ready)
+# FinWise (Cloudflare Workers + KV + Pages Assets)
 
-This project is now configured to run as a **static site on Cloudflare Pages**.
+FinWise now runs as a **real web app** on Cloudflare:
 
-## What changed for Pages
+- Static HTML assets are served from Cloudflare Pages/Workers assets.
+- Auth APIs run on Cloudflare Workers.
+- User and session data are stored in Cloudflare KV (`USERS_KV`, `SESSIONS_KV`).
 
-- Added `wrangler.toml` with `pages_build_output_dir = "."` so Pages can deploy directly from this repo root.
-- Added `_redirects` so routes like `/login`, `/signup`, and `/dashboard` resolve to their `.html` files, plus a catch-all fallback.
-- Added `.gitignore` to avoid committing `node_modules` and local user data artifacts.
+## Architecture
 
-## Deploy on Cloudflare Pages
+- Worker entrypoint: `src/index.ts`
+- Front-end auth client: `auth.js`
+- HTML pages stay static, but sign-up/sign-in now call server APIs:
+  - `POST /api/auth/signup`
+  - `POST /api/auth/login`
+  - `POST /api/auth/google`
+  - `GET /api/auth/me`
+  - `POST /api/auth/logout`
 
-### Option A: Cloudflare Dashboard (recommended)
-
-1. Push this repo to GitHub/GitLab.
-2. In Cloudflare, go to **Workers & Pages → Create → Pages → Connect to Git**.
-3. Select this repository.
-4. Build settings:
-   - **Framework preset:** None
-   - **Build command:** *(leave empty)*
-   - **Build output directory:** `.`
-5. Deploy.
-
-### Option B: Wrangler CLI
+## 1) Create KV namespaces
 
 ```bash
-npx wrangler pages deploy .
+npx wrangler kv namespace create USERS_KV
+npx wrangler kv namespace create USERS_KV --preview
+npx wrangler kv namespace create SESSIONS_KV
+npx wrangler kv namespace create SESSIONS_KV --preview
 ```
 
-### Option C: Wrangler Workers deploy (assets mode)
+Copy the returned IDs into `wrangler.toml`.
 
-If your CI/CD runs `wrangler deploy` (Workers deploy), this repo now includes an `[assets]` section in `wrangler.toml` so static files are uploaded from the repo root:
+## 2) Configure `wrangler.toml`
+
+This repo includes bindings:
+
+- `USERS_KV`
+- `SESSIONS_KV`
+
+Replace placeholder IDs:
+
+- `YOUR_USERS_KV_NAMESPACE_ID`
+- `YOUR_USERS_KV_PREVIEW_NAMESPACE_ID`
+- `YOUR_SESSIONS_KV_NAMESPACE_ID`
+- `YOUR_SESSIONS_KV_PREVIEW_NAMESPACE_ID`
+
+## 3) Deploy
 
 ```bash
 npx wrangler deploy
@@ -37,27 +50,14 @@ npx wrangler deploy
 
 ## Local development
 
-Because this is static-first, you can run any static server, for example:
-
 ```bash
-npx serve .
+npx wrangler dev
 ```
 
-or with Wrangler Pages emulation:
+Then open the local URL and test signup/login.
 
-```bash
-npx wrangler pages dev .
-```
+## Security note
 
-## Important auth note
-
-Current auth in `auth.js` uses `localStorage` in the browser. That works on Cloudflare Pages, but user accounts are per-browser/per-device unless you later add a real backend (e.g., Cloudflare Workers + D1/KV/R2).
-
-## CI/CD troubleshooting
-
-If your deploy logs stop right after the Wrangler banner (for example after `⛅️ wrangler ...`), the two most common causes are:
-
-1. **Missing Cloudflare credentials in CI** (`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`).
-2. **A future `compatibility_date`** in `wrangler.toml` relative to the runner timezone/date.
-
-This repo pins `compatibility_date` to `2025-12-01` to avoid timezone-related "future date" failures in automated deploy environments.
+- Passwords are hashed before storing in KV.
+- Sessions are stored server-side and referenced by an HttpOnly cookie.
+- Google sign-in still requires setting a valid Google Client ID in `login.html` and `signup.html`.
