@@ -4,13 +4,13 @@ compatibility_date = "2025-12-01"
 
 [[kv_namespaces]]
 binding = "USERS_KV"
-id = "YOUR_USERS_KV_NAMESPACE_ID"
-preview_id = "YOUR_USERS_KV_PREVIEW_NAMESPACE_ID"
+id = "${USERS_KV_NAMESPACE_ID}"
+preview_id = "${USERS_KV_PREVIEW_NAMESPACE_ID}"
 
 [[kv_namespaces]]
 binding = "SESSIONS_KV"
-id = "YOUR_SESSIONS_KV_NAMESPACE_ID"
-preview_id = "YOUR_SESSIONS_KV_PREVIEW_NAMESPACE_ID"
+id = "${SESSIONS_KV_NAMESPACE_ID}"
+preview_id = "${SESSIONS_KV_PREVIEW_NAMESPACE_ID}"
 
 [assets]
 directory = "."

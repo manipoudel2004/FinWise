@@ -26,7 +26,7 @@ npx wrangler kv namespace create SESSIONS_KV
 npx wrangler kv namespace create SESSIONS_KV --preview
 ```
 
-Copy the returned IDs into `wrangler.toml`.
+Copy the returned IDs into Cloudflare environment variables (recommended for CI) or directly into `wrangler.toml`.
 
 ## 2) Configure `wrangler.toml`
 
@@ -35,12 +35,14 @@ This repo includes bindings:
 - `USERS_KV`
 - `SESSIONS_KV`
 
-Replace placeholder IDs:
+This repo reads KV IDs from environment variable interpolation in `wrangler.toml`:
 
-- `YOUR_USERS_KV_NAMESPACE_ID`
-- `YOUR_USERS_KV_PREVIEW_NAMESPACE_ID`
-- `YOUR_SESSIONS_KV_NAMESPACE_ID`
-- `YOUR_SESSIONS_KV_PREVIEW_NAMESPACE_ID`
+- `USERS_KV_NAMESPACE_ID`
+- `USERS_KV_PREVIEW_NAMESPACE_ID`
+- `SESSIONS_KV_NAMESPACE_ID`
+- `SESSIONS_KV_PREVIEW_NAMESPACE_ID`
+
+For Cloudflare dashboard builds, set these in **Workers & Pages → Settings → Variables and Secrets** for both Production and Preview environments.
 
 ## 3) Deploy
 
